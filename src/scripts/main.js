@@ -3,6 +3,14 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 import '../styles/style.scss';
 
+/**
+ * TODO :
+ * - Add wall mesh
+ * - Mouse lerp
+ * - Add tiles
+ * - Add UI
+ */
+
 let scene = null;
 let camera = null;
 let renderer = null;
@@ -57,7 +65,8 @@ const setupScene = () => {
   camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
   scene.add(camera);
 
-  camera.position.z = 10;
+  camera.position.z = 12;
+  camera.position.y = -12;
 
   new OrbitControls(camera, canvas);
 
@@ -72,7 +81,12 @@ const setupLights = () => {
 
 const setupWorld = () => {
 
-  let geo = new THREE.PlaneGeometry(10, 10, 10, 10);
+  const boardSizes = {
+    x: 30,
+    y: 20
+  }
+
+  let geo = new THREE.PlaneGeometry(boardSizes.x, boardSizes.y, boardSizes.x, boardSizes.y);
 
   let mat = new THREE.MeshBasicMaterial({
     color: 0xffffff,
