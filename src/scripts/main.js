@@ -23,8 +23,6 @@ let camera = null
 let renderer = null
 let canvas = null
 let ambiantLight = null
-let boardMesh = null
-let wallMesh = null
 
 // Experience objects
 let scroll = 0
@@ -99,7 +97,9 @@ const setupRenderer = () => {
   renderer = new THREE.WebGLRenderer({
     canvas,
     antialias: true,
-  })
+    alpha: true
+  });
+  renderer.setClearColor(0xffffff, 1);
 }
 
 const setupScene = () => {
@@ -121,24 +121,6 @@ const setupLights = () => {
 }
 
 const setupWorld = () => {
-  const boardSizes = {
-    x: 20,
-    y: 200,
-  }
-
-  let boardGeo = new THREE.PlaneGeometry(
-    boardSizes.x,
-    boardSizes.y,
-    boardSizes.x,
-    boardSizes.y
-  )
-
-  let boardMat = new THREE.MeshLambertMaterial({
-    color: 0xffffff,
-  })
-
-  boardMesh = new THREE.Mesh(boardGeo, boardMat)
-  scene.add(boardMesh)
 
   /**
    * TODO :
