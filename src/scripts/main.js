@@ -59,6 +59,7 @@ class Month {
     this.year = year;
     this.description = description;
     this.deaths = deaths;
+    this.height = this.deaths;
     this.position = position;
 
     // Tableau contenant tous les plans de l'île
@@ -70,7 +71,7 @@ class Month {
   
   setupIsland() {
 
-    for(let i=0; i<this.deaths; i++) {
+    for(let i=0; i<this.height; i++) {
   
       let size = 5 - i * .15;
   
