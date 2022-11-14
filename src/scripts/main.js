@@ -27,7 +27,7 @@ let ambiantLight = null
 // Experience objects
 let scroll = 0
 
-const ISLANDS_ARRAY = []
+const MONTHS_ARRAY = []
 
 const sizes = {
   width: 0,
@@ -46,12 +46,12 @@ class Month {
     this.scale = 5
 
     // Tableau contenant tous les plans de l'île
-    this.ISLAND_ARRAY = []
+    this.MONTH_ARRAY = []
 
-    this.setupIsland()
+    this.setupLayers()
   }
 
-  setupIsland() {
+  setupLayers() {
     for (let i = 0; i < this.height; i++) {
       let size = 5 - i * 0.15
 
@@ -65,10 +65,10 @@ class Month {
       mesh.position.z = i * 0.2 + 0.1
       scene.add(mesh)
 
-      this.ISLAND_ARRAY.push(mesh)
+      this.MONTH_ARRAY.push(mesh)
     }
 
-    ISLANDS_ARRAY.push(this.ISLAND_ARRAY)
+    MONTHS_ARRAY.push(this.MONTH_ARRAY)
   }
 }
 
