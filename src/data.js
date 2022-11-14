@@ -44,27 +44,32 @@ export const months = {
     12: 'Décembre',
 }
 
-export const DARK_COLORS_ARRAY = [
-    "#EEEEEE",
-    "#DDDDDD",
-    "#CCCCCC",
-    "#BBBBBB",
-    "#AAAAAA",
-    "#9c9c9c",
-    "#999999",
-    "#8c8c8c",
-    "#888888",
-    "#7c7c7c",
-    "#777777",
-    "#6c6c6c",
-    "#666666",
-    "#5c5c5c",
-    "#555555",
-    "#4c4c4c",
-    "#444444",
-    "#3c3c3c",
-    "#333333",
-    "#2c2c2c",
-    "#222222",
-  ]
+export const DARK_COLORS = [
+  "#EEEEEE",
+  "#DDDDDD",
+  "#CCCCCC",
+  "#BBBBBB",
+  "#AAAAAA",
+  "#9c9c9c",
+  "#999999",
+  "#8c8c8c",
+  "#888888",
+  "#7c7c7c",
+  "#777777",
+  "#6c6c6c",
+  "#666666",
+  "#5c5c5c",
+  "#555555",
+  "#4c4c4c",
+  "#444444",
+  "#3c3c3c",
+  "#333333",
+  "#2c2c2c",
+  "#222222",
+]
+
+export const FUN_COLORS = [
+  "#EEEEEE",
+  "#DDDDDD",
+]
   
