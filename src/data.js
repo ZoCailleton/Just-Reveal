@@ -30,18 +30,18 @@ export const data = {
 }
 
 export const months = {
-    1: 'Janvier',
-    2: 'Février',
-    3: 'Mars',
-    4: 'Avril',
-    5: 'Mai',
-    6: 'Juin',
-    7: 'Juillet',
-    8: 'Août',
-    9: 'Septembre',
-    10: 'Octobre',
-    11: 'Novembre',
-    12: 'Décembre',
+  1: "Janvier",
+  2: "Février",
+  3: "Mars",
+  4: "Avril",
+  5: "Mai",
+  6: "Juin",
+  7: "Juillet",
+  8: "Août",
+  9: "Septembre",
+  10: "Octobre",
+  11: "Novembre",
+  12: "Décembre",
 }
 
 export const DARK_COLORS = [
@@ -69,7 +69,25 @@ export const DARK_COLORS = [
 ]
 
 export const FUN_COLORS = [
-  "#EEEEEE",
-  "#DDDDDD",
+  "#0A2F51",
+  "#0C3A59",
+  "#0D4761",
+  "#0F5468",
+  "#116270",
+  "#137177",
+  "#147E7B",
+  "#168579",
+  "#198C75",
+  "#1B9371",
+  "#1D9A6C",
+  "#2EA36B",
+  "#3FAC6C",
+  "#50B56E",
+  "#62BE73",
+  "#74C67A",
+  "#88CE86",
+  "#A1D698",
+  "#B8DEAA",
+  "#CCE6BD",
+  "#DEEDCF",
 ]
-  
