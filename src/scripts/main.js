@@ -1,17 +1,19 @@
 import * as THREE from 'three';
 import { Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { getRandomIntFromInterval } from '../utils/getRandomIntFromInterval';
 
 import '../styles/style.scss';
 
 /**
  * TODO :
- * - Add wall mesh
  * - Mouse lerp
+ * - Scroll lerp
  * - Add tiles
  * - Add UI
  */
 
+// Three objects
 let scene = null;
 let camera = null;
 let renderer = null;
@@ -20,12 +22,91 @@ let ambiantLight = null;
 let boardMesh = null;
 let wallMesh = null;
 
+// Experience objects
 let scroll = 0;
+
+const ISLANDS_ARRAY = [];
+
+const DARK_COLORS_ARRAY = [
+  '#BBBBBB',
+  '#AAAAAA',
+  '#999999',
+  '#888888',
+  '#777777',
+  '#666666',
+  '#555555',
+  '#444444',
+  '#333333',
+  '#222222',
+];
 
 const sizes = {
   width: 0,
   height: 0
 }
+
+
+
+
+
+
+
+class Month {
+
+  constructor({month, year, description, deaths, position}) {
+
+    this.month = month;
+    this.year = year;
+    this.description = description;
+    this.deaths = deaths;
+    this.position = position;
+
+    // Tableau contenant tous les plans de l'île
+    this.ISLAND_ARRAY = [];
+
+    this.setupIsland();
+
+  }
+  
+  setupIsland() {
+
+    for(let i=0; i<this.deaths; i++) {
+  
+      let size = 5 - i * .15;
+  
+      const geometry = new THREE.CircleGeometry(size, 20);
+      const material = new THREE.MeshBasicMaterial( { color: DARK_COLORS_ARRAY[i] } );
+      const mesh = new THREE.Mesh( geometry, material ) ;
+      mesh.position.y = this.position;
+      mesh.position.z = (i * 0.2) + 0.1;
+      scene.add( mesh );
+      
+      this.ISLAND_ARRAY.push(mesh);
+  
+    }
+      
+    ISLANDS_ARRAY.push( this.ISLAND_ARRAY );
+
+  }
+
+  /* 
+  const x = 0, y = 0;
+  const level1 = new THREE.Shape();
+  level1.moveTo( x, y );
+  level1.quadraticCurveTo( 1, 1, 2, 2 );
+  let extrudeSettings = { depth: .05, bevelEnabled: false };
+  */
+
+}
+
+
+
+
+
+
+
+
+
 
 const updateSizes = () => {
 
@@ -45,8 +126,6 @@ const updateSizes = () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 }
-
-window.addEventListener('resize', updateSizes);
 
 const setupCanvas = () => {
 
@@ -85,76 +164,6 @@ const setupLights = () => {
 
 }
 
-function randomIntFromInterval(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min)
-}
-
-const ISLANDS_ARRAY = [];
-
-const DARK_COLORS_ARRAY = [
-  '#BBBBBB',
-  '#AAAAAA',
-  '#999999',
-  '#888888',
-  '#777777',
-  '#666666',
-  '#555555',
-  '#444444',
-  '#333333',
-  '#222222',
-];
-
-class Month {
-
-  constructor(nom, height, position) {
-
-    this.nom = nom;
-    this.height = height;
-    this.position = position;
-
-    // Tableau contenant tous les plans de l'île
-    this.ISLAND_ARRAY = [];
-
-    this.setupIsland();
-
-  }
-  
-  setupIsland() {
-
-    for(let i=0; i<this.height; i++) {
-  
-      let size = 5 - i * .15;
-  
-      const geometry = new THREE.CircleGeometry(size, 20);
-      const material = new THREE.MeshBasicMaterial( { color: DARK_COLORS_ARRAY[i] } );
-      const mesh = new THREE.Mesh( geometry, material ) ;
-      mesh.position.y = this.position;
-      mesh.position.z = (i * 0.2) + 0.1;
-      scene.add( mesh );
-      
-      this.ISLAND_ARRAY.push(mesh);
-  
-    }
-      
-    ISLANDS_ARRAY.push( this.ISLAND_ARRAY );
-
-  }
-
-  /* 
-  const x = 0, y = 0;
-  const level1 = new THREE.Shape();
-  level1.moveTo( x, y );
-  level1.quadraticCurveTo( 1, 1, 2, 2 );
-  let extrudeSettings = { depth: .05, bevelEnabled: false };
-  */
-
-}
-
-addEventListener('wheel', e => {
-  scroll += e.deltaY * 0.01;
-  console.log(scroll);
-});
-
 const setupWorld = () => {
 
   const boardSizes = {
@@ -171,10 +180,38 @@ const setupWorld = () => {
   boardMesh = new THREE.Mesh(boardGeo, boardMat);
   scene.add(boardMesh);
 
-  new Month('Décembre 2021', 10, 0);
-  new Month('Décembre 2021', 5, 25);
-  new Month('Décembre 2021', 8, 50);
-  new Month('Décembre 2021', 3, 75);
+  /**
+   * TODO :
+   * - Automatically generate monthes with JSON
+   */
+
+  new Month({
+    month: 'Décembre',
+    year: 2020,
+    deaths: 10,
+    position: 0
+  });
+
+  new Month({
+    month: 'Janvier',
+    year: 2021,
+    deaths: 5,
+    position: 25
+  });
+
+  new Month({
+    month: 'Février',
+    year: 2021,
+    deaths: 8,
+    position: 50
+  });
+
+  new Month({
+    month: 'Mars',
+    year: 2021,
+    deaths: 3,
+    position: 75
+  });
 
 }
 
@@ -203,3 +240,20 @@ const startExperience = () => {
 }
 
 startExperience();
+
+
+
+
+
+
+
+
+
+
+
+addEventListener('wheel', e => {
+  scroll += e.deltaY * 0.01;
+  console.log(scroll);
+});
+
+window.addEventListener('resize', updateSizes);
