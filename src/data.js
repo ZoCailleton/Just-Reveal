@@ -69,6 +69,7 @@ export const DARK_COLORS = [
 ]
 
 export const FUN_COLORS = [
+  "#eeeeeee",
   "#DEEDCF",
   "#CCE6BD",
   "#B8DEAA",
