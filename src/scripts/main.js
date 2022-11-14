@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 import '../styles/style.scss';
@@ -17,6 +18,9 @@ let renderer = null;
 let canvas = null;
 let ambiantLight = null;
 let boardMesh = null;
+let wallMesh = null;
+
+let scroll = 0;
 
 const sizes = {
   width: 0,
@@ -53,7 +57,8 @@ const setupCanvas = () => {
 const setupRenderer = () => {
 
   renderer = new THREE.WebGLRenderer({
-    canvas
+    canvas,
+    antialias: true
   });
 
 }
@@ -67,8 +72,9 @@ const setupScene = () => {
 
   camera.position.z = 12;
   camera.position.y = -12;
+  camera.rotation.x = 1;
 
-  new OrbitControls(camera, canvas);
+  //new OrbitControls(camera, canvas);
 
 }
 
@@ -79,28 +85,104 @@ const setupLights = () => {
 
 }
 
+function randomIntFromInterval(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+const ISLANDS_ARRAY = [];
+
+const DARK_COLORS_ARRAY = [
+  '#BBBBBB',
+  '#AAAAAA',
+  '#999999',
+  '#888888',
+  '#777777',
+  '#666666',
+  '#555555',
+  '#444444',
+  '#333333',
+  '#222222',
+];
+
+class Month {
+
+  constructor(nom, height, position) {
+
+    this.nom = nom;
+    this.height = height;
+    this.position = position;
+
+    // Tableau contenant tous les plans de l'île
+    this.ISLAND_ARRAY = [];
+
+    this.setupIsland();
+
+  }
+  
+  setupIsland() {
+
+    for(let i=0; i<this.height; i++) {
+  
+      let size = 5 - i * .15;
+  
+      const geometry = new THREE.CircleGeometry(size, 20);
+      const material = new THREE.MeshBasicMaterial( { color: DARK_COLORS_ARRAY[i] } );
+      const mesh = new THREE.Mesh( geometry, material ) ;
+      mesh.position.y = this.position;
+      mesh.position.z = (i * 0.2) + 0.1;
+      scene.add( mesh );
+      
+      this.ISLAND_ARRAY.push(mesh);
+  
+    }
+      
+    ISLANDS_ARRAY.push( this.ISLAND_ARRAY );
+
+  }
+
+  /* 
+  const x = 0, y = 0;
+  const level1 = new THREE.Shape();
+  level1.moveTo( x, y );
+  level1.quadraticCurveTo( 1, 1, 2, 2 );
+  let extrudeSettings = { depth: .05, bevelEnabled: false };
+  */
+
+}
+
+addEventListener('wheel', e => {
+  scroll += e.deltaY * 0.01;
+  console.log(scroll);
+});
+
 const setupWorld = () => {
 
   const boardSizes = {
-    x: 30,
-    y: 20
+    x: 20,
+    y: 200
   }
 
-  let geo = new THREE.PlaneGeometry(boardSizes.x, boardSizes.y, boardSizes.x, boardSizes.y);
+  let boardGeo = new THREE.PlaneGeometry(boardSizes.x, boardSizes.y, boardSizes.x, boardSizes.y);
 
-  let mat = new THREE.MeshBasicMaterial({
-    color: 0xffffff,
-    wireframe: true
+  let boardMat = new THREE.MeshLambertMaterial({
+    color: 0xffffff
   });
   
-  boardMesh = new THREE.Mesh(geo, mat);
+  boardMesh = new THREE.Mesh(boardGeo, boardMat);
   scene.add(boardMesh);
+
+  new Month('Décembre 2021', 10, 0);
+  new Month('Décembre 2021', 5, 25);
+  new Month('Décembre 2021', 8, 50);
+  new Month('Décembre 2021', 3, 75);
 
 }
 
 const tick = () => {
 
   renderer.render(scene, camera);
+
+  camera.position.y = scroll;
   
   requestAnimationFrame(tick);
 
