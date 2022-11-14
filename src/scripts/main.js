@@ -4,8 +4,16 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader"
 
 import getRandomIntFromInterval from "../utils/getRandomIntFromInterval"
-import { data, months, DARK_COLORS_ARRAY } from "../data"
-import { shape1 } from "../shapes.js"
+
+import {
+  data,
+  months,
+  DARK_COLORS_ARRAY
+} from "../data"
+
+import {
+  shape2
+} from "../shapes.js"
 
 import "../styles/style.scss"
 
@@ -40,7 +48,7 @@ class Month {
     this.year = year
     this.description = description
     this.deaths = deaths
-    this.height = this.deaths / 1000
+    this.height = this.deaths / 2000
     // this.height = 1
     this.position = position
     this.scale = 5
@@ -52,23 +60,33 @@ class Month {
   }
 
   setupLayers() {
-    for (let i = 0; i < this.height; i++) {
-      let size = 5 - i * 0.15
 
-      const geometry = new THREE.CircleGeometry(size, 20)
+    for (let i = 0; i < this.height; i++) {
+
+      let offset = i / 1000;
+
+      let size = .05 - offset;
+
+      const geometry = getGeometryFromSVG(shape2);
 
       const material = new THREE.MeshBasicMaterial({
         color: DARK_COLORS_ARRAY[i],
       })
       const mesh = new THREE.Mesh(geometry, material)
+
       mesh.position.y = this.position
-      mesh.position.z = i * 0.2 + 0.1
+      mesh.position.x = -4
+      mesh.position.z = i * 1 + 0.1
+
+      mesh.scale.set(size, size, 0);
+      
       scene.add(mesh)
 
       this.MONTH_ARRAY.push(mesh)
     }
 
     MONTHS_ARRAY.push(this.MONTH_ARRAY)
+
   }
 }
 
@@ -122,18 +140,10 @@ const setupLights = () => {
 
 const setupWorld = () => {
 
-  /**
-   * TODO :
-   * - Automatically generate monthes with JSON
-   */
-
   let index = 0
 
   for (const year in data) {
     for (const month in data[year]) {
-      // console.log(months[month], year)
-      // console.log("cas:", data[year][month])
-      // console.log("cas:", data[year][month] / 1000)
 
       new Month({
         month: months[month],
@@ -148,6 +158,7 @@ const setupWorld = () => {
 }
 
 const getGeometryFromSVG = (shape) => {
+
   let shapes = []
 
   const loader = new SVGLoader()
@@ -163,6 +174,7 @@ const getGeometryFromSVG = (shape) => {
   })
 
   return geometry
+
 }
 
 const tick = () => {
@@ -181,8 +193,6 @@ const startExperience = () => {
   setupWorld()
 
   updateSizes()
-
-  getGeometryFromSVG(shape1)
   tick()
 }
 
