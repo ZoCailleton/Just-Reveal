@@ -54,6 +54,7 @@ class Month {
     // this.height = 1
     this.positions = positions
     this.scale = 5
+    this.thickness = 0.025
 
     // Tableau contenant tous les plans de l'île
     this.layers = []
@@ -87,7 +88,7 @@ class Month {
       mesh.position.z = i * 0.5 + 0.1
       //mesh.rotation.z = rand;
 
-      mesh.scale.set(size, size, 0.025)
+      mesh.scale.set(size, size, this.thickness)
 
       scene.add(mesh)
 
@@ -99,13 +100,15 @@ class Month {
 
   setupModels() {
 
+    const topLayer = this.layers[this.layers.length-1]
+
     for(let i=0; i<2; i++) {
       let model = getRandomFromArray(TREES_ARRAY);
       let clone = model.clone()
 
       clone.position.x = 1 - i * 3
       clone.position.y = this.positions.y + 3
-      clone.position.z = 1
+      clone.position.z = topLayer?.position.z + this.thickness
 
       clone.rotation.x = 1.5
 
