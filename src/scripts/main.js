@@ -53,7 +53,7 @@ class Month {
     this.year = year
     this.description = description
     this.deaths = deaths
-    this.height = this.deaths / 2000
+    this.height = this.deaths / 1000
     // this.height = 1
     this.positions = positions
     this.scale = 5
@@ -71,7 +71,7 @@ class Month {
 
     for (let i = 0; i < this.height; i++) {
 
-      let offset = i / 200;
+      let offset = i / 400;
 
       let size = .075 - offset;
 
@@ -87,7 +87,7 @@ class Month {
       mesh.position.z = i * .5 + 0.1
       //mesh.rotation.z = rand;
 
-      mesh.scale.set(size, size, 0);
+      mesh.scale.set(size, size, .025);
       
       scene.add(mesh)
 
@@ -253,8 +253,8 @@ window.addEventListener('mousedown', e => {
     let i=0;
     for(let layer of month.layers) {
       i++;
-      gsap.to(layer.position, {z: i, duration: .1})
-      layer.material.color.setHex( FUN_COLORS[i] )
+      gsap.to(layer.position, {z: i * .5, duration: .1})
+      layer.material.color.setHex(`0x${FUN_COLORS[i].replace('#', '')}`)
     }
 
   }
