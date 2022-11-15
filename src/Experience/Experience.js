@@ -1,5 +1,4 @@
 import * as THREE from "three"
-import { BoxGeometry, MeshNormalMaterial, Vector3 } from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import gsap from "gsap"

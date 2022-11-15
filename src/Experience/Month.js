@@ -1,10 +1,11 @@
 import * as THREE from 'three'
 import gsap, { Back } from "gsap"
 
-import mapValueBetween from "../utils/mapValueBetween"
-import getRandomIntFromInterval from "../utils/getRandomIntFromInterval"
-import getRandomFromArray from "../utils/getRandomFromArray"
-import getGeometryFromSVG from "../utils/getGeometryFromSVG"
+import {
+  mapValueBetween,
+  getRandomFromArray,
+  getGeometryFromSVG
+} from '../utils/index'
 
 import { THEMES } from "../themes"
 import { SHAPES } from "../shapes.js"
