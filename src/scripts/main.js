@@ -6,12 +6,15 @@ import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader"
 import gsap from "gsap"
 
 import getRandomIntFromInterval from "../utils/getRandomIntFromInterval"
+import getRandomFromArray from "../utils/getRandomFromArray"
 
 import { data, months, DARK_COLORS, FUN_COLORS } from "../data"
 import { shape2 } from "../shapes.js"
 import { models } from "../models.js"
 
 import "../styles/style.scss"
+
+getRandomFromArray()
 
 /**
  * TODO :
