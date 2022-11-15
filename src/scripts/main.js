@@ -282,7 +282,7 @@ const setupWorld = () => {
         deaths: COVID_DATA[year][month],
         position: {
           x: 0,
-          y: index * 50,
+          y: index * 50
         },
       })
 
