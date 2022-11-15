@@ -31,6 +31,7 @@ let canvas = null
 let ambiantLight = null
 let raycaster = null
 let currentIntersect = null
+let environmentSphere = null
 
 // Experience objects
 let scroll = 0
@@ -48,14 +49,14 @@ const sizes = {
 }
 
 class Month {
-  constructor({ month, year, description, deaths, positions }) {
+  constructor({ month, year, description, deaths, position }) {
     this.month = month
     this.year = year
     this.description = description
     this.deaths = deaths
     this.height = this.deaths / 1000
     // this.height = 1
-    this.positions = positions
+    this.position = position
     this.scale = 5
     this.thickness = 0.025
 
@@ -71,6 +72,7 @@ class Month {
   }
 
   setupLayers() {
+
     let rand = getRandomIntFromInterval(-10, 10)
 
     for (let i = 0; i < this.height; i++) {
@@ -86,10 +88,11 @@ class Month {
       })
       const mesh = new THREE.Mesh(geometry, material)
 
-      mesh.position.y = this.positions.y
+      mesh.position.y = this.position.y
       mesh.position.x = -7 + offset * 100
       mesh.position.z = i * 0.5 + 0.1
-      //mesh.rotation.z = rand;
+
+      console.log(mesh.position.y);
 
       mesh.scale.set(size, size, this.thickness)
 
@@ -109,7 +112,7 @@ class Month {
       let clone = model.clone()
 
       clone.position.x = 2 - i * 4
-      clone.position.y = this.positions.y + 3
+      clone.position.y = this.position.y + 3
       clone.position.z = topLayer?.position.z - 2
 
       clone.rotation.x = 1.5
@@ -136,7 +139,7 @@ class Month {
     this.collider = new THREE.Mesh(geometry, material)
 
     this.collider.position.x = 1
-    this.collider.position.y = this.positions.y + 6
+    this.collider.position.y = this.position.y + 6
     this.collider.position.z = this.height / 3
 
     COLLIDERS_ARRAY.push(this.collider)
@@ -193,6 +196,27 @@ const setupLights = () => {
   scene.add(ambiantLight)
 }
 
+const changeEnvironment = (theme) => {
+
+  const targetColor = new THREE.Color(THEMES[theme].background);
+
+  gsap.to(environmentSphere.material.color, {r: targetColor.r, g: targetColor.g, b: targetColor.b, duration: .5});
+
+}
+
+const setupEnvironment = () => {
+
+  const geometry = new THREE.SphereGeometry(175, 100)
+  const material = new THREE.MeshLambertMaterial({
+    color: 0xffffff,
+    side: THREE.BackSide
+  })
+  environmentSphere = new THREE.Mesh(geometry, material)
+
+  scene.add(environmentSphere);
+
+}
+
 const setupWorld = () => {
   let index = 0
 
@@ -202,7 +226,7 @@ const setupWorld = () => {
         month: MONTHS_WORDING[month],
         year: year,
         deaths: COVID_DATA[year][month],
-        positions: {
+        position: {
           x: 0,
           y: index * 50,
         },
@@ -249,6 +273,7 @@ window.addEventListener("mousemove", (e) => {
 })
 
 const checkRaycasterIntersections = () => {
+
   raycaster.setFromCamera(mouse, camera)
   const intersects = raycaster.intersectObjects(COLLIDERS_ARRAY)
 
@@ -259,10 +284,14 @@ const checkRaycasterIntersections = () => {
     canvas.style.cursor = "default"
     currentIntersect = null
   }
+
 }
 
 window.addEventListener("mousedown", (e) => {
+
   if (currentIntersect) {
+
+    changeEnvironment('happy')
     
     let meshId = currentIntersect.object.uuid
     let month = MONTHS_ARRAY.filter((el) => el.collider.uuid === meshId)[0]
@@ -298,19 +327,26 @@ window.addEventListener("mousedown", (e) => {
       )
     }
   }
+
 })
 
 const tick = () => {
+
   renderer.render(scene, camera)
 
   checkRaycasterIntersections()
 
-  camera.position.y = scroll
+  let y = scroll * MONTHS_ARRAY[MONTHS_ARRAY.length-1].position.y
+
+  camera.position.y = y
+  environmentSphere.position.y = y
 
   requestAnimationFrame(tick)
+  
 }
 
 const loadModel = (model) => {
+
   const loader = new GLTFLoader()
 
   loader.load(
@@ -330,6 +366,7 @@ const loadModel = (model) => {
       console.log("An error happened")
     }
   )
+
 }
 
 const loadExperience = () => {
@@ -339,10 +376,12 @@ const loadExperience = () => {
 }
 
 const startExperience = () => {
+
   setupCanvas()
   setupRenderer()
   setupScene()
   setupLights()
+  setupEnvironment();
   setupWorld()
   setupRaycaster()
 
@@ -350,13 +389,17 @@ const startExperience = () => {
 
   updateSizes()
   tick()
+
 }
 
 loadExperience()
 
-addEventListener("wheel", (e) => {
-  scroll += e.deltaY * 0.01
-  // console.log(scroll)
-})
+const monthObserver = () => {
+  
+}
+
+window.addEventListener('scroll', () => {
+  scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
+});
 
 window.addEventListener("resize", updateSizes)

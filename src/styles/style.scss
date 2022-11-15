@@ -1,5 +1,22 @@
 body {
-  height: 100vh;
   margin: 0;
-  overflow: hidden;
+}
+
+#webgl {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.debug-custom {
+  background-color: #fff;
+  padding: 2em;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.fake-scroll {
+  height: 25000px;
 }
