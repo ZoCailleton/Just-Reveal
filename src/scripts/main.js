@@ -76,8 +76,11 @@ class Month {
 
       const material = new THREE.MeshBasicMaterial({
         color: DARK_COLORS[i],
+        transparent: true
       })
       const mesh = new THREE.Mesh(geometry, material)
+
+      mesh.material.opacity = .1
 
       mesh.position.y = this.positions.y
       mesh.position.x = -7 + offset * 100
@@ -96,12 +99,12 @@ class Month {
 
   setupModels() {
 
-    this.models.push(TREES_ARRAY[0])
-
-    for(let model of this.models) {
-      console.log(model);
-      model.position.y = this.positions.y;
-      scene.add(model);
+    for(let i=0; i<2; i++) {
+      let model = TREES_ARRAY[0];
+      let clone = model.clone()
+      clone.position.set(i, this.positions.y, 0)
+      scene.add(clone)
+      this.models.push(clone);
     }
 
   }
