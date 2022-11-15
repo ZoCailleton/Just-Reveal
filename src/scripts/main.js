@@ -31,8 +31,6 @@ let camera = null
 let renderer = null
 let canvas = null
 let ambiantLight = null
-let raycaster = null
-let currentIntersect = null
 let environmentSphere = null
 
 // Experience objects
@@ -54,7 +52,9 @@ const sizes = {
 }
 
 class Month {
+
   constructor({ month, year, description, deaths, position }) {
+
     this.month = month
     this.year = year
     this.description = description
@@ -84,6 +84,7 @@ class Month {
     const geometry = getGeometryFromSVG(islandShape)
 
     for (let i = 0; i < this.height; i++) {
+
       let offset = i / 400
 
       let size = islandSize - offset
@@ -92,6 +93,7 @@ class Month {
         color: DARK_COLORS[i],
         transparent: true,
       })
+
       const mesh = new THREE.Mesh(geometry, material)
 
       mesh.position.y = this.position.y
@@ -207,6 +209,7 @@ class Month {
 }
 
 const updateSizes = () => {
+
   sizes.width = window.innerWidth
   sizes.height = window.innerHeight
 
@@ -221,6 +224,7 @@ const updateSizes = () => {
 
   renderer.setSize(sizes.width, sizes.height)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
 }
 
 const setupCanvas = () => {
@@ -242,6 +246,7 @@ const setupScene = () => {
   camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 200)
   scene.add(camera)
 
+  camera.position.x = 10
   camera.position.z = 12
   camera.rotation.x = 1
 
@@ -275,6 +280,7 @@ const setupEnvironment = () => {
 }
 
 const setupWorld = () => {
+
   let index = 0
 
   for (const year in COVID_DATA) {
@@ -292,9 +298,11 @@ const setupWorld = () => {
       index++
     }
   }
+
 }
 
 const getGeometryFromSVG = (shape) => {
+
   let shapes = []
 
   const loader = new SVGLoader()
@@ -310,88 +318,14 @@ const getGeometryFromSVG = (shape) => {
   })
 
   return geometry
-}
-
-const setupRaycaster = () => {
-  raycaster = new THREE.Raycaster()
-
-  const rayOrigin = new THREE.Vector3(-3, 0, 0)
-  const rayDirection = new THREE.Vector3(10, 0, 0)
-  rayDirection.normalize()
-
-  raycaster.set(rayOrigin, rayDirection)
-}
-
-let mouse = new THREE.Vector2()
-
-window.addEventListener("mousemove", (e) => {
-  mouse.x = (e.clientX / sizes.width) * 2 - 1
-  mouse.y = -(e.clientY / sizes.height) * 2 + 1
-})
-
-const checkRaycasterIntersections = () => {
-
-  raycaster.setFromCamera(mouse, camera)
-  const intersects = raycaster.intersectObjects(COLLIDERS_ARRAY)
-
-  if (intersects.length) {
-    canvas.style.cursor = "pointer"
-    currentIntersect = intersects[0]
-  } else {
-    canvas.style.cursor = "default"
-    currentIntersect = null
-  }
 
 }
-
-window.addEventListener("mousedown", (e) => {
-
-  if (currentIntersect) {
-
-    changeEnvironment('happy')
-    
-    let meshId = currentIntersect.object.uuid
-    let month = MONTHS_ARRAY.filter((el) => el.collider.uuid === meshId)[0]
-
-    // Animation des layers des îles
-    let i = 0
-    for (let layer of month.layers) {
-      i++
-      gsap.to(layer.position, { z: i * 0.5, duration: 0.1 })
-      layer.material.color.setHex(`0x${HAPPY_COLORS[i]?.replace("#", "")}`)
-    }
-
-    // Animation des models
-    i = 0
-    for (let model of month.models) {
-      i++
-      let tl = gsap.timeline()
-      tl.addLabel("tree")
-      tl.to(
-        model.element.scale,
-        { x: 1, y: 1, z: 1, duration: 0.5, ease: Back.easeOut },
-        "tree"
-      )
-      tl.to(
-        model.element.position,
-        { z: model.z, duration: 0.25, ease: Back.easeOut },
-        "tree"
-      )
-      tl.to(
-        model.element.rotation,
-        { y: 5, duration: 0.25, ease: Back.easeOut },
-        "tree"
-      )
-    }
-  }
-
-})
 
 const tick = () => {
 
   renderer.render(scene, camera)
 
-  camera.position.x = cameraX
+  //camera.position.x = cameraX
   camera.position.y = cameraY
   
   environmentSphere.position.x = cameraX
@@ -439,9 +373,6 @@ const startExperience = () => {
   setupLights()
   setupEnvironment();
   setupWorld()
-  setupRaycaster()
-
-  // console.log(TREES_ARRAY)
 
   updateSizes()
   tick()
@@ -457,7 +388,9 @@ const monthObserver = () => {
       month.reveal()
       month.active = true
       changeEnvironment('happy')
-      document.getElementById('month-debug').innerHTML = month.month + ' ' + month.year
+      document.querySelector('.infos .month').innerHTML = month.month + ' ' + month.year
+      document.querySelector('.infos .covid-cases').innerHTML = month.deaths
+      document.querySelector('.infos .description').innerHTML = month.description
     } else if(month.active) {
       month.active = false
       month.darken();
@@ -474,8 +407,6 @@ const cursor = document.querySelector('.timeline .cursor')
 window.addEventListener('scroll', () => {
 
   scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
-
-  console.log(scroll*100)
 
   cursor.style.left = `${scroll*100}%`
   

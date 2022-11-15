@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+}
+
+#webgl {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.infos {
+  width: 30%;
+  height: 100vh;
+  background-color: #fff;
+  padding: 2em;
+  border-left: 1px solid #eee;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.fake-scroll {
+  height: 25000px;
+}
+
+.timeline {
+  width: 80%;
+  height: 10px;
+  background-color: red;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: fixed;
+  left: 50%;
+  bottom: 50px;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  z-index: 2;
+}
+
+.timeline .cursor {
+  width: 25px;
+  height: 25px;
+  background-color: #aaa;
+  position: relative;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+/*# sourceMappingURL=style.css.map */
