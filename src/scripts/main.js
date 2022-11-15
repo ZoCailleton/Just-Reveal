@@ -470,10 +470,17 @@ const monthObserver = () => {
 const cursor = document.querySelector('.timeline .cursor')
 
 window.addEventListener('scroll', () => {
+
   scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
+
+  console.log(scroll*100)
+
+  cursor.style.left = `${scroll*100}%`
+  
   //cameraX = Math.cos(scroll * 100) * 20
   cameraY = scroll * MONTHS_ARRAY[MONTHS_ARRAY.length-1]?.position.y
   monthObserver()
+  
 });
 
 window.addEventListener("resize", updateSizes)

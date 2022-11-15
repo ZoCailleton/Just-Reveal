@@ -29,12 +29,14 @@ body {
   align-items: center;
   position: fixed;
   left: 50%;
-  bottom: 100px;
+  bottom: 50px;
   transform: translateX(-50%);
   z-index: 2;
   .cursor {
     width: 25px;
     height: 25px;
     background-color: #aaa;
+    position: relative;
+    transform: translateX(-50%);
   }
 }
