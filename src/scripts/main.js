@@ -7,11 +7,13 @@ import gsap, { Back } from "gsap"
 
 import getRandomIntFromInterval from "../utils/getRandomIntFromInterval"
 import getRandomFromArray from "../utils/getRandomFromArray"
+import mapValueBetween from "../utils/mapValueBetween"
 
-import { shape2 } from "../shapes.js"
+// import { shape2 } from "../shapes.js"
 import { COVID_DATA, MONTHS_WORDING } from "../data"
 import { THEMES } from "../themes"
 import { MODELS } from "../models.js"
+import { SHAPES } from "../shapes.js"
 
 import "../styles/style.scss"
 
@@ -77,14 +79,14 @@ class Month {
 
   setupLayers() {
 
-    let rand = getRandomIntFromInterval(-10, 10)
+    const islandSize = Math.floor(mapValueBetween(this.deaths, 0, 20000, 6, 10)) * 0.01
+    const islandShape = getRandomFromArray(SHAPES)
+    const geometry = getGeometryFromSVG(islandShape)
 
     for (let i = 0; i < this.height; i++) {
       let offset = i / 400
 
-      let size = 0.075 - offset
-
-      const geometry = getGeometryFromSVG(shape2)
+      let size = islandSize - offset
 
       const material = new THREE.MeshBasicMaterial({
         color: DARK_COLORS[i],
