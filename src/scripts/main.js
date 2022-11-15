@@ -154,7 +154,7 @@ class Month {
     let i = 0
     for (let layer of this.layers) {
       i++
-      gsap.to(layer.position, { z: i * 0.5, duration: 0.1 })
+      gsap.to(layer.position, { z: i * 0.5, duration: 0.1, ease: Back.easeOut })
       layer.material.color.setHex(`0x${THEMES[theme].gradient[i]?.replace("#", "")}`)
     }
 
@@ -165,25 +165,23 @@ class Month {
     this.setTheme('happy')
 
     // Animation des models
-    let i = 0
     for (let model of this.models) {
-      i++
       let tl = gsap.timeline()
-      tl.addLabel("tree")
+      tl.addLabel("treeAppear")
       tl.to(
         model.element.scale,
         { x: 1, y: 1, z: 1, duration: 0.5, ease: Back.easeOut },
-        "tree"
+        "treeAppear"
       )
       tl.to(
         model.element.position,
         { z: model.z, duration: 0.25, ease: Back.easeOut },
-        "tree"
+        "treeAppear"
       )
       tl.to(
         model.element.rotation,
         { y: 5, duration: 0.25, ease: Back.easeOut },
-        "tree"
+        "treeAppear"
       )
     }
 
@@ -193,27 +191,12 @@ class Month {
 
     this.setTheme('dark')
 
-    // Animation des models
-    let i = 0
     for (let model of this.models) {
-      i++
       let tl = gsap.timeline()
-      tl.addLabel("tree")
-      tl.to(
-        model.element.scale,
-        { x: 0, y: 0, z: 0, duration: 0.15, ease: Back.easeIn },
-        "tree"
-      )
-      tl.to(
-        model.element.position,
-        { z: model.z - 5, duration: 0.25, ease: Back.easeIn },
-        "tree"
-      )
-      tl.to(
-        model.element.rotation,
-        { y: 5, duration: 0.25, ease: Back.easeIn },
-        "tree"
-      )
+      tl.addLabel("treeHide")
+      tl.to(model.element.scale, {x: 0, y: 0, z: 0, duration: .5, ease: Back.easeIn}, 'treeHide')
+      tl.to(model.element.position, {z: model.z - 5, duration: .5, ease: Back.easeIn}, "treeHide")
+      tl.to(model.element.rotation, {y: 5, duration: 0.25, ease: Back.easeIn}, "treeHide")
     }
 
   }
