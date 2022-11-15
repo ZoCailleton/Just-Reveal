@@ -35,6 +35,7 @@ let environmentSphere = null
 
 // Experience objects
 let scroll = 0
+let cameraX = 0
 let cameraY = 0
 let currentMonthIndex = 0
 
@@ -388,7 +389,10 @@ const tick = () => {
 
   renderer.render(scene, camera)
 
+  camera.position.x = cameraX
   camera.position.y = cameraY
+  
+  environmentSphere.position.x = cameraX
   environmentSphere.position.y = cameraY
 
   requestAnimationFrame(tick)
@@ -451,6 +455,7 @@ const monthObserver = () => {
       month.reveal()
       month.active = true
       changeEnvironment('happy')
+      document.getElementById('month-debug').innerHTML = month.month + ' ' + month.year
     } else if(month.active) {
       month.active = false
       month.darken();
@@ -464,6 +469,7 @@ const monthObserver = () => {
 
 window.addEventListener('scroll', () => {
   scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
+  //cameraX = Math.cos(scroll * 100) * 20
   cameraY = scroll * MONTHS_ARRAY[MONTHS_ARRAY.length-1]?.position.y
   monthObserver()
 });
