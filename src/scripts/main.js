@@ -108,7 +108,7 @@ class Month {
       let model = getRandomFromArray(TREES_ARRAY);
       let clone = model.clone()
 
-      clone.position.x = 1 - i * 3
+      clone.position.x = 2 - i * 4
       clone.position.y = this.positions.y + 3
       clone.position.z = topLayer?.position.z - 2
 
@@ -282,7 +282,7 @@ window.addEventListener("mousedown", (e) => {
       i++;
       let tl = gsap.timeline()
       tl.addLabel('tree')
-      tl.to(model.element.scale, {x: 1, y: 1, z: 1, duration: .25, ease: Back.easeOut}, 'tree')
+      tl.to(model.element.scale, {x: 1, y: 1, z: 1, duration: .5, ease: Back.easeOut}, 'tree')
       tl.to(model.element.position, {z: model.z, duration: .25, ease: Back.easeOut}, 'tree')
       tl.to(model.element.rotation, {y: 5, duration: .25, ease: Back.easeOut}, 'tree')
     }
