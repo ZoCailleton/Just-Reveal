@@ -1,5 +1,6 @@
 import * as THREE from "three"
 import { BoxGeometry, MeshNormalMaterial, Vector3 } from "three"
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader"
 import gsap from 'gsap';
@@ -41,6 +42,7 @@ let scroll = 0
 
 const MONTHS_ARRAY = []
 const COLLIDERS_ARRAY = []
+const TREES_ARRAY = []
 
 const sizes = {
   width: 0,
@@ -48,6 +50,7 @@ const sizes = {
 }
 
 class Month {
+  
   constructor({ month, year, description, deaths, positions }) {
     this.month = month
     this.year = year
@@ -61,8 +64,13 @@ class Month {
     // Tableau contenant tous les plans de l'île
     this.layers = []
 
+    // Tableau contenant les modèles 3D
+    this.models = []
+
     this.setupLayers()
+    this.setupModels()
     this.setupCollider()
+
   }
 
   setupLayers() {
@@ -95,6 +103,12 @@ class Month {
     }
 
     MONTHS_ARRAY.push(this);
+
+  }
+
+  setupModels() {
+
+    console.log(TREES_ARRAY)
 
   }
 
@@ -273,11 +287,40 @@ const tick = () => {
   
 }
 
+const loadModel = (file) => {
+
+  const loader = new GLTFLoader();
+
+  loader.load(
+    `./models/${file}`,
+    function ( gltf ) {
+      TREES_ARRAY.push(gltf.scene);
+    },
+    function ( xhr ) {
+      console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    },
+    function ( error ) {
+      console.log( 'An error happened' );
+    }
+  );
+
+}
+
+const loadModels = () => {
+
+  loadModel('tree.gltf');
+  loadModel('tree.gltf');
+  loadModel('tree.gltf');
+  loadModel('tree.gltf');
+
+}
+
 const startExperience = () => {
   setupCanvas()
   setupRenderer()
   setupScene()
   setupLights()
+  loadModels();
   setupWorld()
   setupRaycaster()
 
