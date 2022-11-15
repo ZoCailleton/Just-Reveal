@@ -3,7 +3,7 @@ import { BoxGeometry, MeshNormalMaterial, Vector3 } from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader"
-import gsap from "gsap"
+import gsap, { Back } from "gsap"
 
 import getRandomIntFromInterval from "../utils/getRandomIntFromInterval"
 import getRandomFromArray from "../utils/getRandomFromArray"
@@ -103,18 +103,24 @@ class Month {
     const topLayer = this.layers[this.layers.length-1]
 
     for(let i=0; i<2; i++) {
+      
       let model = getRandomFromArray(TREES_ARRAY);
       let clone = model.clone()
 
       clone.position.x = 1 - i * 3
       clone.position.y = this.positions.y + 3
-      clone.position.z = topLayer?.position.z + this.thickness
+      clone.position.z = topLayer?.position.z - 2
 
       clone.rotation.x = 1.5
 
+      clone.scale.set(0, 0, 0)
+
       scene.add(clone)
 
-      this.models.push(clone)
+      this.models.push({
+        z: topLayer?.position.z + this.thickness * 30,
+        element: clone
+      })
 
     }
 
@@ -256,17 +262,32 @@ const checkRaycasterIntersections = () => {
 }
 
 window.addEventListener("mousedown", (e) => {
+
   if (currentIntersect) {
     let meshId = currentIntersect.object.uuid
     let month = MONTHS_ARRAY.filter((el) => el.collider.uuid === meshId)[0]
-    
+
+    // Animation des layers des îles
     let i=0;
     for(let layer of month.layers) {
       i++;
       gsap.to(layer.position, {z: i * .5, duration: .1})
       layer.material.color.setHex(`0x${FUN_COLORS[i]?.replace('#', '')}`)
     }
+
+    // Animation des models
+    i=0;
+    for(let model of month.models) {
+      i++;
+      let tl = gsap.timeline()
+      tl.addLabel('tree')
+      tl.to(model.element.scale, {x: 1, y: 1, z: 1, duration: .25, ease: Back.easeOut}, 'tree')
+      tl.to(model.element.position, {z: model.z, duration: .25, ease: Back.easeOut}, 'tree')
+      tl.to(model.element.rotation, {y: 5, duration: .25, ease: Back.easeOut}, 'tree')
+    }
+
   }
+
 })
 
 const tick = () => {
