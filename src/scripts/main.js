@@ -108,7 +108,13 @@ class Month {
 
   setupModels() {
 
-    console.log(TREES_ARRAY)
+    this.models.push(TREES_ARRAY[0])
+
+    for(let model of this.models) {
+      console.log(model);
+      model.position.y = this.positions.y;
+      scene.add(model);
+    }
 
   }
 
@@ -268,7 +274,7 @@ window.addEventListener('mousedown', e => {
     for(let layer of month.layers) {
       i++;
       gsap.to(layer.position, {z: i * .5, duration: .1})
-      layer.material.color.setHex(`0x${FUN_COLORS[i].replace('#', '')}`)
+      layer.material.color.setHex(`0x${FUN_COLORS[i]?.replace('#', '')}`)
     }
 
   }
@@ -297,7 +303,7 @@ const loadModel = (file) => {
       TREES_ARRAY.push(gltf.scene);
     },
     function ( xhr ) {
-      console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+      //console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
     },
     function ( error ) {
       console.log( 'An error happened' );
