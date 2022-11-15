@@ -1,22 +1,15 @@
 import * as THREE from "three"
 import { BoxGeometry, MeshNormalMaterial, Vector3 } from "three"
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader"
-import gsap from 'gsap';
+import gsap from "gsap"
 
 import getRandomIntFromInterval from "../utils/getRandomIntFromInterval"
 
-import {
-  data,
-  months,
-  DARK_COLORS,
-  FUN_COLORS
-} from "../data"
-
-import {
-  shape2
-} from "../shapes.js"
+import { data, months, DARK_COLORS, FUN_COLORS } from "../data"
+import { shape2 } from "../shapes.js"
+import { models } from "../models.js"
 
 import "../styles/style.scss"
 
@@ -35,7 +28,7 @@ let renderer = null
 let canvas = null
 let ambiantLight = null
 let raycaster = null
-let currentIntersect = null;
+let currentIntersect = null
 
 // Experience objects
 let scroll = 0
@@ -50,7 +43,6 @@ const sizes = {
 }
 
 class Month {
-  
   constructor({ month, year, description, deaths, positions }) {
     this.month = month
     this.year = year
@@ -70,20 +62,17 @@ class Month {
     this.setupLayers()
     this.setupModels()
     this.setupCollider()
-
   }
 
   setupLayers() {
-
-    let rand = getRandomIntFromInterval(-10, 10);
+    let rand = getRandomIntFromInterval(-10, 10)
 
     for (let i = 0; i < this.height; i++) {
+      let offset = i / 400
 
-      let offset = i / 400;
+      let size = 0.075 - offset
 
-      let size = .075 - offset;
-
-      const geometry = getGeometryFromSVG(shape2);
+      const geometry = getGeometryFromSVG(shape2)
 
       const material = new THREE.MeshBasicMaterial({
         color: DARK_COLORS[i],
@@ -91,34 +80,29 @@ class Month {
       const mesh = new THREE.Mesh(geometry, material)
 
       mesh.position.y = this.positions.y
-      mesh.position.x = - 7 + offset * 100;
-      mesh.position.z = i * .5 + 0.1
+      mesh.position.x = -7 + offset * 100
+      mesh.position.z = i * 0.5 + 0.1
       //mesh.rotation.z = rand;
 
-      mesh.scale.set(size, size, .025);
-      
+      mesh.scale.set(size, size, 0.025)
+
       scene.add(mesh)
 
       this.layers.push(mesh)
     }
 
-    MONTHS_ARRAY.push(this);
-
+    MONTHS_ARRAY.push(this)
   }
 
   setupModels() {
-
-    console.log(TREES_ARRAY)
-
   }
 
   setupCollider() {
-
     const geometry = new BoxGeometry(10, 10, 3)
     const material = new MeshNormalMaterial({
-      color: 'red',
+      color: "red",
       wireframe: true,
-      visible: false
+      visible: false,
     })
 
     this.collider = new THREE.Mesh(geometry, material)
@@ -126,12 +110,10 @@ class Month {
     this.collider.position.y = this.positions.y
     this.collider.position.z = 2
 
-    COLLIDERS_ARRAY.push(this.collider);
-    
+    COLLIDERS_ARRAY.push(this.collider)
+
     scene.add(this.collider)
-
   }
-
 }
 
 const updateSizes = () => {
@@ -159,9 +141,9 @@ const setupRenderer = () => {
   renderer = new THREE.WebGLRenderer({
     canvas,
     antialias: true,
-    alpha: true
-  });
-  renderer.setClearColor(0xffffff, 1);
+    alpha: true,
+  })
+  renderer.setClearColor(0xf5f0ec, 1)
 }
 
 const setupScene = () => {
@@ -178,25 +160,23 @@ const setupScene = () => {
 }
 
 const setupLights = () => {
-  ambiantLight = new THREE.AmbientLight(0xffffff)
+  ambiantLight = new THREE.AmbientLight(0xf5f0ec)
   scene.add(ambiantLight)
 }
 
 const setupWorld = () => {
-
   let index = 0
 
   for (const year in data) {
     for (const month in data[year]) {
-
       new Month({
         month: months[month],
         year: year,
         deaths: data[year][month],
         positions: {
           x: 0,
-          y: index * 50
-        }
+          y: index * 50,
+        },
       })
 
       index++
@@ -205,7 +185,6 @@ const setupWorld = () => {
 }
 
 const getGeometryFromSVG = (shape) => {
-
   let shapes = []
 
   const loader = new SVGLoader()
@@ -221,62 +200,53 @@ const getGeometryFromSVG = (shape) => {
   })
 
   return geometry
-
 }
 
 const setupRaycaster = () => {
+  raycaster = new THREE.Raycaster()
 
-  raycaster = new THREE.Raycaster();
+  const rayOrigin = new THREE.Vector3(-3, 0, 0)
+  const rayDirection = new THREE.Vector3(10, 0, 0)
+  rayDirection.normalize()
 
-  const rayOrigin = new THREE.Vector3(-3, 0, 0);
-  const rayDirection = new THREE.Vector3(10, 0, 0);
-  rayDirection.normalize();
-
-  raycaster.set(rayOrigin, rayDirection);
-
+  raycaster.set(rayOrigin, rayDirection)
 }
 
-let mouse = new THREE.Vector2();
+let mouse = new THREE.Vector2()
 
-window.addEventListener('mousemove', e => {
-  mouse.x = e.clientX / sizes.width * 2 - 1;
-  mouse.y = - (e.clientY / sizes.height) * 2 + 1;
-});
+window.addEventListener("mousemove", (e) => {
+  mouse.x = (e.clientX / sizes.width) * 2 - 1
+  mouse.y = -(e.clientY / sizes.height) * 2 + 1
+})
 
 const checkRaycasterIntersections = () => {
+  raycaster.setFromCamera(mouse, camera)
+  const intersects = raycaster.intersectObjects(COLLIDERS_ARRAY)
 
-  raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObjects(COLLIDERS_ARRAY);
-
-  if(intersects.length) {
-    canvas.style.cursor = 'pointer';
-    currentIntersect = intersects[0];
+  if (intersects.length) {
+    canvas.style.cursor = "pointer"
+    currentIntersect = intersects[0]
   } else {
-    canvas.style.cursor = 'default';
-    currentIntersect = null;
+    canvas.style.cursor = "default"
+    currentIntersect = null
   }
-  
 }
 
-window.addEventListener('mousedown', e => {
-
-  if(currentIntersect) {
+window.addEventListener("mousedown", (e) => {
+  if (currentIntersect) {
     let meshId = currentIntersect.object.uuid
     let month = MONTHS_ARRAY.filter((el) => el.collider.uuid === meshId)[0]
-    
-    let i=0;
-    for(let layer of month.layers) {
-      i++;
-      gsap.to(layer.position, {z: i * .5, duration: .1})
-      layer.material.color.setHex(`0x${FUN_COLORS[i].replace('#', '')}`)
+
+    let i = 0
+    for (let layer of month.layers) {
+      i++
+      gsap.to(layer.position, { z: i * 0.5, duration: 0.1 })
+      layer.material.color.setHex(`0x${FUN_COLORS[i].replace("#", "")}`)
     }
-
   }
-
-});
+})
 
 const tick = () => {
-
   renderer.render(scene, camera)
 
   checkRaycasterIntersections()
@@ -284,35 +254,34 @@ const tick = () => {
   camera.position.y = scroll
 
   requestAnimationFrame(tick)
-  
 }
 
-const loadModel = (file) => {
-
-  const loader = new GLTFLoader();
+const loadModel = (model) => {
+  const loader = new GLTFLoader()
 
   loader.load(
-    `./models/${file}`,
-    function ( gltf ) {
-      TREES_ARRAY.push(gltf.scene);
-    },
-    function ( xhr ) {
-      console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-    },
-    function ( error ) {
-      console.log( 'An error happened' );
-    }
-  );
+    `./models/${model.filename}.gltf`,
+    function (gltf) {
+      TREES_ARRAY.push(gltf.scene)
+      model.loaded = true
 
+      if (models.filter(el => !el.loaded).length === 0) {
+        startExperience()
+      }
+    },
+    function (xhr) {
+      console.log((xhr.loaded / xhr.total) * 100 + "% loaded")
+    },
+    function (error) {
+      console.log("An error happened")
+    }
+  )
 }
 
-const loadModels = () => {
-
-  loadModel('tree.gltf');
-  loadModel('tree.gltf');
-  loadModel('tree.gltf');
-  loadModel('tree.gltf');
-
+const loadExperience = () => {
+  for (const model of models) {
+    loadModel(model)
+  }
 }
 
 const startExperience = () => {
@@ -320,15 +289,16 @@ const startExperience = () => {
   setupRenderer()
   setupScene()
   setupLights()
-  loadModels();
   setupWorld()
   setupRaycaster()
+
+  console.log(TREES_ARRAY)
 
   updateSizes()
   tick()
 }
 
-startExperience()
+loadExperience()
 
 addEventListener("wheel", (e) => {
   scroll += e.deltaY * 0.01
