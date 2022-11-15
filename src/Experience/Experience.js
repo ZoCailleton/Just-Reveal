@@ -48,7 +48,6 @@ export default class Experience {
 		}
 
 		for (const model of MODELS) {
-			console.log(this)
 			this.loadModel(model)
 		}
 		
@@ -237,7 +236,6 @@ export default class Experience {
 		loader.load(
 			`./models/${model.filename}.gltf`,
 			(gltf) => {
-				console.log(this)
 				this.TREES_ARRAY.push(gltf.scene)
 				model.loaded = true
 	
