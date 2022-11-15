@@ -35,6 +35,7 @@ let environmentSphere = null
 
 // Experience objects
 let scroll = 0
+let currentMonthIndex = 0
 
 const MONTHS_ARRAY = []
 const COLLIDERS_ARRAY = []
@@ -385,7 +386,7 @@ const startExperience = () => {
   setupWorld()
   setupRaycaster()
 
-  console.log(TREES_ARRAY)
+  // console.log(TREES_ARRAY)
 
   updateSizes()
   tick()
@@ -395,11 +396,14 @@ const startExperience = () => {
 loadExperience()
 
 const monthObserver = () => {
-  
+
+  currentMonthIndex = Math.floor(scroll*24)
+
 }
 
 window.addEventListener('scroll', () => {
   scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
+  monthObserver()
 });
 
 window.addEventListener("resize", updateSizes)
