@@ -14,8 +14,6 @@ import { models } from "../models.js"
 
 import "../styles/style.scss"
 
-getRandomFromArray()
-
 /**
  * TODO :
  * - Mouse lerp
@@ -103,7 +101,7 @@ class Month {
   setupModels() {
 
     for(let i=0; i<2; i++) {
-      let model = TREES_ARRAY[0];
+      let model = getRandomFromArray(TREES_ARRAY);
       let clone = model.clone()
       clone.position.set(i, this.positions.y, 0)
       scene.add(clone)
