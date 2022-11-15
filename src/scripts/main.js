@@ -145,6 +145,42 @@ class Month {
 
     scene.add(this.collider)
   }
+
+  reveal() {
+
+    // Animation des layers des îles
+    let i = 0
+    for (let layer of this.layers) {
+      i++
+      gsap.to(layer.position, { z: i * 0.5, duration: 0.1 })
+      layer.material.color.setHex(`0x${HAPPY_COLORS[i]?.replace("#", "")}`)
+    }
+
+    // Animation des models
+    i = 0
+    for (let model of this.models) {
+      i++
+      let tl = gsap.timeline()
+      tl.addLabel("tree")
+      tl.to(
+        model.element.scale,
+        { x: 1, y: 1, z: 1, duration: 0.5, ease: Back.easeOut },
+        "tree"
+      )
+      tl.to(
+        model.element.position,
+        { z: model.z, duration: 0.25, ease: Back.easeOut },
+        "tree"
+      )
+      tl.to(
+        model.element.rotation,
+        { y: 5, duration: 0.25, ease: Back.easeOut },
+        "tree"
+      )
+    }
+
+  }
+
 }
 
 const updateSizes = () => {
@@ -396,6 +432,10 @@ loadExperience()
 const monthObserver = () => {
 
   currentMonthIndex = Math.floor(scroll*24)
+
+  MONTHS_ARRAY[currentMonthIndex].reveal()
+
+  changeEnvironment('happy')
 
 }
 
