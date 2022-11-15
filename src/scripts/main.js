@@ -112,13 +112,21 @@ class Month {
 
   setupModels() {
     const topLayer = this.layers[this.layers.length - 1]
+    const mappedDeaths = mapValueBetween(this.deaths, 0, 20000, 1, 0.5)
+    const treeNumbers = Math.random() * 4 + 2
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < treeNumbers; i++) {
+
+      const pos = {
+        x: mappedDeaths * 6 * (Math.random() - 0.5),
+        y: mappedDeaths * 6 * (Math.random() - 0.5),
+      }
+
       let model = getRandomFromArray(TREES_ARRAY)
       let clone = model.clone()
 
-      clone.position.x = 2 - i * 4
-      clone.position.y = this.position.y + 3
+      clone.position.x = pos.x
+      clone.position.y = pos.y + this.position.y + 5
       clone.position.z = topLayer?.position.z - 2
 
       clone.rotation.x = 1.5
