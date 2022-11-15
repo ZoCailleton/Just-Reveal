@@ -45,6 +45,7 @@ const sizes = {
 
 class Month {
   constructor({ month, year, description, deaths, positions }) {
+
     this.month = month
     this.year = year
     this.description = description
@@ -81,8 +82,6 @@ class Month {
       })
       const mesh = new THREE.Mesh(geometry, material)
 
-      mesh.material.opacity = .1
-
       mesh.position.y = this.positions.y
       mesh.position.x = -7 + offset * 100
       mesh.position.z = i * 0.5 + 0.1
@@ -103,9 +102,17 @@ class Month {
     for(let i=0; i<2; i++) {
       let model = getRandomFromArray(TREES_ARRAY);
       let clone = model.clone()
-      clone.position.set(i, this.positions.y, 0)
+
+      clone.position.x = 1 - i * 3
+      clone.position.y = this.positions.y + 3
+      clone.position.z = 1
+
+      clone.rotation.x = 1.5
+
       scene.add(clone)
-      this.models.push(clone);
+
+      this.models.push(clone)
+
     }
 
   }
