@@ -1,4 +1,4 @@
-export const data = {
+export const COVID_DATA = {
   2020: {
     1: 0,
     2: 2,
@@ -29,7 +29,7 @@ export const data = {
   },
 }
 
-export const months = {
+export const MONTHS_WORDING = {
   1: "Janvier",
   2: "Février",
   3: "Mars",

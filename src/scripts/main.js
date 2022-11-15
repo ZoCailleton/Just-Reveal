@@ -8,10 +8,10 @@ import gsap, { Back } from "gsap"
 import getRandomIntFromInterval from "../utils/getRandomIntFromInterval"
 import getRandomFromArray from "../utils/getRandomFromArray"
 
-import { data, months } from "../data"
-import { BACKGROUND_COLOR, DARK_COLORS, FUN_COLORS } from "../colors"
 import { shape2 } from "../shapes.js"
-import { models } from "../models.js"
+import { COVID_DATA, MONTHS_WORDING } from "../data"
+import { THEMES } from "../themes"
+import { MODELS } from "../models.js"
 
 import "../styles/style.scss"
 
@@ -39,6 +39,9 @@ const MONTHS_ARRAY = []
 const COLLIDERS_ARRAY = []
 const TREES_ARRAY = []
 
+const DARK_COLORS = THEMES.dark.gradient
+const HAPPY_COLORS = THEMES.happy.gradient.reverse()
+
 const sizes = {
   width: 0,
   height: 0,
@@ -46,7 +49,6 @@ const sizes = {
 
 class Month {
   constructor({ month, year, description, deaths, positions }) {
-
     this.month = month
     this.year = year
     this.description = description
@@ -80,7 +82,7 @@ class Month {
 
       const material = new THREE.MeshBasicMaterial({
         color: DARK_COLORS[i],
-        transparent: true
+        transparent: true,
       })
       const mesh = new THREE.Mesh(geometry, material)
 
@@ -100,12 +102,10 @@ class Month {
   }
 
   setupModels() {
+    const topLayer = this.layers[this.layers.length - 1]
 
-    const topLayer = this.layers[this.layers.length-1]
-
-    for(let i=0; i<2; i++) {
-      
-      let model = getRandomFromArray(TREES_ARRAY);
+    for (let i = 0; i < 2; i++) {
+      let model = getRandomFromArray(TREES_ARRAY)
       let clone = model.clone()
 
       clone.position.x = 2 - i * 4
@@ -120,11 +120,9 @@ class Month {
 
       this.models.push({
         z: topLayer?.position.z + this.thickness * 30,
-        element: clone
+        element: clone,
       })
-
     }
-
   }
 
   setupCollider() {
@@ -174,7 +172,7 @@ const setupRenderer = () => {
     antialias: true,
     alpha: true,
   })
-  renderer.setClearColor(BACKGROUND_COLOR, 1)
+  renderer.setClearColor(THEMES.dark.background, 1)
 }
 
 const setupScene = () => {
@@ -191,19 +189,19 @@ const setupScene = () => {
 }
 
 const setupLights = () => {
-  ambiantLight = new THREE.AmbientLight(BACKGROUND_COLOR)
+  ambiantLight = new THREE.AmbientLight(THEMES.dark.background)
   scene.add(ambiantLight)
 }
 
 const setupWorld = () => {
   let index = 0
 
-  for (const year in data) {
-    for (const month in data[year]) {
+  for (const year in COVID_DATA) {
+    for (const month in COVID_DATA[year]) {
       new Month({
-        month: months[month],
+        month: MONTHS_WORDING[month],
         year: year,
-        deaths: data[year][month],
+        deaths: COVID_DATA[year][month],
         positions: {
           x: 0,
           y: index * 50,
@@ -264,33 +262,42 @@ const checkRaycasterIntersections = () => {
 }
 
 window.addEventListener("mousedown", (e) => {
-
   if (currentIntersect) {
     
     let meshId = currentIntersect.object.uuid
     let month = MONTHS_ARRAY.filter((el) => el.collider.uuid === meshId)[0]
 
     // Animation des layers des îles
-    let i=0;
-    for(let layer of month.layers) {
-      i++;
-      gsap.to(layer.position, {z: i * .5, duration: .1})
-      layer.material.color.setHex(`0x${FUN_COLORS[i]?.replace('#', '')}`)
+    let i = 0
+    for (let layer of month.layers) {
+      i++
+      gsap.to(layer.position, { z: i * 0.5, duration: 0.1 })
+      layer.material.color.setHex(`0x${HAPPY_COLORS[i]?.replace("#", "")}`)
     }
 
     // Animation des models
-    i=0;
-    for(let model of month.models) {
-      i++;
+    i = 0
+    for (let model of month.models) {
+      i++
       let tl = gsap.timeline()
-      tl.addLabel('tree')
-      tl.to(model.element.scale, {x: 1, y: 1, z: 1, duration: .5, ease: Back.easeOut}, 'tree')
-      tl.to(model.element.position, {z: model.z, duration: .25, ease: Back.easeOut}, 'tree')
-      tl.to(model.element.rotation, {y: 5, duration: .25, ease: Back.easeOut}, 'tree')
+      tl.addLabel("tree")
+      tl.to(
+        model.element.scale,
+        { x: 1, y: 1, z: 1, duration: 0.5, ease: Back.easeOut },
+        "tree"
+      )
+      tl.to(
+        model.element.position,
+        { z: model.z, duration: 0.25, ease: Back.easeOut },
+        "tree"
+      )
+      tl.to(
+        model.element.rotation,
+        { y: 5, duration: 0.25, ease: Back.easeOut },
+        "tree"
+      )
     }
-
   }
-
 })
 
 const tick = () => {
@@ -312,7 +319,7 @@ const loadModel = (model) => {
       TREES_ARRAY.push(gltf.scene)
       model.loaded = true
 
-      if (models.filter(el => !el.loaded).length === 0) {
+      if (MODELS.filter((el) => !el.loaded).length === 0) {
         startExperience()
       }
     },
@@ -326,7 +333,7 @@ const loadModel = (model) => {
 }
 
 const loadExperience = () => {
-  for (const model of models) {
+  for (const model of MODELS) {
     loadModel(model)
   }
 }

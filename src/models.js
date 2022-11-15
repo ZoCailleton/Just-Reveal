@@ -1,6 +1,14 @@
-export const models = [
+export const MODELS = [
     {
-        filename: "tree",
+        filename: "trees/sapin",
         loaded: false,
-    }
+    },
+    {
+        filename: "trees/fancy",
+        loaded: false,
+    },
+    {
+        filename: "trees/rond",
+        loaded: false,
+    },
 ]
