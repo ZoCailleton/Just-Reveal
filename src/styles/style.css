@@ -20,6 +20,10 @@ body {
   z-index: 2;
 }
 
+.infos .month {
+  font-size: 2em;
+}
+
 .fake-scroll {
   height: 25000px;
 }
