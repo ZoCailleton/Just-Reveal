@@ -467,6 +467,8 @@ const monthObserver = () => {
 
 }
 
+const cursor = document.querySelector('.timeline .cursor')
+
 window.addEventListener('scroll', () => {
   scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
   //cameraX = Math.cos(scroll * 100) * 20
