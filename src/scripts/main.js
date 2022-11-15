@@ -92,8 +92,6 @@ class Month {
       mesh.position.x = -7 + offset * 100
       mesh.position.z = i * 0.5 + 0.1
 
-      console.log(mesh.position.y);
-
       mesh.scale.set(size, size, this.thickness)
 
       scene.add(mesh)
@@ -385,8 +383,6 @@ const startExperience = () => {
   setupWorld()
   setupRaycaster()
 
-  console.log(TREES_ARRAY)
-
   updateSizes()
   tick()
 
@@ -400,6 +396,7 @@ const monthObserver = () => {
 
 window.addEventListener('scroll', () => {
   scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
+  monthObserver();
 });
 
 window.addEventListener("resize", updateSizes)
