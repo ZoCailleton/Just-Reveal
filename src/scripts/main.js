@@ -8,7 +8,8 @@ import gsap from "gsap"
 import getRandomIntFromInterval from "../utils/getRandomIntFromInterval"
 import getRandomFromArray from "../utils/getRandomFromArray"
 
-import { data, months, DARK_COLORS, FUN_COLORS } from "../data"
+import { data, months } from "../data"
+import { BACKGROUND_COLOR, DARK_COLORS, FUN_COLORS } from "../colors"
 import { shape2 } from "../shapes.js"
 import { models } from "../models.js"
 
@@ -166,7 +167,7 @@ const setupRenderer = () => {
     antialias: true,
     alpha: true,
   })
-  renderer.setClearColor(0xf5f0ec, 1)
+  renderer.setClearColor(BACKGROUND_COLOR, 1)
 }
 
 const setupScene = () => {
@@ -183,7 +184,7 @@ const setupScene = () => {
 }
 
 const setupLights = () => {
-  ambiantLight = new THREE.AmbientLight(0xf5f0ec)
+  ambiantLight = new THREE.AmbientLight(BACKGROUND_COLOR)
   scene.add(ambiantLight)
 }
 
