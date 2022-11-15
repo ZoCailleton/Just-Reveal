@@ -35,6 +35,7 @@ let environmentSphere = null
 
 // Experience objects
 let scroll = 0
+let cameraY = 0
 let currentMonthIndex = 0
 
 const MONTHS_ARRAY = []
@@ -55,11 +56,12 @@ class Month {
     this.year = year
     this.description = description
     this.deaths = deaths
-    this.height = this.deaths / 1000
-    // this.height = 1
     this.position = position
+
+    this.height = this.deaths / 1000
     this.scale = 5
     this.thickness = 0.025
+    this.active = false
 
     // Tableau contenant tous les plans de l'île
     this.layers = []
@@ -145,19 +147,25 @@ class Month {
 
     scene.add(this.collider)
   }
-
-  reveal() {
+  
+  setTheme(theme) {
 
     // Animation des layers des îles
     let i = 0
     for (let layer of this.layers) {
       i++
       gsap.to(layer.position, { z: i * 0.5, duration: 0.1 })
-      layer.material.color.setHex(`0x${HAPPY_COLORS[i]?.replace("#", "")}`)
+      layer.material.color.setHex(`0x${THEMES[theme].gradient[i]?.replace("#", "")}`)
     }
 
+  }
+
+  reveal() {
+
+    this.setTheme('happy')
+
     // Animation des models
-    i = 0
+    let i = 0
     for (let model of this.models) {
       i++
       let tl = gsap.timeline()
@@ -175,6 +183,35 @@ class Month {
       tl.to(
         model.element.rotation,
         { y: 5, duration: 0.25, ease: Back.easeOut },
+        "tree"
+      )
+    }
+
+  }
+
+  darken() {
+
+    this.setTheme('dark')
+
+    // Animation des models
+    let i = 0
+    for (let model of this.models) {
+      i++
+      let tl = gsap.timeline()
+      tl.addLabel("tree")
+      tl.to(
+        model.element.scale,
+        { x: 0, y: 0, z: 0, duration: 0.15, ease: Back.easeIn },
+        "tree"
+      )
+      tl.to(
+        model.element.position,
+        { z: model.z - 5, duration: 0.25, ease: Back.easeIn },
+        "tree"
+      )
+      tl.to(
+        model.element.rotation,
+        { y: 5, duration: 0.25, ease: Back.easeIn },
         "tree"
       )
     }
@@ -220,7 +257,6 @@ const setupScene = () => {
   scene.add(camera)
 
   camera.position.z = 12
-  camera.position.y = -12
   camera.rotation.x = 1
 
   // new OrbitControls(camera, canvas);
@@ -369,12 +405,8 @@ const tick = () => {
 
   renderer.render(scene, camera)
 
-  checkRaycasterIntersections()
-
-  let y = scroll * MONTHS_ARRAY[MONTHS_ARRAY.length-1].position.y
-
-  camera.position.y = y
-  environmentSphere.position.y = y
+  camera.position.y = cameraY
+  environmentSphere.position.y = cameraY
 
   requestAnimationFrame(tick)
   
@@ -431,16 +463,25 @@ loadExperience()
 
 const monthObserver = () => {
 
-  currentMonthIndex = Math.floor(scroll*24)
+  for(let month of MONTHS_ARRAY) {
+    if(cameraY > month.position.y - 25 && cameraY < month.position.y) {
+      month.reveal()
+      month.active = true
+      changeEnvironment('happy')
+    } else if(month.active) {
+      month.active = false
+      month.darken();
+      changeEnvironment('dark')
+    }
+  }
 
-  MONTHS_ARRAY[currentMonthIndex].reveal()
-
-  changeEnvironment('happy')
+  MONTHS_ARRAY[currentMonthIndex]?.reveal()
 
 }
 
 window.addEventListener('scroll', () => {
   scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
+  cameraY = scroll * MONTHS_ARRAY[MONTHS_ARRAY.length-1]?.position.y
   monthObserver()
 });
 
