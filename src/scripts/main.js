@@ -128,7 +128,7 @@ class Month {
   }
 
   setupCollider() {
-    const geometry = new BoxGeometry(10, 10, 3)
+    const geometry = new BoxGeometry(15, 15, this.height / 1.5)
     const material = new MeshNormalMaterial({
       color: "red",
       wireframe: true,
@@ -137,8 +137,9 @@ class Month {
 
     this.collider = new THREE.Mesh(geometry, material)
 
-    this.collider.position.y = this.positions.y
-    this.collider.position.z = 2
+    this.collider.position.x = 1
+    this.collider.position.y = this.positions.y + 6
+    this.collider.position.z = this.height / 3
 
     COLLIDERS_ARRAY.push(this.collider)
 
@@ -265,6 +266,7 @@ const checkRaycasterIntersections = () => {
 window.addEventListener("mousedown", (e) => {
 
   if (currentIntersect) {
+    
     let meshId = currentIntersect.object.uuid
     let month = MONTHS_ARRAY.filter((el) => el.collider.uuid === meshId)[0]
 
