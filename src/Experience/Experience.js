@@ -79,10 +79,6 @@ export default class Experience {
       if (this.started) {
         this.scroll =
           window.scrollY / (document.body.offsetHeight - window.innerHeight)
-
-      if(this.started) {
-		
-        this.scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
         
         //this.cameraX = Math.cos(this.scroll * 100) * 20
         this.cameraY = this.scroll * this.MONTHS[this.MONTHS.length-1]?.position.y
