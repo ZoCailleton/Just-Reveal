@@ -11,6 +11,7 @@ import { THEMES } from "../themes"
 import { SHAPES } from "../shapes"
 
 import Experience from "./Experience"
+import { SphereGeometry } from "three"
 
 export default class Month {
   constructor({ index, data, position }) {
@@ -34,12 +35,14 @@ export default class Month {
     // Tableau contenant tous les plans de l'île
     this.layers = []
     this.crumbles = []
+    this.particles = []
 
     // Tableau contenant les modèles 3D
     this.models = []
 
     this.setupLayers()
     this.setupModels()
+    this.setupParticles()
   }
 
   setupLayers() {
@@ -106,6 +109,20 @@ export default class Month {
     }
 
     // this.addModelFromType("bird")
+  }
+
+  setupParticles() {
+
+    for(let i=0; i<10; i++) {
+      const geometry = new THREE.SphereGeometry(.1, 10)
+      const material = new THREE.MeshBasicMaterial({
+        color: 0xffffff
+      })
+      const mesh = new THREE.Mesh(geometry, material)
+      this.particles.push(mesh)
+      this.experience.scene.add(mesh)
+    }
+
   }
 
   addModelFromType(type) {

@@ -159,7 +159,7 @@ $gap: 25px;
       }
     }
     &:hover {
-      height: 30px;
+      background-color: $black;
       .name {
         transform: translateX(125%);
         opacity: 1;
