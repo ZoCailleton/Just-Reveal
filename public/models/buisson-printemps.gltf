@@ -15,7 +15,7 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "buisson",
+            "name" : "buisson.001",
             "rotation" : [
                 1,
                 0,
@@ -40,9 +40,9 @@
             "name" : "vert",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14995941519737244,
-                    0.37626197934150696,
-                    0.2501583695411682,
+                    0.052860356867313385,
+                    0.2501581609249115,
+                    0.20507876574993134,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -52,7 +52,7 @@
     ],
     "meshes" : [
         {
-            "name" : "Cube.030",
+            "name" : "Cube.001",
             "primitives" : [
                 {
                     "attributes" : {

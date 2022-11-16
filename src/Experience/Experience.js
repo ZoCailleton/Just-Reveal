@@ -9,6 +9,7 @@ import { MODELS } from "../models"
 import { MONTHS_DATA } from "../data"
 
 import Month from "./Month"
+import { Object3D } from "three"
 import PointTimeline from "./PointTimeline"
 import Card from "./Card"
 
@@ -155,7 +156,6 @@ export default class Experience {
     const ACTIVE_STEP = this.STEP * 0.9
 
     for (let month of this.MONTHS) {
-
       if (
         this.cameraY > month.position.y - ACTIVE_STEP / 2 &&
         this.cameraY < month.position.y + ACTIVE_STEP / 2
@@ -212,10 +212,15 @@ export default class Experience {
     )
     this.scene.add(this.camera)
 
+    this.scene.fog = new THREE.Fog(0xFBF8EF, 10, 150);
+
     this.camera.position.x = 10
     this.camera.position.z = 30
     
     this.camera.rotation.x = 1
+
+    this.group = new Object3D()
+    this.scene.add(this.group)
 
     // new OrbitControls(this.camera, this.canvas);
   }
@@ -272,12 +277,13 @@ export default class Experience {
   setupEnvironment() {
     const geometry = new THREE.SphereGeometry(150, 100)
     const material = new THREE.MeshLambertMaterial({
-      color: 0xffffff,
+      color: 0xFBF8EF,
       side: THREE.BackSide,
     })
     this.environmentSphere = new THREE.Mesh(geometry, material)
 
-    this.scene.add(this.environmentSphere)
+    this.group.add(this.environmentSphere)
+    // this.scene.add(this.environmentSphere)
   }
 
   setupWorld() {
@@ -381,6 +387,7 @@ export default class Experience {
     //camera.position.x = cameraX
     // on démarre 1/2 step avant le début pour bien voir janvier
     this.camera.position.y = this.cameraY - this.STEP / 2
+    // this.camera.position.z = this.cameraZ
 
     this.environmentSphere.position.x = this.cameraX
     this.environmentSphere.position.y = this.cameraY
@@ -410,6 +417,7 @@ export default class Experience {
         model.loaded = true
 
         if (MODELS.filter((el) => !el.loaded).length === 0) {
+          console.log(this.MODELS_COLLECTION)
           this.start()
         }
       },

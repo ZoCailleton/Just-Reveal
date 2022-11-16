@@ -36,6 +36,7 @@ export default class Month {
     this.layers = []
     this.crumbles = []
     this.particles = []
+    this.light
 
     // Tableau contenant les modèles 3D
     this.models = []
@@ -56,7 +57,7 @@ export default class Month {
 
       let size = this.islandSize + offset
 
-      const material = new THREE.MeshBasicMaterial({
+      const material = new THREE.MeshLambertMaterial({
         color: this.DARK_COLORS[i],
         transparent: true,
         opacity: 1,
@@ -75,7 +76,7 @@ export default class Month {
       mesh.position.z = pos.z
       mesh.scale.set(size, size, this.thickness)
 
-      this.experience.scene.add(mesh)
+      this.experience.group.add(mesh)
       this.layers.push(mesh)
 
       if (i < 4) {
@@ -88,11 +89,16 @@ export default class Month {
           crumbleMesh.position.z = pos.z
           crumbleMesh.scale.set(size, size, this.thickness)
 
-          this.experience.scene.add(crumbleMesh)
+          this.experience.group.add(crumbleMesh)
           this.crumbles.push(crumbleMesh)
         }
       }
     }
+
+    this.light = new THREE.PointLight(0xff0000, 0, 50)
+    this.light.position.set(2, this.position.y, layersCount * 0.5 - 12)
+    this.light.castShadow = true
+    this.experience.group.add(this.light)
 
     this.experience.MONTHS.push(this)
   }
@@ -167,7 +173,7 @@ export default class Month {
     clone.rotation.x = 1.5
     clone.scale.set(0, 0, 0)
 
-    this.experience.scene.add(clone)
+    this.experience.group.add(clone)
 
     this.models.push({
       z: this.layers[0].position.z + this.thickness * 30,
@@ -198,6 +204,7 @@ export default class Month {
     
     // console.log(this)
     this.setColorTheme("happy")
+    this.light.intensity = 1
 
     // Animation des models
     for (let model of this.models) {
@@ -223,6 +230,7 @@ export default class Month {
 
   darken() {
     this.setColorTheme("dark")
+    this.light.intensity = 0
 
     for (let model of this.models) {
       let tl = gsap.timeline()
