@@ -340,8 +340,11 @@ export default class Experience {
       }, 200)
 
       setTimeout(() => {
-        this.started = true
         this.MONTHS[0].reveal()
+      }, 700)
+
+      setTimeout(() => {
+        this.started = true
         document.body.style.overflow = 'visible'
       }, 1000)
 
