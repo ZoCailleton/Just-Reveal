@@ -60,6 +60,12 @@
             "doubleSided" : true,
             "name" : "neige",
             "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.9473053812980652,
+                    0.9473055005073547,
+                    0.9473063945770264,
+                    1
+                ],
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.5
             }
