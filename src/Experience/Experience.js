@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
-import gsap, { Back } from "gsap"
+import gsap, { Power2, Back } from "gsap"
 import { Howl } from "howler"
 
 import { THEMES } from "../themes"
@@ -15,7 +15,9 @@ import Card from "./Card"
 let instance = null
 
 export default class Experience {
+
   constructor() {
+
     if (instance != null) {
       return instance
     }
@@ -35,6 +37,12 @@ export default class Experience {
     this.cameraX = 0
     this.cameraY = 0
     this.currentMonthIndex = 0
+    this.started = false
+    this.debug = false
+
+    if(window.location.hash.replace('#', '') === 'debug') {
+      this.debug = true
+    }
 
     this.ambianceSound
     this.bubbleSound
@@ -64,12 +72,16 @@ export default class Experience {
 		}
 		
 		window.addEventListener('scroll', () => {
+
+      if(this.started) {
 		
-			this.scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
-			
-			//cameraX = Math.cos(scroll * 100) * 20
-			this.cameraY = this.scroll * this.MONTHS[this.MONTHS.length-1]?.position.y
-			this.monthObserver()
+        this.scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
+        
+        //cameraX = Math.cos(scroll * 100) * 20
+        this.cameraY = this.scroll * this.MONTHS[this.MONTHS.length-1]?.position.y
+        this.monthObserver()
+
+      }
 			
 		})
 		
@@ -176,7 +188,7 @@ export default class Experience {
     this.scene.add(this.camera)
 
     this.camera.position.x = 10
-    this.camera.position.z = 8
+    this.camera.position.z = 30
     this.camera.rotation.x = 1
 
     // new OrbitControls(this.camera, this.canvas);
@@ -281,7 +293,40 @@ export default class Experience {
 
   }
 
+  startIntro() {
+
+    if(this.debug) {
+  
+      this.camera.position.z = 8
+      this.started = true
+      document.querySelector('.wrapper').style.transform = 'translateY(-100vh)'
+
+    } else {
+
+      let tl = gsap.timeline()
+      tl.addLabel('intro')
+      tl.to(this.camera.position, {z: 8, duration: 1, ease: Power2.easeInOut}, 'intro')
+      tl.to(document.querySelector('.wrapper'), {y: '-100vh', duration: 1, ease: Power2.easeInOut}, 'intro')
+
+      this.changeEnvironment("happy")
+
+      setTimeout(() => {
+        for(let point of this.timelineWrapper.querySelectorAll('.point')) {
+          point.classList.add('visible')
+        }
+      }, 200)
+
+      setTimeout(() => {
+        this.started = true
+        this.MONTHS[0].reveal()
+      }, 1000)
+
+    }
+
+  }
+
   start() {
+
     this.setupCanvas()
     this.setupRenderer()
     this.setupScene()
@@ -292,6 +337,15 @@ export default class Experience {
 
     this.updateSizes()
     this.tick()
+
+    if(this.debug) {
+      this.startIntro()
+    } else {
+      document.querySelector('.screen.intro .cta').addEventListener('click', () => {
+        this.startIntro()
+      })
+    }
+
   }
 
   tick() {

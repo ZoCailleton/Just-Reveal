@@ -12,6 +12,8 @@
     "vite": "^3.2.3"
   },
   "dependencies": {
+    "animate": "^1.0.0",
+    "animejs": "^3.2.1",
     "gsap": "^3.11.3",
     "howler": "^2.2.3",
     "sass": "^1.56.1",
