@@ -1,6 +1,7 @@
 export const MONTHS_DATA = [
   {
     month: "janvier",
+    description: "Lorem ipsum",
     deaths: 0,
     gradient: [
       "#4F1213",
@@ -16,6 +17,7 @@ export const MONTHS_DATA = [
   },
   {
     month: "février",
+    description: "Lorem ipsum",
     deaths: 2,
     gradient: [
       "#2D415A",
@@ -31,6 +33,7 @@ export const MONTHS_DATA = [
   },
   {
     month: "mars",
+    description: "Lorem ipsum",
     deaths: 3521,
     gradient: [
       "#4F1213",
@@ -46,6 +49,7 @@ export const MONTHS_DATA = [
   },
   {
     month: "avril",
+    description: "Lorem ipsum",
     deaths: 20853,
     gradient: [
       "#4F1213",
@@ -61,6 +65,7 @@ export const MONTHS_DATA = [
   },
   {
     month: "mai",
+    description: "Lorem ipsum",
     deaths: 4426,
     gradient: [
       "#4F1213",
@@ -76,6 +81,7 @@ export const MONTHS_DATA = [
   },
   {
     month: "juin",
+    description: "Lorem ipsum",
     deaths: 1041,
     gradient: [
       "#4F1213",
@@ -91,6 +97,7 @@ export const MONTHS_DATA = [
   },
   {
     month: "juillet",
+    description: "Lorem ipsum",
     deaths: 383,
     gradient: [
       "#4F1213",
@@ -106,6 +113,7 @@ export const MONTHS_DATA = [
   },
   {
     month: "août",
+    description: "Lorem ipsum",
     deaths: 378,
     gradient: [
       "#4F1213",
@@ -121,6 +129,7 @@ export const MONTHS_DATA = [
   },
   {
     month: "septembre",
+    description: "Lorem ipsum",
     deaths: 1352,
     gradient: [
       "#4F1213",
@@ -136,6 +145,7 @@ export const MONTHS_DATA = [
   },
   {
     month: "octobre",
+    description: "Lorem ipsum",
     deaths: 4832,
     gradient: [
       "#4F1213",
@@ -151,6 +161,7 @@ export const MONTHS_DATA = [
   },
   {
     month: "novembre",
+    description: "Lorem ipsum",
     deaths: 15943,
     gradient: [
       "#4F1213",
@@ -166,6 +177,7 @@ export const MONTHS_DATA = [
   },
   {
     month: "décembre",
+    description: "Lorem ipsum",
     deaths: 11901,
     gradient: [
       "#4F1213",

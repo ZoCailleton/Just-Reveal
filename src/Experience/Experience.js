@@ -3,10 +3,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import gsap from "gsap"
 
-// import { shape2 } from "../shapes.js"
-import { COVID_DATA, MONTHS_WORDING } from "../covid"
 import { THEMES } from "../themes"
-import { MODELS } from "../models.js"
+import { MODELS } from "../models"
 import { MONTHS_DATA } from "../data"
 
 import Month from "./Month"
@@ -98,7 +96,6 @@ export default class Experience {
         this.cameraY < month.position.y + ACTIVE_STEP / 2
       ) {
         if (!month.active) {
-          console.log("reveal!")
           month.reveal()
 
           month.active = true
@@ -232,7 +229,6 @@ export default class Experience {
     loader.load(
       `./models/${model.filename}.gltf`,
       (gltf) => {
-        console.log(this)
 
         if (!this.MODELS_COLLECTION[model.season]) {
           this.MODELS_COLLECTION[model.season] = {}
@@ -247,8 +243,6 @@ export default class Experience {
         model.loaded = true
 
         if (MODELS.filter((el) => !el.loaded).length === 0) {
-          console.log(MODELS)
-          console.log(this.MODELS_COLLECTION)
           this.start()
         }
       },
