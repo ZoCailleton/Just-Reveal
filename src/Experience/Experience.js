@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
-import gsap from "gsap"
+import gsap, { Back } from "gsap"
 
 import { THEMES } from "../themes"
 import { MODELS } from "../models"
@@ -9,6 +9,7 @@ import { MONTHS_DATA } from "../data"
 
 import Month from "./Month"
 import PointTimeline from "./PointTimeline"
+import Card from "./Card"
 
 let instance = null
 
@@ -34,11 +35,15 @@ export default class Experience {
     this.cameraY = 0
     this.currentMonthIndex = 0
 
-    this.timeline = document.querySelector('.timeline');
+    this.tl = new gsap.timeline()
+
+    this.timelineWrapper = document.querySelector('.timeline')
+    this.cardsWrapper = document.querySelector('.cards')
 
     this.STEP = 50
 
-    this.MONTHS_ARRAY = []
+    this.MONTHS = []
+    this.CARDS = []
 
     this.MODELS_COLLECTION = {}
 
@@ -59,10 +64,10 @@ export default class Experience {
 			this.scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
 			
 			//cameraX = Math.cos(scroll * 100) * 20
-			this.cameraY = this.scroll * this.MONTHS_ARRAY[this.MONTHS_ARRAY.length-1]?.position.y
+			this.cameraY = this.scroll * this.MONTHS[this.MONTHS.length-1]?.position.y
 			this.monthObserver()
 			
-		});
+		})
 		
 		window.addEventListener("resize", () => {
 			this.updateSizes()
@@ -93,7 +98,7 @@ export default class Experience {
 
     const ACTIVE_STEP = this.STEP * 0.9
 
-    for (let month of this.MONTHS_ARRAY) {
+    for (let month of this.MONTHS) {
 
       if (
         this.cameraY > month.position.y - ACTIVE_STEP / 2 &&
@@ -101,6 +106,7 @@ export default class Experience {
       ) {
 
         this.updateTimeline(month.index+1)
+        this.updateCards(month.index+1)
 
         if (!month.active) {
           month.reveal()
@@ -162,14 +168,61 @@ export default class Experience {
   updateTimeline(index) {
 
     for(let point of document.querySelectorAll('.timeline .point')) {
-      point.classList.remove('size-2', 'size-3', 'size-4')
+      point.classList.remove('active')
     }
 
-    this.timeline.querySelector(`.timeline .point:nth-child(${index-2})`)?.classList.add('size-2')
-    this.timeline.querySelector(`.timeline .point:nth-child(${index+2})`)?.classList.add('size-2')
-    this.timeline.querySelector(`.timeline .point:nth-child(${index-1})`)?.classList.add('size-3')
-    this.timeline.querySelector(`.timeline .point:nth-child(${index+1})`)?.classList.add('size-3')
-    this.timeline.querySelector(`.timeline .point:nth-child(${index})`)?.classList.add('size-4')
+    this.timelineWrapper.querySelector(`.timeline .point:nth-child(${index})`)?.classList.add('active')
+
+  }
+
+  updateCards(index) {
+
+    let i=0
+
+    for(let card of this.CARDS) {
+
+      if(i < index - 1) {
+        card.classList.add('hidden')
+      } else {
+        card.classList.remove('hidden')
+      }
+
+      card.classList.remove('active', 'prev-1')
+
+      i++
+
+    }
+
+    this.CARDS[index-1]?.classList.add('active')
+    this.CARDS[index]?.classList.add('prev-1')
+    // this.CARDS[length-index-1].classList.add('active')
+    // this.CARDS[length-index-2].classList.add('prev-1')
+    // this.CARDS[length-index-3].classList.add('prev-2')
+
+    // let timecode = index * .75
+    // this.tl.tweenTo(timecode)
+
+  }
+
+  setupCardsAnimation() {
+
+    let index = 0
+
+    for(let card of this.CARDS) {
+
+      this.tl.to(card, {
+        y: -800,
+        x: index % 2 ? 150 : -150,
+        rotation: index % 2 ? 10 : -10,
+        duration: .75,
+        ease: Back.easeIn
+      })
+
+      index++
+      
+    }
+
+    this.tl.pause()
 
   }
 
@@ -196,10 +249,22 @@ export default class Experience {
   }
 
   setupWorld() {
+
     let index = 0
 
     for (const month of MONTHS_DATA) {
-      this.timeline.append(new PointTimeline(month.month))
+
+      let card = new Card({
+        month: month.name,
+        title: month.title,
+        image: month.image,
+        description: month.description
+      })
+
+      this.CARDS.push(card)
+      this.cardsWrapper.insertAdjacentElement('afterbegin', card)
+
+      this.timelineWrapper.append(new PointTimeline(month.name))
 
       new Month({
         index,
@@ -211,7 +276,9 @@ export default class Experience {
       })
 
       index++
+      
     }
+
   }
 
   start() {
@@ -221,6 +288,7 @@ export default class Experience {
     this.setupLights()
     this.setupEnvironment()
     this.setupWorld()
+    //this.setupCardsAnimation()
 
     this.updateSizes()
     this.tick()

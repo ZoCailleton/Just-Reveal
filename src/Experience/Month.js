@@ -90,7 +90,7 @@ export default class Month {
       }
     }
 
-    this.experience.MONTHS_ARRAY.push(this)
+    this.experience.MONTHS.push(this)
   }
 
   setupModels() {

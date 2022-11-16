@@ -1,7 +1,9 @@
 export const MONTHS_DATA = [
   {
-    month: "janvier",
-    description: "Lorem ipsum",
+    name: "janvier",
+    title: "janvier",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 0,
     gradient: [
       "#4F1213",
@@ -16,8 +18,10 @@ export const MONTHS_DATA = [
     season: "winter",
   },
   {
-    month: "février",
-    description: "Lorem ipsum",
+    name: "février",
+    title: "février",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 2,
     gradient: [
       "#2D415A",
@@ -32,8 +36,10 @@ export const MONTHS_DATA = [
     season: "winter",
   },
   {
-    month: "mars",
-    description: "Lorem ipsum",
+    name: "mars",
+    title: "mars",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 3521,
     gradient: [
       "#4F1213",
@@ -48,8 +54,10 @@ export const MONTHS_DATA = [
     season: "spring",
   },
   {
-    month: "avril",
-    description: "Lorem ipsum",
+    name: "avril",
+    title: "avril",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 20853,
     gradient: [
       "#4F1213",
@@ -64,8 +72,10 @@ export const MONTHS_DATA = [
     season: "spring",
   },
   {
-    month: "mai",
-    description: "Lorem ipsum",
+    name: "mai",
+    title: "mai",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 4426,
     gradient: [
       "#4F1213",
@@ -80,8 +90,10 @@ export const MONTHS_DATA = [
     season: "spring",
   },
   {
-    month: "juin",
-    description: "Lorem ipsum",
+    name: "juin",
+    title: "juin",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 1041,
     gradient: [
       "#4F1213",
@@ -96,8 +108,10 @@ export const MONTHS_DATA = [
     season: "summer",
   },
   {
-    month: "juillet",
-    description: "Lorem ipsum",
+    name: "juillet",
+    title: "juillet",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 383,
     gradient: [
       "#4F1213",
@@ -112,8 +126,10 @@ export const MONTHS_DATA = [
     season: "summer",
   },
   {
-    month: "août",
-    description: "Lorem ipsum",
+    name: "août",
+    title: "août",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 378,
     gradient: [
       "#4F1213",
@@ -128,8 +144,10 @@ export const MONTHS_DATA = [
     season: "summer",
   },
   {
-    month: "septembre",
-    description: "Lorem ipsum",
+    name: "septembre",
+    title: "septembre",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 1352,
     gradient: [
       "#4F1213",
@@ -144,8 +162,10 @@ export const MONTHS_DATA = [
     season: "autumn",
   },
   {
-    month: "octobre",
-    description: "Lorem ipsum",
+    name: "octobre",
+    title: "octobre",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 4832,
     gradient: [
       "#4F1213",
@@ -160,8 +180,10 @@ export const MONTHS_DATA = [
     season: "autumn",
   },
   {
-    month: "novembre",
-    description: "Lorem ipsum",
+    name: "novembre",
+    title: "novembre",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 15943,
     gradient: [
       "#4F1213",
@@ -176,8 +198,10 @@ export const MONTHS_DATA = [
     season: "autumn",
   },
   {
-    month: "décembre",
-    description: "Lorem ipsum",
+    name: "décembre",
+    title: "décembre",
+    image: "illutest.png",
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 11901,
     gradient: [
       "#4F1213",
