@@ -3,10 +3,9 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import gsap from "gsap"
 
-// import { shape2 } from "../shapes.js"
-import { COVID_DATA, MONTHS_WORDING } from "../data"
 import { THEMES } from "../themes"
-import { MODELS } from "../models.js"
+import { MODELS } from "../models"
+import { MONTHS_DATA } from "../data"
 
 import Month from "./Month"
 import PointTimeline from "./PointTimeline"
@@ -104,7 +103,6 @@ export default class Experience {
         this.updateTimeline(month.index+1)
 
         if (!month.active) {
-          console.log("reveal!")
           month.reveal()
 
           month.active = true
@@ -200,25 +198,19 @@ export default class Experience {
   setupWorld() {
     let index = 0
 
-    for (const year in COVID_DATA) {
-      if (year === "2021") return
-      for (const month in COVID_DATA[year]) {
+    for (const month of MONTHS_DATA) {
+      this.timeline.append(new PointTimeline(month.month))
 
-        this.timeline.append(new PointTimeline(MONTHS_WORDING[month]))
+      new Month({
+        index,
+        data: month,
+        position: {
+          x: 0,
+          y: index * this.STEP,
+        },
+      })
 
-        new Month({
-          index,
-          month: MONTHS_WORDING[month],
-          year: year,
-          deaths: COVID_DATA[year][month],
-          position: {
-            x: 0,
-            y: index * this.STEP,
-          },
-        })
-
-        index++
-      }
+      index++
     }
   }
 
@@ -255,13 +247,16 @@ export default class Experience {
     loader.load(
       `./models/${model.filename}.gltf`,
       (gltf) => {
-        console.log(this)
 
-		if (!this.MODELS_COLLECTION[model.type]) {
-			this.MODELS_COLLECTION[model.type] = []
-		}
+        if (!this.MODELS_COLLECTION[model.season]) {
+          this.MODELS_COLLECTION[model.season] = {}
+        }
 
-		this.MODELS_COLLECTION[model.type].push(gltf.scene)
+        if (!this.MODELS_COLLECTION[model.season][model.type]) {
+          this.MODELS_COLLECTION[model.season][model.type] = []
+        }
+
+        this.MODELS_COLLECTION[model.season][model.type].push(gltf.scene)
 
         model.loaded = true
 

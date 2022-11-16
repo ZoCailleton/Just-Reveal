@@ -9,23 +9,19 @@ import {
 
 import { THEMES } from "../themes"
 import { SHAPES } from "../shapes"
-import { SEASONS } from "../seasons"
 
 import Experience from "./Experience"
 
 export default class Month {
-  constructor({ index, month, year, description, deaths, position }) {
+  constructor({ index, data, position }) {
     this.experience = new Experience()
 
     this.index = index
-    this.month = month
-    this.year = year
-    this.description = description
-    this.deaths = deaths
+    this.data = data
     this.position = position
 
-    this.height = this.deaths / 1000
-    this.mappedDeaths = mapValueBetween(this.deaths, 0, 20000, 6, 10)
+    this.height = this.data.deaths / 1000
+    this.mappedDeaths = mapValueBetween(this.data.deaths, 0, 20000, 6, 10)
     this.islandSize = 0.05
     this.scale = 5
     this.thickness = 0.025
@@ -36,6 +32,7 @@ export default class Month {
 
     // Tableau contenant tous les plans de l'île
     this.layers = []
+    this.crumbles = []
 
     // Tableau contenant les modèles 3D
     this.models = []
@@ -45,8 +42,9 @@ export default class Month {
   }
 
   setupLayers() {
-    const islandShape = getRandomFromArray(SHAPES)
-    const geometry = getGeometryFromSVG(islandShape)
+    const island = getRandomFromArray(SHAPES)
+    const islandGeometry = getGeometryFromSVG(island.main)
+
     const layersCount = Math.ceil(this.height + 3)
 
     for (let i = layersCount; i > 0; i--) {
@@ -57,19 +55,39 @@ export default class Month {
       const material = new THREE.MeshBasicMaterial({
         color: this.DARK_COLORS[i],
         transparent: true,
+        opacity: 1,
       })
 
-      const mesh = new THREE.Mesh(geometry, material)
+      const mesh = new THREE.Mesh(islandGeometry, material)
 
-      mesh.position.y = this.position.y
-      mesh.position.x = 2 - offset * 100
-      mesh.position.z = i * 0.5 - 12
+      const pos = {
+        x: 2 - offset * 100,
+        y: this.position.y,
+        z: i * 0.5 - 12,
+      }
 
+      mesh.position.x = pos.x
+      mesh.position.y = pos.y
+      mesh.position.z = pos.z
       mesh.scale.set(size, size, this.thickness)
 
       this.experience.scene.add(mesh)
-
       this.layers.push(mesh)
+
+      if (i < 4) {
+        for (const crumble of island.crumbles) {
+          const crumbleGeometry = getGeometryFromSVG(crumble)
+          const crumbleMesh = new THREE.Mesh(crumbleGeometry, material)
+
+          crumbleMesh.position.x = pos.x
+          crumbleMesh.position.y = pos.y
+          crumbleMesh.position.z = pos.z
+          crumbleMesh.scale.set(size, size, this.thickness)
+
+          this.experience.scene.add(crumbleMesh)
+          this.crumbles.push(crumbleMesh)
+        }
+      }
     }
 
     this.experience.MONTHS_ARRAY.push(this)
@@ -114,7 +132,13 @@ export default class Month {
     //   console.log('loop!')
     // } while (!hasEnoughSpace)
 
-    const modelsArray = this.experience.MODELS_COLLECTION[type]
+    let season = this.data.season
+
+    if (!this.experience.MODELS_COLLECTION[season][type]) {
+      season = "all"
+    }
+
+    const modelsArray = this.experience.MODELS_COLLECTION[season][type]
     const model = getRandomFromArray(modelsArray)
 
     const clone = model.clone()
@@ -138,10 +162,9 @@ export default class Month {
     for (let layer of this.layers) {
       i--
 
+
       if (theme === "happy") {
-        // const seasonalColors = SEASONS[this.index]?.gradient
-        const seasonalColors = THEMES[theme].gradient
-        layer.material.color.setHex(`0x${seasonalColors[i]?.replace("#", "")}`)
+        layer.material.color.setHex(`0x${this.data.gradient[i]?.replace("#", "")}`)
       } else {
         layer.material.color.setHex(
           `0x${THEMES[theme].gradient[i]?.replace("#", "")}`
