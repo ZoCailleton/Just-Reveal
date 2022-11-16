@@ -172,8 +172,6 @@ export default class Experience {
 
           month.active = true
 
-          this.changeEnvironment("happy")
-
         }
       } else {
         if (month.active) {
@@ -181,7 +179,6 @@ export default class Experience {
 
           month.darken()
 
-          this.changeEnvironment("dark")
         }
       }
     }
@@ -263,17 +260,6 @@ export default class Experience {
 
   }
 
-  changeEnvironment(theme) {
-    const targetColor = new THREE.Color(THEMES[theme].background)
-
-    gsap.to(this.environmentSphere.material.color, {
-      r: targetColor.r,
-      g: targetColor.g,
-      b: targetColor.b,
-      duration: 0.5,
-    })
-  }
-
   setupEnvironment() {
     const geometry = new THREE.SphereGeometry(150, 100)
     const material = new THREE.MeshLambertMaterial({
@@ -339,8 +325,6 @@ export default class Experience {
       tl.addLabel('intro')
       tl.to(this.camera.position, {z: 8, duration: 1, ease: Power2.easeInOut}, 'intro')
       tl.to(document.querySelector('.wrapper'), {y: '-100vh', duration: 1, ease: Power2.easeInOut}, 'intro')
-
-      this.changeEnvironment("happy")
 
       setTimeout(() => {
         for(let point of this.timelineWrapper.querySelectorAll('.point')) {
