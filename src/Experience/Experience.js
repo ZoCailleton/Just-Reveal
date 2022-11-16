@@ -9,6 +9,7 @@ import { THEMES } from "../themes"
 import { MODELS } from "../models.js"
 
 import Month from "./Month"
+import PointTimeline from "./PointTimeline"
 
 let instance = null
 
@@ -32,6 +33,9 @@ export default class Experience {
     this.scroll = 0
     this.cameraX = 0
     this.cameraY = 0
+    this.currentMonthIndex = 0
+
+    this.timeline = document.querySelector('.timeline');
 
     this.STEP = 50
 
@@ -47,55 +51,58 @@ export default class Experience {
       height: 0,
     }
 
-    for (const model of MODELS) {
-      this.loadModel(model)
-    }
-
-    const cursor = document.querySelector(".timeline .cursor")
-
-    window.addEventListener("scroll", () => {
-      this.scroll =
-        window.scrollY / (document.body.offsetHeight - window.innerHeight)
-
-      cursor.style.left = `${this.scroll * 100}%`
-
-      //cameraX = Math.cos(scroll * 100) * 20
-      this.cameraY =
-        this.scroll *
-        this.MONTHS_ARRAY[this.MONTHS_ARRAY.length - 1]?.position.y
-      this.monthObserver()
-    })
-
-    window.addEventListener("resize", () => {
-      this.updateSizes()
-    })
-  }
-
-  updateSizes() {
-    this.sizes.width = window.innerWidth
-    this.sizes.height = window.innerHeight
-
-    this.canvas.width = this.sizes.width
-    this.canvas.height = this.sizes.height
-
-    this.canvas.style.width = this.sizes.width
-    this.canvas.style.height = this.sizes.height
-
-    this.camera.aspect = this.sizes.width / this.sizes.height
-    this.camera.updateProjectionMatrix()
-
-    this.renderer.setSize(this.sizes.width, this.sizes.height)
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-  }
+		for (const model of MODELS) {
+			this.loadModel(model)
+		}
+		
+		window.addEventListener('scroll', () => {
+		
+			this.scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
+			
+			//cameraX = Math.cos(scroll * 100) * 20
+			this.cameraY = this.scroll * this.MONTHS_ARRAY[this.MONTHS_ARRAY.length-1]?.position.y
+			this.monthObserver()
+			
+		});
+		
+		window.addEventListener("resize", () => {
+			this.updateSizes()
+		})
+			
+	}
+	
+	updateSizes() {
+	
+		this.sizes.width = window.innerWidth
+		this.sizes.height = window.innerHeight
+	
+		this.canvas.width = this.sizes.width
+		this.canvas.height = this.sizes.height
+	
+		this.canvas.style.width = this.sizes.width
+		this.canvas.style.height = this.sizes.height
+	
+		this.camera.aspect = this.sizes.width / this.sizes.height
+		this.camera.updateProjectionMatrix()
+	
+		this.renderer.setSize(this.sizes.width, this.sizes.height)
+		this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+	
+	}
 
   monthObserver() {
+
     const ACTIVE_STEP = this.STEP * 0.9
 
     for (let month of this.MONTHS_ARRAY) {
+
       if (
         this.cameraY > month.position.y - ACTIVE_STEP / 2 &&
         this.cameraY < month.position.y + ACTIVE_STEP / 2
       ) {
+
+        this.updateTimeline(month.index+1)
+
         if (!month.active) {
           console.log("reveal!")
           month.reveal()
@@ -104,11 +111,6 @@ export default class Experience {
 
           this.changeEnvironment("happy")
 
-          document.querySelector(".infos .month").innerHTML =
-            month.month + " " + month.year
-          document.querySelector(".infos .covid-cases").innerHTML = month.deaths
-          document.querySelector(".infos .description").innerHTML =
-            month.description
         }
       } else {
         if (month.active) {
@@ -159,6 +161,20 @@ export default class Experience {
     this.scene.add(this.ambiantLight)
   }
 
+  updateTimeline(index) {
+
+    for(let point of document.querySelectorAll('.timeline .point')) {
+      point.classList.remove('size-2', 'size-3', 'size-4')
+    }
+
+    this.timeline.querySelector(`.timeline .point:nth-child(${index-2})`)?.classList.add('size-2')
+    this.timeline.querySelector(`.timeline .point:nth-child(${index+2})`)?.classList.add('size-2')
+    this.timeline.querySelector(`.timeline .point:nth-child(${index-1})`)?.classList.add('size-3')
+    this.timeline.querySelector(`.timeline .point:nth-child(${index+1})`)?.classList.add('size-3')
+    this.timeline.querySelector(`.timeline .point:nth-child(${index})`)?.classList.add('size-4')
+
+  }
+
   changeEnvironment(theme) {
     const targetColor = new THREE.Color(THEMES[theme].background)
 
@@ -171,7 +187,7 @@ export default class Experience {
   }
 
   setupEnvironment() {
-    const geometry = new THREE.SphereGeometry(175, 100)
+    const geometry = new THREE.SphereGeometry(150, 100)
     const material = new THREE.MeshLambertMaterial({
       color: 0xffffff,
       side: THREE.BackSide,
@@ -187,6 +203,9 @@ export default class Experience {
     for (const year in COVID_DATA) {
       if (year === "2021") return
       for (const month in COVID_DATA[year]) {
+
+        this.timeline.append(new PointTimeline(MONTHS_WORDING[month]))
+
         new Month({
           index,
           month: MONTHS_WORDING[month],
