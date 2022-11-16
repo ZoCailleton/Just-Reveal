@@ -64,18 +64,24 @@ export default class Card {
 	setupStars() {
 
 		for(let i=0; i<4; i++) {
+
 			const star = document.createElement('img')
 			star.src = './assets/star.svg'
 			star.classList.add('star')
-			this.html.append(star)
-			star.style.transform = `scale(${getRandomIntFromInterval / 10})`
+
+			star.style.transform = `scale(${getRandomIntFromInterval(7, 10)/10})`
+			star.style.animationDelay = `${getRandomIntFromInterval(0, 500)}ms`
+
 			if(i < 2) {
-				star.style.right = `${getRandomIntFromInterval(0, 10)}%`
-				star.style.top = `${getRandomIntFromInterval(0, 10)}%`
+				star.style.right = `${getRandomIntFromInterval(-15, 5)}%`
+				star.style.top = `${getRandomIntFromInterval(-15, 5)}%`
 			} else {
-				star.style.left = `${getRandomIntFromInterval(0, 10)}%`
-				star.style.bottom = `${getRandomIntFromInterval(0, 10)}%`
+				star.style.left = `${getRandomIntFromInterval(-15, 5)}%`
+				star.style.bottom = `${getRandomIntFromInterval(-15, 5)}%`
 			}
+
+			this.html.append(star)
+
 		}
 
 	}

@@ -53,13 +53,16 @@ $gap: 25px;
     text-align: center;
     transform: scale(.8) translateY(60px) rotate(-2deg);
     transition: 500ms;
-    &.prev-1 {
+    &.prev {
       transform: scale(.9) translateY(30px) rotate(0deg);
     }
     &.active {
       transform: scale(1) rotate(2deg);
       .month {
         transform: translateY(-60%) rotate(-5deg) scale(1);
+      }
+      .star {
+        display: block;
       }
     }
     &.hidden {
@@ -94,9 +97,27 @@ $gap: 25px;
     .star {
       height: 3em;
       position: absolute;
-      right: 0;
-      top: 0;
-      transform: translate(-50%, -50%);
+      display: none;
+      animation-name: star;
+      animation-duration: 500ms;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+      @keyframes star {
+        0% {
+          transform: scale(0);
+        }
+        50% {
+          transform: scale(1);
+        }
+        75% {
+          transform: scale(.75);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0;
+        }
+      }
     }
   }
 }

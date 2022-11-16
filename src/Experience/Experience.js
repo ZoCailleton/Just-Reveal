@@ -187,17 +187,14 @@ export default class Experience {
         card.classList.remove('hidden')
       }
 
-      card.classList.remove('active', 'prev-1')
+      card.classList.remove('active', 'prev')
 
       i++
 
     }
 
     this.CARDS[index-1]?.classList.add('active')
-    this.CARDS[index]?.classList.add('prev-1')
-    // this.CARDS[length-index-1].classList.add('active')
-    // this.CARDS[length-index-2].classList.add('prev-1')
-    // this.CARDS[length-index-3].classList.add('prev-2')
+    this.CARDS[index]?.classList.add('prev')
 
     // let timecode = index * .75
     // this.tl.tweenTo(timecode)
@@ -260,6 +257,12 @@ export default class Experience {
         image: month.image,
         description: month.description
       })
+
+      if(index === 0)
+        card.classList.add('active')
+
+      if(index === 1)
+        card.classList.add('prev')
 
       this.CARDS.push(card)
       this.cardsWrapper.insertAdjacentElement('afterbegin', card)
