@@ -78,7 +78,7 @@ export default class Experience {
 		
         this.scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
         
-        //cameraX = Math.cos(scroll * 100) * 20
+        //this.cameraX = Math.cos(this.scroll * 100) * 20
         this.cameraY = this.scroll * this.MONTHS[this.MONTHS.length-1]?.position.y
         this.monthObserver()
 
@@ -294,7 +294,14 @@ export default class Experience {
       this.CARDS.push(card)
       this.cardsWrapper.insertAdjacentElement('afterbegin', card)
 
-      this.timelineWrapper.append(new PointTimeline(month.name))
+      let pointTimeline = new PointTimeline(month.name, index+1)
+
+      pointTimeline.addEventListener('click', () => {
+        let scroll = document.body.offsetHeight / pointTimeline.dataset.index
+        console.log(scroll)
+      })
+
+      this.timelineWrapper.append(pointTimeline)
 
       new Month({
         index,
@@ -368,7 +375,7 @@ export default class Experience {
   tick() {
     this.renderer.render(this.scene, this.camera)
 
-    //camera.position.x = cameraX
+    //this.camera.position.x = this.cameraX
     // on démarre 1/2 step avant le début pour bien voir janvier
     this.camera.position.y = this.cameraY - this.STEP / 2
     // this.camera.position.z = this.cameraZ

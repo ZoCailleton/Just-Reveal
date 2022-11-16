@@ -1,11 +1,13 @@
 export default class PointTimeline {
 	
-	constructor(month) {
+	constructor(month, index) {
 		
 		this.month = month
+		this.index = index
 		
 		this.html = document.createElement('div')
 		this.html.classList.add('point')
+		this.html.dataset.index = this.index
 
 		this.setupName()
 
