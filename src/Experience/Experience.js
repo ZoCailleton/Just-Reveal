@@ -1,16 +1,17 @@
 import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
-import gsap from "gsap"
+import gsap, { Back } from "gsap"
+import { Howl } from "howler"
 
 import { THEMES } from "../themes"
 import { MODELS } from "../models"
 import { MONTHS_DATA } from "../data"
 
 import Month from "./Month"
+import { Object3D } from "three"
 import PointTimeline from "./PointTimeline"
 import Card from "./Card"
-import { Object3D } from "three"
 
 let instance = null
 
@@ -46,7 +47,8 @@ export default class Experience {
 
     this.STEP = 50
 
-    this.MONTHS_ARRAY = []
+    this.MONTHS = []
+    this.CARDS = []
 
     this.MODELS_COLLECTION = {}
 
@@ -58,67 +60,83 @@ export default class Experience {
       height: 0,
     }
 
-    for (const model of MODELS) {
-      this.loadModel(model)
-    }
+		for (const model of MODELS) {
+			this.loadModel(model)
+		}
+		
+		window.addEventListener('scroll', () => {
+		
+			this.scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
+			
+			//cameraX = Math.cos(scroll * 100) * 20
+			this.cameraY = this.scroll * this.MONTHS[this.MONTHS.length-1]?.position.y
+			this.monthObserver()
+			
+		})
+		
+		window.addEventListener("resize", () => {
+			this.updateSizes()
+		})
+			
+	}
+	
+	updateSizes() {
+	
+		this.sizes.width = window.innerWidth - 350
+		this.sizes.height = window.innerHeight
+	
+		this.canvas.width = this.sizes.width
+		this.canvas.height = this.sizes.height
+	
+		this.canvas.style.width = this.sizes.width
+		this.canvas.style.height = this.sizes.height
+	
+		this.camera.aspect = this.sizes.width / this.sizes.height
+		this.camera.updateProjectionMatrix()
+	
+		this.renderer.setSize(this.sizes.width, this.sizes.height)
+		this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+	
+	}
 
-    const cursor = document.querySelector(".timeline .cursor")
+  setupAudio() {
 
-    window.addEventListener("scroll", () => {
-      this.scroll =
-        window.scrollY / (document.body.offsetHeight - window.innerHeight)
+    this.ambianceSound = new Howl({
+      src: './audio/ambiance.wav',
+      loop: true,
+      volume: 0.1
+    });
 
-      cursor.style.left = `${this.scroll * 100}%`
-
-      //cameraX = Math.cos(scroll * 100) * 20
-      this.cameraY =
-        this.scroll *
-        this.MONTHS_ARRAY[this.MONTHS_ARRAY.length - 1]?.position.y
-      this.monthObserver()
+    this.bubbleSound = new Howl({
+      src: './audio/bubble-1.wav',
+      volume: 0.1
     })
 
-    window.addEventListener("resize", () => {
-      this.updateSizes()
-    })
-  }
-
-  updateSizes() {
-    this.sizes.width = window.innerWidth
-    this.sizes.height = window.innerHeight
-
-    this.canvas.width = this.sizes.width
-    this.canvas.height = this.sizes.height
-
-    this.canvas.style.width = this.sizes.width
-    this.canvas.style.height = this.sizes.height
-
-    this.camera.aspect = this.sizes.width / this.sizes.height
-    this.camera.updateProjectionMatrix()
-
-    this.renderer.setSize(this.sizes.width, this.sizes.height)
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   }
 
   monthObserver() {
+
     const ACTIVE_STEP = this.STEP * 0.9
 
-    for (let month of this.MONTHS_ARRAY) {
+    for (let month of this.MONTHS) {
       if (
         this.cameraY > month.position.y - ACTIVE_STEP / 2 &&
         this.cameraY < month.position.y + ACTIVE_STEP / 2
       ) {
+
+        this.updateTimeline(month.index+1)
+        this.updateCards(month.index+1)
+
         if (!month.active) {
+
+          this.bubbleSound.play()
+
           month.reveal()
 
           month.active = true
 
           this.changeEnvironment("happy")
 
-          document.querySelector(".infos .month").innerHTML =
-            month.month + " " + month.year
-          document.querySelector(".infos .covid-cases").innerHTML = month.deaths
-          document.querySelector(".infos .description").innerHTML =
-            month.description
         }
       } else {
         if (month.active) {
@@ -160,7 +178,7 @@ export default class Experience {
     this.scene.fog = new THREE.Fog(0xFBF8EF, 10, 150);
 
     this.camera.position.x = 10
-    this.camera.position.z = 12
+    this.camera.position.z = 8
     this.camera.rotation.x = 1
 
     this.group = new Object3D()
@@ -172,6 +190,39 @@ export default class Experience {
   setupLights() {
     this.ambiantLight = new THREE.AmbientLight(THEMES.dark.background)
     this.scene.add(this.ambiantLight)
+  }
+
+  updateTimeline(index) {
+
+    for(let point of document.querySelectorAll('.timeline .point')) {
+      point.classList.remove('active')
+    }
+
+    this.timelineWrapper.querySelector(`.timeline .point:nth-child(${index})`)?.classList.add('active')
+
+  }
+
+  updateCards(index) {
+
+    let i=0
+
+    for(let card of this.CARDS) {
+
+      if(i < index - 1) {
+        card.classList.add('hidden')
+      } else {
+        card.classList.remove('hidden')
+      }
+
+      card.classList.remove('active', 'prev')
+
+      i++
+
+    }
+
+    this.CARDS[index-1]?.classList.add('active')
+    this.CARDS[index]?.classList.add('prev')
+
   }
 
   changeEnvironment(theme) {
@@ -186,7 +237,7 @@ export default class Experience {
   }
 
   setupEnvironment() {
-    const geometry = new THREE.SphereGeometry(175, 100)
+    const geometry = new THREE.SphereGeometry(150, 100)
     const material = new THREE.MeshLambertMaterial({
       color: 0xFBF8EF,
       side: THREE.BackSide,
@@ -198,9 +249,29 @@ export default class Experience {
   }
 
   setupWorld() {
+
     let index = 0
 
     for (const month of MONTHS_DATA) {
+
+      let card = new Card({
+        month: month.name,
+        title: month.title,
+        image: month.image,
+        description: month.description
+      })
+
+      if(index === 0)
+        card.classList.add('active')
+
+      if(index === 1)
+        card.classList.add('prev')
+
+      this.CARDS.push(card)
+      this.cardsWrapper.insertAdjacentElement('afterbegin', card)
+
+      this.timelineWrapper.append(new PointTimeline(month.name))
+
       new Month({
         index,
         data: month,
@@ -211,7 +282,9 @@ export default class Experience {
       })
 
       index++
+      
     }
+
   }
 
   start() {
@@ -221,6 +294,7 @@ export default class Experience {
     this.setupLights()
     this.setupEnvironment()
     this.setupWorld()
+    this.setupAudio()
 
     this.updateSizes()
     this.tick()

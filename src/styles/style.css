@@ -10,14 +10,17 @@ body {
 
 .infos {
   width: 30%;
-  height: 100vh;
   background-color: #fff;
   padding: 2em;
-  border-left: 1px solid #eee;
+  border: 1px solid #eee;
   position: fixed;
-  right: 0;
-  top: 0;
+  right: 25px;
+  top: 25px;
   z-index: 2;
+}
+
+.infos img {
+  height: 10em;
 }
 
 .infos .month {

@@ -1,30 +1,18 @@
 export const MONTHS_DATA = [
   {
-<<<<<<< Updated upstream
-    month: "janvier",
-    description: "Lorem ipsum",
-=======
     name: "janvier",
     title: "janvier",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 0,
     gradient: ["#ffffff", "#84B9BF", "#A6DACD", "#CDEFDB", "#FBFEFB"],
     season: "winter",
   },
   {
-<<<<<<< Updated upstream
-    month: "février",
-    description: "Lorem ipsum",
-=======
     name: "février",
     title: "février",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 2,
     gradient: [
       "#ffffff",
@@ -37,16 +25,10 @@ export const MONTHS_DATA = [
     season: "winter",
   },
   {
-<<<<<<< Updated upstream
-    month: "mars",
-    description: "Lorem ipsum",
-=======
     name: "mars",
     title: "mars",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 3521,
     gradient: [
       "#4AA0AB",
@@ -62,16 +44,10 @@ export const MONTHS_DATA = [
     season: "spring",
   },
   {
-<<<<<<< Updated upstream
-    month: "avril",
-    description: "Lorem ipsum",
-=======
     name: "avril",
     title: "avril",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 20853,
     gradient: [
       "#2E626C",
@@ -104,16 +80,10 @@ export const MONTHS_DATA = [
     season: "spring",
   },
   {
-<<<<<<< Updated upstream
-    month: "mai",
-    description: "Lorem ipsum",
-=======
     name: "mai",
     title: "mai",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 4426,
     gradient: [
       "#58A18F",
@@ -130,16 +100,10 @@ export const MONTHS_DATA = [
     season: "spring",
   },
   {
-<<<<<<< Updated upstream
-    month: "juin",
-    description: "Lorem ipsum",
-=======
     name: "juin",
     title: "juin",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 1041,
     gradient: [
       "#98C585",
@@ -156,16 +120,10 @@ export const MONTHS_DATA = [
     season: "summer",
   },
   {
-<<<<<<< Updated upstream
-    month: "juillet",
-    description: "Lorem ipsum",
-=======
     name: "juillet",
     title: "juillet",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 383,
     gradient: [
       "#83B352",
@@ -178,16 +136,10 @@ export const MONTHS_DATA = [
     season: "summer",
   },
   {
-<<<<<<< Updated upstream
-    month: "août",
-    description: "Lorem ipsum",
-=======
     name: "août",
     title: "août",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 378,
     gradient: [
       "#AFBC67",
@@ -200,16 +152,10 @@ export const MONTHS_DATA = [
     season: "summer",
   },
   {
-<<<<<<< Updated upstream
-    month: "septembre",
-    description: "Lorem ipsum",
-=======
     name: "septembre",
     title: "septembre",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 1352,
     gradient: [
       "#E7BF65",
@@ -223,16 +169,10 @@ export const MONTHS_DATA = [
     season: "autumn",
   },
   {
-<<<<<<< Updated upstream
-    month: "octobre",
-    description: "Lorem ipsum",
-=======
     name: "octobre",
     title: "octobre",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 4832,
     gradient: [
       "#F2908B",
@@ -249,16 +189,10 @@ export const MONTHS_DATA = [
     season: "autumn",
   },
   {
-<<<<<<< Updated upstream
-    month: "novembre",
-    description: "Lorem ipsum",
-=======
     name: "novembre",
     title: "novembre",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 15943,
     gradient: [
       "#DA759F",
@@ -286,16 +220,10 @@ export const MONTHS_DATA = [
     season: "autumn",
   },
   {
-<<<<<<< Updated upstream
-    month: "décembre",
-    description: "Lorem ipsum",
-=======
     name: "décembre",
     title: "décembre",
     image: "illutest.png",
-    description:
-      "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
->>>>>>> Stashed changes
+    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 11901,
     gradient: [
       "#ffffff",

@@ -184,6 +184,7 @@ export default class Month {
   }
 
   reveal() {
+    
     // console.log(this)
     this.setColorTheme("happy")
     this.light.intensity = 1
