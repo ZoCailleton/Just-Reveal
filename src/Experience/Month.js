@@ -9,23 +9,19 @@ import {
 
 import { THEMES } from "../themes"
 import { SHAPES } from "../shapes"
-import { SEASONS } from "../seasons"
 
 import Experience from "./Experience"
 
 export default class Month {
-  constructor({ index, month, year, description, deaths, position }) {
+  constructor({ index, data, position }) {
     this.experience = new Experience()
 
     this.index = index
-    this.month = month
-    this.year = year
-    this.description = description
-    this.deaths = deaths
+    this.data = data
     this.position = position
 
-    this.height = this.deaths / 1000
-    this.mappedDeaths = mapValueBetween(this.deaths, 0, 20000, 6, 10)
+    this.height = this.data.deaths / 1000
+    this.mappedDeaths = mapValueBetween(this.data.deaths, 0, 20000, 6, 10)
     this.islandSize = 0.05
     this.scale = 5
     this.thickness = 0.025
@@ -114,7 +110,17 @@ export default class Month {
     //   console.log('loop!')
     // } while (!hasEnoughSpace)
 
-    const modelsArray = this.experience.MODELS_COLLECTION[type]
+    let season = this.data.season
+
+    if (!this.experience.MODELS_COLLECTION[season][type]) {
+      season = "all"
+    }
+
+    const modelsArray = this.experience.MODELS_COLLECTION[season][type]
+    console.log(this.experience.MODELS_COLLECTION)
+    console.log(season)
+    console.log(type)
+    console.log(modelsArray)
     const model = getRandomFromArray(modelsArray)
 
     const clone = model.clone()
