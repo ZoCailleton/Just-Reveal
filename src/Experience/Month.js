@@ -18,6 +18,7 @@ export default class Month {
 
     this.index = index
     this.data = data
+    this.gradient = data.gradient.reverse()
     this.position = position
 
     this.height = this.data.deaths / 1000
@@ -45,7 +46,7 @@ export default class Month {
     const island = getRandomFromArray(SHAPES)
     const islandGeometry = getGeometryFromSVG(island.main)
 
-    const layersCount = Math.ceil(this.height + 3)
+    const layersCount = Math.ceil(this.height + 5)
 
     for (let i = layersCount; i > 0; i--) {
       let offset = (layersCount - i) / 400
@@ -162,9 +163,12 @@ export default class Month {
     for (let layer of this.layers) {
       i--
 
-
       if (theme === "happy") {
-        layer.material.color.setHex(`0x${this.data.gradient[i]?.replace("#", "")}`)
+        if (i === 0) {
+          layer.material.color.setHex(`0xF5EFDE`)
+        } else {
+          layer.material.color.setHex(`0x${this.gradient[i]?.replace("#", "")}`)
+        }
       } else {
         layer.material.color.setHex(
           `0x${THEMES[theme].gradient[i]?.replace("#", "")}`
