@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'Phosphate';
+  src: url('/fonts/PhosphatePro-Solid.woff2');
+}
+
+$regular: 'Outfit';
+$title: 'Phosphate';
+
+$black: #2C2A40;
+
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +17,7 @@
 
 body {
   margin: 0;
-  font-family: 'Outfit', sans-serif;
+  font-family: $regular, sans-serif;
 }
 
 #webgl {
@@ -19,26 +29,52 @@ body {
 $gap: 25px;
 
 .cards {
-  width: 100%;
-  max-width: 350px;
-  height: 80vh;
+  width: 350px;
+  height: 100vh;
+  padding: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   right: 50px;
-  top: 50px;
+  top: 0px;
   z-index: 2;
   .card {
-    width: 100%;
-    height: 100%;
+    width: 350px;
+    height: auto;
     background-color: #fff;
-    padding: 2em;
-    border: 1px solid #222;
+    padding: 2em 2em 4em;
+    border: 3px solid $black;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: absolute;
-    border-radius: 10px;
+    text-align: center;
+    .month {
+      background-color: $black;
+      padding: .5em 1.25em .75em;
+      border-radius: 8px;
+      position: absolute;
+      left: 10%;
+      top: 0;
+      transform: translateY(-60%) rotate(-5deg);
+      font-size: 1.25em;
+      color: #fff;
+      font-family: $title;
+    }
+    img {
+      height: 10em;
+    }
     .heading {
-      font-size: 2em;
+      margin: .25em 0;
+      font-size: 2.5em;
+      color: $black;
+      font-family: $title;
+    }
+    .description {
+      margin-top: .5em;
+      line-height: 1.5em;
     }
   }
 }
