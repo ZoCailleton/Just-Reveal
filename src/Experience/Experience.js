@@ -88,6 +88,8 @@ export default class Experience {
 		window.addEventListener("resize", () => {
 			this.updateSizes()
 		})
+
+    this.setupIntro()
 			
 	}
 	
@@ -109,6 +111,29 @@ export default class Experience {
 		this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 	
 	}
+
+  setupIntro() {
+    
+    const headingElt = document.querySelector('.screen.intro .heading')
+    const headingText = headingElt.textContent
+    headingElt.innerHTML = ''
+
+    let i=0
+    for(let word of headingText.split(' ')) {
+      const worldElt = document.createElement('span')
+      worldElt.classList.add('word')
+      for(let letter of word.split('')) {
+        i++
+        const letterElt = document.createElement('span')
+        letterElt.classList.add('letter')
+        letterElt.style.animationDelay = `${i*50+500}ms`
+        letterElt.innerHTML = letter
+        worldElt.append(letterElt)
+      }
+      headingElt.append(worldElt)
+    }
+
+  }
 
   setupAudio() {
 
@@ -189,6 +214,7 @@ export default class Experience {
 
     this.camera.position.x = 10
     this.camera.position.z = 30
+    
     this.camera.rotation.x = 1
 
     // new OrbitControls(this.camera, this.canvas);
@@ -319,6 +345,7 @@ export default class Experience {
       setTimeout(() => {
         this.started = true
         this.MONTHS[0].reveal()
+        document.body.style.overflow = 'visible'
       }, 1000)
 
     }
