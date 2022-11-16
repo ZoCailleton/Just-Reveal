@@ -32,15 +32,14 @@ export default class Experience {
     this.scroll = 0
     this.cameraX = 0
     this.cameraY = 0
-    this.currentMonthIndex = 0
+
+    this.STEP = 50
 
     this.MONTHS_ARRAY = []
 
-    this.TREES_ARRAY = []
-    this.VEGETATION_ARRAY = []
-    this.ANIMALS_ARRAY = []
+    this.MODELS_COLLECTION = {}
 
-    this.DARK_COLORS = THEMES.dark.gradient
+    this.DARK_COLORS = THEMES.dark.gradient.reverse()
     this.HAPPY_COLORS = THEMES.happy.gradient.reverse()
 
     this.sizes = {
@@ -48,76 +47,79 @@ export default class Experience {
       height: 0,
     }
 
-		for (const model of MODELS) {
-			this.loadModel(model)
-		}
-		
-		const cursor = document.querySelector('.timeline .cursor')
-		
-		window.addEventListener('scroll', () => {
-		
-			this.scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight)
-		
-			cursor.style.left = `${this.scroll*100}%`
-			
-			//cameraX = Math.cos(scroll * 100) * 20
-			this.cameraY = this.scroll * this.MONTHS_ARRAY[this.MONTHS_ARRAY.length-1]?.position.y
-			this.monthObserver()
-			
-		});
-		
-		window.addEventListener("resize", () => {
-			this.updateSizes()
-		})
-			
-	}
-	
-	updateSizes() {
-	
-		this.sizes.width = window.innerWidth
-		this.sizes.height = window.innerHeight
-	
-		this.canvas.width = this.sizes.width
-		this.canvas.height = this.sizes.height
-	
-		this.canvas.style.width = this.sizes.width
-		this.canvas.style.height = this.sizes.height
-	
-		this.camera.aspect = this.sizes.width / this.sizes.height
-		this.camera.updateProjectionMatrix()
-	
-		this.renderer.setSize(this.sizes.width, this.sizes.height)
-		this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-	
-	}
-
-  monthObserver() {
-    for (let month of this.MONTHS_ARRAY) {
-      if (
-        this.cameraY > month.position.y - 25 &&
-        this.cameraY < month.position.y
-      ) {
-        month.reveal()
-
-        month.active = true
-
-        this.changeEnvironment("happy")
-
-        document.querySelector(".infos .month").innerHTML =
-          month.month + " " + month.year
-        document.querySelector(".infos .covid-cases").innerHTML = month.deaths
-        document.querySelector(".infos .description").innerHTML =
-          month.description
-      } else if (month.active) {
-        month.active = false
-
-        month.darken()
-
-        this.changeEnvironment("dark")
-      }
+    for (const model of MODELS) {
+      this.loadModel(model)
     }
 
-    this.MONTHS_ARRAY[this.currentMonthIndex]?.reveal()
+    const cursor = document.querySelector(".timeline .cursor")
+
+    window.addEventListener("scroll", () => {
+      this.scroll =
+        window.scrollY / (document.body.offsetHeight - window.innerHeight)
+
+      cursor.style.left = `${this.scroll * 100}%`
+
+      //cameraX = Math.cos(scroll * 100) * 20
+      this.cameraY =
+        this.scroll *
+        this.MONTHS_ARRAY[this.MONTHS_ARRAY.length - 1]?.position.y
+      this.monthObserver()
+    })
+
+    window.addEventListener("resize", () => {
+      this.updateSizes()
+    })
+  }
+
+  updateSizes() {
+    this.sizes.width = window.innerWidth
+    this.sizes.height = window.innerHeight
+
+    this.canvas.width = this.sizes.width
+    this.canvas.height = this.sizes.height
+
+    this.canvas.style.width = this.sizes.width
+    this.canvas.style.height = this.sizes.height
+
+    this.camera.aspect = this.sizes.width / this.sizes.height
+    this.camera.updateProjectionMatrix()
+
+    this.renderer.setSize(this.sizes.width, this.sizes.height)
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  }
+
+  monthObserver() {
+    const ACTIVE_STEP = this.STEP * 0.9
+
+    for (let month of this.MONTHS_ARRAY) {
+      if (
+        this.cameraY > month.position.y - ACTIVE_STEP / 2 &&
+        this.cameraY < month.position.y + ACTIVE_STEP / 2
+      ) {
+        if (!month.active) {
+          console.log("reveal!")
+          month.reveal()
+
+          month.active = true
+
+          this.changeEnvironment("happy")
+
+          document.querySelector(".infos .month").innerHTML =
+            month.month + " " + month.year
+          document.querySelector(".infos .covid-cases").innerHTML = month.deaths
+          document.querySelector(".infos .description").innerHTML =
+            month.description
+        }
+      } else {
+        if (month.active) {
+          month.active = false
+
+          month.darken()
+
+          this.changeEnvironment("dark")
+        }
+      }
+    }
   }
 
   setupCanvas() {
@@ -183,14 +185,16 @@ export default class Experience {
     let index = 0
 
     for (const year in COVID_DATA) {
+      if (year === "2021") return
       for (const month in COVID_DATA[year]) {
         new Month({
+          index,
           month: MONTHS_WORDING[month],
           year: year,
           deaths: COVID_DATA[year][month],
           position: {
             x: 0,
-            y: index * 50,
+            y: index * this.STEP,
           },
         })
 
@@ -215,7 +219,8 @@ export default class Experience {
     this.renderer.render(this.scene, this.camera)
 
     //camera.position.x = cameraX
-    this.camera.position.y = this.cameraY
+    // on démarre 1/2 step avant le début pour bien voir janvier
+    this.camera.position.y = this.cameraY - this.STEP / 2
 
     this.environmentSphere.position.x = this.cameraX
     this.environmentSphere.position.y = this.cameraY
@@ -233,13 +238,11 @@ export default class Experience {
       (gltf) => {
         console.log(this)
 
-        if (model.type === "tree") {
-          this.TREES_ARRAY.push(gltf.scene)
-        } else if (model.type === "vegetation") {
-          this.VEGETATION_ARRAY.push(gltf.scene)
-        } else if (model.type === "animal") {
-          this.ANIMALS_ARRAY.push(gltf.scene)
-        }
+		if (!this.MODELS_COLLECTION[model.type]) {
+			this.MODELS_COLLECTION[model.type] = []
+		}
+
+		this.MODELS_COLLECTION[model.type].push(gltf.scene)
 
         model.loaded = true
 

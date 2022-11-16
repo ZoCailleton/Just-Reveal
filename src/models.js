@@ -31,7 +31,7 @@ export const MODELS = [
     },
     {
         filename: "animals/birds",
-        type: "animal",
+        type: "bird",
         loaded: false,
     },
 ]

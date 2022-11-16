@@ -4,18 +4,20 @@ import gsap, { Back } from "gsap"
 import {
   mapValueBetween,
   getRandomFromArray,
-  getGeometryFromSVG
-} from '../utils/index'
+  getGeometryFromSVG,
+} from "../utils/index"
 
 import { THEMES } from "../themes"
-import { SHAPES } from "../shapes.js"
+import { SHAPES } from "../shapes"
+import { SEASONS } from "../seasons"
 
 import Experience from "./Experience"
 
 export default class Month {
-  constructor({ month, year, description, deaths, position }) {
+  constructor({ index, month, year, description, deaths, position }) {
     this.experience = new Experience()
 
+    this.index = index
     this.month = month
     this.year = year
     this.description = description
@@ -23,7 +25,8 @@ export default class Month {
     this.position = position
 
     this.height = this.deaths / 1000
-    this.mappedDeaths = mapValueBetween(this.deaths, 0, 20000, 1, 0.5)
+    this.mappedDeaths = mapValueBetween(this.deaths, 0, 20000, 6, 10)
+    this.islandSize = 0.05
     this.scale = 5
     this.thickness = 0.025
     this.active = false
@@ -33,7 +36,6 @@ export default class Month {
 
     // Tableau contenant tous les plans de l'île
     this.layers = []
-    this.topLayer
 
     // Tableau contenant les modèles 3D
     this.models = []
@@ -43,15 +45,14 @@ export default class Month {
   }
 
   setupLayers() {
-    const islandSize =
-      Math.floor(mapValueBetween(this.deaths, 0, 20000, 6, 10)) * 0.01
     const islandShape = getRandomFromArray(SHAPES)
     const geometry = getGeometryFromSVG(islandShape)
+    const layersCount = Math.ceil(this.height + 3)
 
-    for (let i = 0; i < this.height; i++) {
-      let offset = i / 400
+    for (let i = layersCount; i > 0; i--) {
+      let offset = (layersCount - i) / 400
 
-      let size = islandSize - offset
+      let size = this.islandSize + offset
 
       const material = new THREE.MeshBasicMaterial({
         color: this.DARK_COLORS[i],
@@ -61,8 +62,8 @@ export default class Month {
       const mesh = new THREE.Mesh(geometry, material)
 
       mesh.position.y = this.position.y
-      mesh.position.x = -7 + offset * 100
-      mesh.position.z = i * 0.5 + 0.1
+      mesh.position.x = 2 - offset * 100
+      mesh.position.z = i * 0.5 - 12
 
       mesh.scale.set(size, size, this.thickness)
 
@@ -75,60 +76,83 @@ export default class Month {
   }
 
   setupModels() {
-    this.topLayer = this.layers[this.layers?.length - 1]
-
     const treesCount = Math.random() * 4 + 2
     for (let i = 0; i < treesCount; i++) {
-      this.addModelFromArray(this.experience.TREES_ARRAY)
+      this.addModelFromType("tree")
     }
 
     const vegetation = Math.random() * 4 + 2
     for (let i = 0; i < treesCount; i++) {
-      this.addModelFromArray(this.experience.VEGETATION_ARRAY)
+      this.addModelFromType("vegetation")
     }
 
-    const animalsCount = 1
-    for (let i = 0; i < animalsCount; i++) {
-      this.addModelFromArray(this.experience.ANIMALS_ARRAY)
-    }
+    // this.addModelFromType("bird")
   }
 
-  addModelFromArray(array) {
-    const pos = {
-      x: this.mappedDeaths * 6 * (Math.random() - 0.5),
-      y: this.mappedDeaths * 6 * (Math.random() - 0.5),
-    }
+  addModelFromType(type) {
+    let pos = new THREE.Vector3(0, 0, 0)
+    pos.x = 7.5 * (Math.random() - 0.5) + this.islandSize * 180
+    pos.y = 5 * (Math.random() - 0.5) + this.position.y + 5
+    pos.z = 2 * (Math.random() - 0.5) - 2
 
-    const model = getRandomFromArray(array)
+    // const threshold = 0.2
+    // let hasEnoughSpace = true
+
+    // do {
+    //   pos.x = 7.5 * (Math.random() - 0.5) + this.islandSize * 180
+    //   pos.y = 5 * (Math.random() - 0.5) + this.position.y + 5
+    //   pos.z = 2 * (Math.random() - 0.5) - 2
+
+    //   for (const model of this.models) {
+    //     const dist = pos.distanceTo(model.element.position)
+    //     if (dist < threshold) {
+    //       console.log('oups')
+    //       console.log(dist)
+    //       hasEnoughSpace = false
+    //     }
+    //   }
+    //   console.log('loop!')
+    // } while (!hasEnoughSpace)
+
+    const modelsArray = this.experience.MODELS_COLLECTION[type]
+    const model = getRandomFromArray(modelsArray)
+
     const clone = model.clone()
     clone.position.x = pos.x
-    clone.position.y = pos.y + this.position.y + 5
-    clone.position.z = this.topLayer?.position.z - 2
+    clone.position.y = pos.y
+    clone.position.z = pos.z
+
     clone.rotation.x = 1.5
     clone.scale.set(0, 0, 0)
 
     this.experience.scene.add(clone)
 
     this.models.push({
-      z: this.topLayer?.position.z + this.thickness * 30,
+      z: this.layers[0].position.z + this.thickness * 30,
       element: clone,
     })
   }
 
-  setTheme(theme) {
-    // Animation des layers des îles
-    let i = 0
+  setColorTheme(theme) {
+    let i = this.layers.length
     for (let layer of this.layers) {
-      i++
-      gsap.to(layer.position, { z: i * 0.5, duration: 0.1, ease: Back.easeOut })
-      layer.material.color.setHex(
-        `0x${THEMES[theme].gradient[i]?.replace("#", "")}`
-      )
+      i--
+
+      if (theme === "happy") {
+        // const seasonalColors = SEASONS[this.index]?.gradient
+        const seasonalColors = THEMES[theme].gradient
+        layer.material.color.setHex(`0x${seasonalColors[i]?.replace("#", "")}`)
+      } else {
+        layer.material.color.setHex(
+          `0x${THEMES[theme].gradient[i]?.replace("#", "")}`
+        )
+      }
     }
   }
 
   reveal() {
-    this.setTheme("happy")
+    // console.log(this)
+    this.setColorTheme("happy")
 
     // Animation des models
     for (let model of this.models) {
@@ -136,7 +160,7 @@ export default class Month {
       tl.addLabel("treeAppear")
       tl.to(
         model.element.scale,
-        { x: 1, y: 1, z: 1, duration: 0.5, ease: Back.easeOut },
+        { x: 1.6, y: 1.6, z: 1.6, duration: 0.5, ease: Back.easeOut },
         "treeAppear"
       )
       tl.to(
@@ -153,7 +177,7 @@ export default class Month {
   }
 
   darken() {
-    this.setTheme("dark")
+    this.setColorTheme("dark")
 
     for (let model of this.models) {
       let tl = gsap.timeline()
