@@ -7,7 +7,18 @@ export default class PointTimeline {
 		this.html = document.createElement('div')
 		this.html.classList.add('point')
 
+		this.setupName()
+
 		return this.html
+
+	}
+
+	setupName() {
+
+		const name = document.createElement('div')
+		name.classList.add('name')
+		name.innerHTML = this.month
+		this.html.append(name)
 
 	}
 

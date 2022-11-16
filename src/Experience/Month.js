@@ -174,6 +174,7 @@ export default class Month {
   }
 
   reveal() {
+    
     // console.log(this)
     this.setColorTheme("happy")
 

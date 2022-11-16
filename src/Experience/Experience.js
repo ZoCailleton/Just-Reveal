@@ -2,6 +2,7 @@ import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import gsap, { Back } from "gsap"
+import { Howl } from "howler"
 
 import { THEMES } from "../themes"
 import { MODELS } from "../models"
@@ -34,6 +35,9 @@ export default class Experience {
     this.cameraX = 0
     this.cameraY = 0
     this.currentMonthIndex = 0
+
+    this.ambianceSound
+    this.bubbleSound
 
     this.tl = new gsap.timeline()
 
@@ -77,7 +81,7 @@ export default class Experience {
 	
 	updateSizes() {
 	
-		this.sizes.width = window.innerWidth
+		this.sizes.width = window.innerWidth - 350
 		this.sizes.height = window.innerHeight
 	
 		this.canvas.width = this.sizes.width
@@ -94,6 +98,21 @@ export default class Experience {
 	
 	}
 
+  setupAudio() {
+
+    this.ambianceSound = new Howl({
+      src: './audio/ambiance.wav',
+      loop: true,
+      volume: 0.1
+    });
+
+    this.bubbleSound = new Howl({
+      src: './audio/bubble-1.wav',
+      volume: 0.1
+    })
+
+  }
+
   monthObserver() {
 
     const ACTIVE_STEP = this.STEP * 0.9
@@ -109,6 +128,9 @@ export default class Experience {
         this.updateCards(month.index+1)
 
         if (!month.active) {
+
+          this.bubbleSound.play()
+
           month.reveal()
 
           month.active = true
@@ -154,7 +176,7 @@ export default class Experience {
     this.scene.add(this.camera)
 
     this.camera.position.x = 10
-    this.camera.position.z = 12
+    this.camera.position.z = 8
     this.camera.rotation.x = 1
 
     // new OrbitControls(this.camera, this.canvas);
@@ -195,31 +217,6 @@ export default class Experience {
 
     this.CARDS[index-1]?.classList.add('active')
     this.CARDS[index]?.classList.add('prev')
-
-    // let timecode = index * .75
-    // this.tl.tweenTo(timecode)
-
-  }
-
-  setupCardsAnimation() {
-
-    let index = 0
-
-    for(let card of this.CARDS) {
-
-      this.tl.to(card, {
-        y: -800,
-        x: index % 2 ? 150 : -150,
-        rotation: index % 2 ? 10 : -10,
-        duration: .75,
-        ease: Back.easeIn
-      })
-
-      index++
-      
-    }
-
-    this.tl.pause()
 
   }
 
@@ -291,7 +288,7 @@ export default class Experience {
     this.setupLights()
     this.setupEnvironment()
     this.setupWorld()
-    //this.setupCardsAnimation()
+    this.setupAudio()
 
     this.updateSizes()
     this.tick()
