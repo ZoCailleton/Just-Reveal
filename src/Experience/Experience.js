@@ -5,7 +5,7 @@ import gsap, { Power2, Back } from "gsap"
 import animateScrollTo from "animated-scroll-to"
 import { Howl } from "howler"
 
-import { THEMES } from "../themes"
+import { COLORS } from "../colors"
 import { MODELS } from "../models"
 import { MONTHS_DATA } from "../data"
 
@@ -69,9 +69,6 @@ export default class Experience {
     this.CARDS = []
 
     this.MODELS_COLLECTION = {}
-
-    this.DARK_COLORS = THEMES.dark.gradient.reverse()
-    this.HAPPY_COLORS = THEMES.happy.gradient.reverse()
 
     this.sizes = {
       width: 0,
@@ -196,7 +193,7 @@ export default class Experience {
       alpha: true,
     })
 
-    this.renderer.setClearColor(THEMES.dark.background, 1)
+    this.renderer.setClearColor(COLORS.background, 1)
   }
 
   setupScene() {
@@ -225,7 +222,7 @@ export default class Experience {
   }
 
   setupLights() {
-    this.ambiantLight = new THREE.AmbientLight(THEMES.dark.background)
+    this.ambiantLight = new THREE.AmbientLight(0xffffff)
     this.scene.add(this.ambiantLight)
   }
 

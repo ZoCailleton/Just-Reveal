@@ -7,7 +7,7 @@ import {
   getGeometryFromSVG,
 } from "../utils/index"
 
-import { THEMES } from "../themes"
+import { COLORS } from "../colors"
 import { SHAPES } from "../shapes"
 
 import Experience from "./Experience"
@@ -29,9 +29,6 @@ export default class Month {
     this.scale = 5
     this.thickness = 0.025
     this.active = false
-
-    this.DARK_COLORS = THEMES.dark.gradient
-    this.HAPPY_COLORS = THEMES.happy.gradient.reverse()
 
     // Tableau contenant tous les plans de l'île
     this.layers = []
@@ -56,7 +53,6 @@ export default class Month {
       let size = this.islandSize + offset
 
       const material = new THREE.MeshLambertMaterial({
-        color: this.DARK_COLORS[i],
         transparent: true,
         opacity: 1,
       })
@@ -93,6 +89,7 @@ export default class Month {
       }
     }
 
+    this.setColorTheme("dark")
     this.experience.MONTHS.push(this)
   }
 
@@ -216,7 +213,7 @@ export default class Month {
         }
       } else {
         layer.material.color.setHex(
-          `0x${THEMES[theme].gradient[i]?.replace("#", "")}`
+          `0x${COLORS.gradient[i]?.replace("#", "")}`
         )
       }
     }
