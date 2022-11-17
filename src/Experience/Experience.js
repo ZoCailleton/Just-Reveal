@@ -144,7 +144,7 @@ export default class Experience {
     this.ambianceSound = new Howl({
       src: "./audio/ambiance-1.wav",
       loop: true,
-      volume: 0.05,
+      volume: 0,
     })
 
     this.bubbleSound = new Howl({
@@ -560,6 +560,7 @@ export default class Experience {
         .addEventListener("click", () => {
           this.startIntro()
           this.ambianceSound.play()
+          this.ambianceSound.fade(0, 0.05, 2000)
         })
     }
   }
