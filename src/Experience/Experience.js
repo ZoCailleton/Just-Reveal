@@ -212,7 +212,7 @@ export default class Experience {
     this.camera.rotation.x = 0.8
 
     this.group = new Object3D()
-    this.group.position.x = -10
+    this.group.position.x = -4
     this.scene.add(this.group)
 
     // new OrbitControls(this.camera, this.canvas);
@@ -236,7 +236,7 @@ export default class Experience {
         new THREE.Vector3(
           month.position.x + 15,
           month.position.y - 30,
-          month.layersCount - 3
+          month.layersCount - 5
         )
       )
     }
@@ -355,7 +355,7 @@ export default class Experience {
         index,
         data: month,
         position: {
-          x: Math.sin(index) * 20,
+          x: Math.cos(index*100) * 10,
           y: index * this.STEP,
         },
       })
