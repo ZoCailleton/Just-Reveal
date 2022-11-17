@@ -363,10 +363,6 @@ export default class Experience {
         description: month.description,
       })
 
-      if (index === 0) card.classList.add("active")
-
-      if (index === 1) card.classList.add("prev")
-
       this.CARDS.push(card)
       this.cardsWrapper.insertAdjacentElement("afterbegin", card)
 
@@ -443,12 +439,12 @@ export default class Experience {
       tl.addLabel("intro")
       tl.to(
         this.camera.position,
-        { z: 8, duration: 0.1, ease: Power2.easeInOut },
+        { z: this.cameraCurve.getPoint(0).z, duration: .1, ease: Power2.easeInOut },
         "intro"
       )
       tl.to(
         document.querySelector(".wrapper"),
-        { y: "-100vh", duration: 0.1, ease: Power2.easeInOut },
+        { y: "-100vh", duration: .1, ease: Power2.easeInOut },
         "intro"
       )
 
@@ -457,6 +453,21 @@ export default class Experience {
           point.classList.add("visible")
         }
       }, 20)
+
+      setTimeout(() => {
+        
+        let i = 0, j = 0
+        for(let card of document.querySelectorAll('.cards .card')) {
+          setTimeout(() => {
+            card.classList.add('visible')
+            if (j === 11) card.classList.add("active")
+            if (j === 10) card.classList.add("prev")
+            j++
+          }, i*0)
+          i++
+        }
+
+      }, 50)
 
       setTimeout(() => {
         this.MONTHS[0].reveal()
@@ -487,6 +498,21 @@ export default class Experience {
           point.classList.add("visible")
         }
       }, 200)
+
+      setTimeout(() => {
+        
+        let i = 0, j = 0
+        for(let card of document.querySelectorAll('.cards .card')) {
+          setTimeout(() => {
+            card.classList.add('visible')
+            if (j === 11) card.classList.add("active")
+            if (j === 10) card.classList.add("prev")
+            j++
+          }, i*75)
+          i++
+        }
+
+      }, 500)
 
       setTimeout(() => {
         this.MONTHS[0].reveal()

@@ -75,12 +75,16 @@ $gap: 25px;
         display: flex;
         justify-content: space-between;
         a {
+          display: inline-block;
+          transform: translateY(1em);
+          opacity: 0;
           color: $black;
           font-family: $title;
           text-decoration: none;
-          @for $i from 1 through 12 {
+          transition: 300ms;
+          @for $i from 1 through 4 {
             &:nth-child(#{$i}) {
-              transition-delay: transform $i*100ms;
+              transition-delay: $i*100ms;
             }
           }
         }
@@ -131,7 +135,7 @@ $gap: 25px;
           margin-top: 1em;
           transform: translateY(2em) rotate(5deg);
           opacity: 0;
-          transition: 200ms cubic-bezier(.21,.66,.47,1.49);
+          transition: 300ms cubic-bezier(.21,.66,.47,1.49);
         }
       }
       .tip {
@@ -144,6 +148,12 @@ $gap: 25px;
         }
       }
       &.active {
+        .names {
+          a {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
         .letter {
           animation-name: letter;
         }
@@ -178,8 +188,11 @@ $gap: 25px;
           align-items: center;
           position: absolute;
           text-align: center;
-          transform: scale(.8) translateY(60px) rotate(-2deg);
-          transition: 500ms;
+          transform: scale(.8) translateY(700px) rotate(-5deg);
+          transition-duration: 500ms;
+          &.visible {
+            transform: scale(.8) translateY(60px) rotate(-2deg);
+          }
           &.prev {
             transform: scale(.9) translateY(30px) rotate(0deg);
           }
