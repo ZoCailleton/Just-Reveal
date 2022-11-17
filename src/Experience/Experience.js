@@ -10,10 +10,11 @@ import { MODELS } from "../models"
 import { MONTHS_DATA } from "../data"
 
 import Month from "./Month"
-import { Object3D } from "three"
+import { MeshLambertMaterial, Object3D, SphereGeometry } from "three"
 import PointTimeline from "./PointTimeline"
 import Card from "./Card"
 import { GUI } from "dat.gui"
+import { getRandomIntFromInterval } from "../utils"
 
 let instance = null
 
@@ -34,7 +35,8 @@ export default class Experience {
     this.environmentSphere
     this.cameraCurve
     this.cameraPath
-    this.cameraKeyframes
+    this.particles = []
+    this.snow = []
 
     // Experience objects
     this.scroll = 0
@@ -169,6 +171,13 @@ export default class Experience {
 
           month.active = true
           this.monthActive = month
+
+          for(let particle of this.particles) {
+            particle.position.x = getRandomIntFromInterval(month.position.x + 10, month.position.x + 20)
+            particle.position.y = getRandomIntFromInterval(month.position.y + 2, month.position.y + 12)
+            particle.position.z = month.layers[0].position.z + 5
+          }
+
         }
       } else {
         if (month.active) {
@@ -230,10 +239,7 @@ export default class Experience {
 
     const islandsPos = []
 
-    console.log(this.MONTHS)
-
     for (const month of this.MONTHS) {
-      console.log(month)
       islandsPos.push(
         new THREE.Vector3(
           month.position.x + 15,
@@ -331,6 +337,7 @@ export default class Experience {
   }
 
   setupWorld() {
+    
     let index = 0
 
     for (const month of MONTHS_DATA) {
@@ -369,6 +376,23 @@ export default class Experience {
 
       index++
     }
+
+    this.setupParticles()
+
+  }
+
+  setupParticles() {
+
+    for (let i = 0; i <10; i++) {
+      const geometry = new THREE.SphereGeometry(.1, 25)
+      const material = new THREE.MeshBasicMaterial({
+        color: 0xff0000
+      })
+      const mesh = new THREE.Mesh(geometry, material)
+      this.group.add(mesh)
+      this.particles.push(mesh)
+    }
+
   }
 
   startIntro() {
@@ -459,12 +483,21 @@ export default class Experience {
         })
     }
   }
+  
+  updateParticles() {
+
+    for(let particle of this.particles) {
+      particle.position.z += Math.sin(this.time) / 100
+    }
+
+  }
 
   tick() {
     this.time += 0.01
     this.renderer.render(this.scene, this.camera)
 
     this.updateCamera()
+    this.updateParticles()
 
     if (this.monthActive) {
       this.monthActive.animateIsland()
