@@ -173,9 +173,9 @@ export default class Experience {
           this.monthActive = month
 
           for(let particle of this.particles) {
-            particle.position.x = getRandomIntFromInterval(month.position.x + 10, month.position.x + 20)
-            particle.position.y = getRandomIntFromInterval(month.position.y + 2, month.position.y + 12)
-            particle.position.z = month.layers[0].position.z + 5
+            particle.mesh.position.x = getRandomIntFromInterval(month.position.x + 10, month.position.x + 20)
+            particle.mesh.position.y = getRandomIntFromInterval(month.position.y + 2, month.position.y + 12)
+            particle.mesh.position.z = month.layers[0].position.z + 5
           }
 
         }
@@ -390,7 +390,10 @@ export default class Experience {
       })
       const mesh = new THREE.Mesh(geometry, material)
       this.group.add(mesh)
-      this.particles.push(mesh)
+      this.particles.push({
+        rand: Math.random(),
+        mesh
+      })
     }
 
   }
@@ -487,7 +490,7 @@ export default class Experience {
   updateParticles() {
 
     for(let particle of this.particles) {
-      particle.position.z += Math.sin(this.time) / 100
+      particle.mesh.position.z += Math.sin(this.time + particle.rand) / 100
     }
 
   }
