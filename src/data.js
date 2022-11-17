@@ -1,7 +1,7 @@
 export const MONTHS_DATA = [
   {
     name: "janvier",
-    title: "Bonne année !",
+    title: "Bonne année 2020 !",
     image: "janvier.png",
     description: "L’année 2020 commence ! Au milieu des bonnes résolutions émergent quelques articles sur une épidémie dans la ville de Wuhan…",
     deaths: 0,
