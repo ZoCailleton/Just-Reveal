@@ -372,7 +372,7 @@ export default class Experience {
           (document.body.offsetHeight / (this.MONTHS.length + 1)) *
             pointTimeline.dataset.index -
           window.innerHeight * 1.1
-        console.log(scroll)
+        //console.log(scroll)
         animateScrollTo(scroll)
       })
 
@@ -459,7 +459,9 @@ export default class Experience {
   }
 
   startIntro() {
+
     if (this.debug) {
+      
       let tl = gsap.timeline()
       tl.addLabel("intro")
       tl.to(
@@ -508,7 +510,9 @@ export default class Experience {
         this.started = true
         document.body.style.overflow = "visible"
       }, 100)
+
     } else {
+
       let tl = gsap.timeline()
       tl.addLabel("intro")
       tl.to(
@@ -555,8 +559,10 @@ export default class Experience {
 
       setTimeout(() => {
         this.started = true
-        document.body.style.overflow = "visible"
-      }, 1000)
+        animateScrollTo(600, {
+          speed: 3000
+        })
+      }, 700)
 
       setTimeout(() => {
         this.monthObserver()
@@ -667,7 +673,7 @@ export default class Experience {
         model.loaded = true
 
         if (MODELS.filter((el) => !el.loaded).length === 0) {
-          console.log(this.MODELS_COLLECTION)
+          //console.log(this.MODELS_COLLECTION)
           this.start()
         }
       },
