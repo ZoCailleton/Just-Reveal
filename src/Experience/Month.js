@@ -36,6 +36,7 @@ export default class Month {
     // Tableau contenant tous les plans de l'île
     this.layers = []
     this.crumbles = []
+    this.clouds = []
     this.light
 
     // Tableau contenant les modèles 3D
