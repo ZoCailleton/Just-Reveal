@@ -177,9 +177,9 @@ $gap: 25px;
         align-items: center;
         .card {
           width: 350px;
-          height: auto;
+          height: 500px;
           background-color: #fff;
-          padding: 2em 2em 4em;
+          padding: 0 2em;
           border: 3px solid $black;
           border-radius: 15px;
           display: flex;
@@ -190,10 +190,10 @@ $gap: 25px;
           transform: scale(.8) translateY(700px) rotate(-5deg);
           transition-duration: 500ms;
           &.visible {
-            transform: scale(.8) translateY(60px) rotate(-2deg);
+            transform: scale(.8) translateY(80px) rotate(-2deg);
           }
           &.prev {
-            transform: scale(.9) translateY(30px) rotate(0deg);
+            transform: scale(.9) translateY(40px) rotate(0deg);
           }
           &.active {
             transform: scale(1) rotate(2deg);
@@ -228,9 +228,10 @@ $gap: 25px;
           .heading {
             font-size: 2.5em;
             font-family: $title;
+            line-height: 1em;
           }
           .description {
-            margin-top: .5em;
+            margin-top: 1em;
             line-height: 1.5em;
           }
           .star {
