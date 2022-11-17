@@ -197,6 +197,10 @@ $gap: 25px;
           transform: translateY(2em) rotate(5deg);
           opacity: 0;
           transition: 300ms cubic-bezier(.21,.66,.47,1.49);
+          &.active {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+          }
         }
       }
       .tip {
@@ -231,10 +235,6 @@ $gap: 25px;
         }
         .star {
           display: block;
-        }
-        .cta {
-          transform: translateY(0) rotate(0deg);
-          opacity: 1;
         }
         .tip {
           transform: translateY(0);

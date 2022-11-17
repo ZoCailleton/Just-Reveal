@@ -645,6 +645,11 @@ export default class Experience {
 
     document.addEventListener('click', () => {
       document.querySelector(".screen.intro").classList.add("active")
+
+      setTimeout(() => {
+        document.querySelector('.screen.intro .cta').classList.add('active')
+      }, 2000)
+
     })
 
     // setTimeout(() => {
