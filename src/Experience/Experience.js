@@ -153,8 +153,7 @@ export default class Experience {
 
     this.natureAmbiance = new Howl({
       src: "./audio/ambiance-3.mp3",
-      loop: true,
-      volume: 0.05,
+      loop: true
     })
 
     this.lowAmbiance = new Howl({
@@ -579,7 +578,7 @@ export default class Experience {
       this.wooshSound.play()
 
       this.natureAmbiance.play()
-      this.natureAmbiance.fade(0, .05, 1000)
+      this.natureAmbiance.fade(0, .025, 1000)
 
       setTimeout(() => {
         for (let point of this.timelineWrapper.querySelectorAll(".point")) {
