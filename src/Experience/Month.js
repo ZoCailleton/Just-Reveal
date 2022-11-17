@@ -24,6 +24,7 @@ export default class Month {
 
     this.height = this.data.deaths / 1000
     this.mappedDeaths = mapValueBetween(this.data.deaths, 0, 20000, 6, 10)
+    this.layersCount = Math.ceil(this.height + 5)
     this.islandSize = 0.05
     this.scale = 5
     this.thickness = 0.025
@@ -40,8 +41,10 @@ export default class Month {
 
     // Tableau contenant les modèles 3D
     this.models = []
+    this.clouds = []
 
     this.setupLayers()
+    this.setupLight()
     this.setupModels()
     this.setupParticles()
   }
@@ -50,11 +53,8 @@ export default class Month {
     const island = getRandomFromArray(SHAPES)
     const islandGeometry = getGeometryFromSVG(island.main)
 
-    const layersCount = Math.ceil(this.height + 5)
-
-    for (let i = layersCount; i > 0; i--) {
-      let offset = (layersCount - i) / 400
-
+    for (let i = this.layersCount; i > 0; i--) {
+      let offset = (this.layersCount - i) / 400
       let size = this.islandSize + offset
 
       const material = new THREE.MeshLambertMaterial({
@@ -95,40 +95,43 @@ export default class Month {
       }
     }
 
-    this.light = new THREE.PointLight(0xff0000, 0, 50)
-    this.light.position.set(2, this.position.y, layersCount * 0.5 - 12)
-    this.light.castShadow = true
-    this.experience.group.add(this.light)
-
     this.experience.MONTHS.push(this)
   }
 
+  setupLight() {
+    this.light = new THREE.PointLight(0xff0000, 0, 50)
+    this.light.position.set(2, this.position.y, this.layersCount * 0.5 - 12)
+    this.light.castShadow = true
+    this.experience.group.add(this.light)
+  }
+
   setupModels() {
-    const treesCount = Math.random() * 4 + 2
+    const treesCount = Math.floor(Math.random() * 2 + 3)
     for (let i = 0; i < treesCount; i++) {
       this.addModelFromType("tree")
     }
 
-    const vegetation = Math.random() * 4 + 2
-    for (let i = 0; i < treesCount; i++) {
+    const vegetationCount = Math.floor(Math.random() * 3 + 4)
+    for (let i = 0; i < vegetationCount; i++) {
       this.addModelFromType("vegetation")
     }
 
-    // this.addModelFromType("bird")
+    const cloudsCount = Math.floor(Math.random() * 2 + 2)
+    for (let i = 0; i < cloudsCount; i++) {
+      this.addModelFromType("cloud")
+    }
   }
 
   setupParticles() {
-
-    for(let i=0; i<10; i++) {
-      const geometry = new THREE.SphereGeometry(.1, 10)
+    for (let i = 0; i < 10; i++) {
+      const geometry = new THREE.SphereGeometry(0.1, 10)
       const material = new THREE.MeshBasicMaterial({
-        color: 0xffffff
+        color: 0xffffff,
       })
       const mesh = new THREE.Mesh(geometry, material)
       this.particles.push(mesh)
       this.experience.scene.add(mesh)
     }
-
   }
 
   addModelFromType(type) {
@@ -137,24 +140,40 @@ export default class Month {
     pos.y = 5 * (Math.random() - 0.5) + this.position.y + 5
     pos.z = 2 * (Math.random() - 0.5) - 2
 
-    // const threshold = 0.2
-    // let hasEnoughSpace = true
+    let threshold = 2
+    let loopCount = 0
+    let hasEnoughSpace = true
 
-    // do {
-    //   pos.x = 7.5 * (Math.random() - 0.5) + this.islandSize * 180
-    //   pos.y = 5 * (Math.random() - 0.5) + this.position.y + 5
-    //   pos.z = 2 * (Math.random() - 0.5) - 2
+    do {
+      hasEnoughSpace = true
+      loopCount++
+      threshold -= 0.1
+      if (loopCount > 5) break
 
-    //   for (const model of this.models) {
-    //     const dist = pos.distanceTo(model.element.position)
-    //     if (dist < threshold) {
-    //       console.log('oups')
-    //       console.log(dist)
-    //       hasEnoughSpace = false
-    //     }
-    //   }
-    //   console.log('loop!')
-    // } while (!hasEnoughSpace)
+      pos.x = 7.5 * (Math.random() - 0.5) + this.islandSize * 180
+      pos.y = 5 * (Math.random() - 0.5) + this.position.y + 5
+      pos.z = 2 * (Math.random() - 0.5) - 2
+
+      if (type === 'cloud') {
+        for (const model of this.clouds) {
+          const dist = pos.distanceTo(model.element.position)
+          if (dist < threshold) {
+            hasEnoughSpace = false
+          }
+        }
+      } else {
+        for (const model of this.models.filter(el => el.type != 'vegetation')) {
+          const dist = pos.distanceTo(model.element.position)
+          if (dist < threshold) {
+            console.log("oups")
+            console.log(dist)
+            hasEnoughSpace = false
+          }
+        }
+      }
+
+      console.log("loop!", loopCount)
+    } while (!hasEnoughSpace)
 
     let season = this.data.season
 
@@ -177,8 +196,24 @@ export default class Month {
 
     this.models.push({
       z: this.layers[0].position.z + this.thickness * 30,
+      type,
       element: clone,
     })
+
+    if (type === "cloud") {
+      this.clouds.push({
+        z: this.layers[0].position.z + this.thickness * 30,
+        element: clone,
+        rand: Math.random(),
+      })
+    }
+  }
+
+  animateIsland() {
+    for (const cloud of this.clouds) {
+      cloud.element.position.z =
+        cloud.z + Math.cos(this.experience.time + cloud.rand)
+    }
   }
 
   setColorTheme(theme) {
@@ -201,13 +236,13 @@ export default class Month {
   }
 
   reveal() {
-    
     // console.log(this)
     this.setColorTheme("happy")
     this.light.intensity = 1
 
     // Animation des models
     for (let model of this.models) {
+      // if (model.type === "cloud") continue
       let tl = gsap.timeline()
       tl.addLabel("treeAppear")
       tl.to(

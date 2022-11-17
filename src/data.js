@@ -5,7 +5,7 @@ export const MONTHS_DATA = [
     image: "illutest.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 0,
-    gradient: ["#ffffff", "#84B9BF", "#A6DACD", "#CDEFDB", "#FBFEFB"],
+    gradient: ["#F9F9F9", "#84B9BF", "#A6DACD", "#CDEFDB", "#FBFEFB"],
     season: "winter",
   },
   {
@@ -15,7 +15,7 @@ export const MONTHS_DATA = [
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 2,
     gradient: [
-      "#ffffff",
+      "#F9F9F9",
       "#84B9BF",
       "#9BD4B6",
       "#BCE5B5",
@@ -226,7 +226,7 @@ export const MONTHS_DATA = [
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 11901,
     gradient: [
-      "#ffffff",
+      "#F9F9F9",
       "#9BA8E1",
       "#A1B5E3",
       "#A7C2E5",

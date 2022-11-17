@@ -42,12 +42,6 @@ export const MODELS = [
         loaded: false,
     },
     {
-        filename: "birds",
-        type: "birds",
-        season: "all",
-        loaded: false,
-    },
-    {
         filename: "buisson-automne",
         type: "vegetation",
         season: "autumn",
