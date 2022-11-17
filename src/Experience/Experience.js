@@ -151,6 +151,7 @@ export default class Experience {
   }
 
   monthObserver() {
+    
     const ACTIVE_STEP = this.STEP * 0.9
 
     for (let month of this.MONTHS) {
@@ -286,12 +287,16 @@ export default class Experience {
 
   updateTimeline(index) {
     for (let point of document.querySelectorAll(".timeline .point")) {
-      point.classList.remove("active")
+      point.classList.remove('active')
     }
 
-    this.timelineWrapper
-      .querySelector(`.timeline .point:nth-child(${index})`)
-      ?.classList.add("active")
+    let point = this.timelineWrapper.querySelector(`.timeline .point:nth-child(${index})`)
+
+    if(point != undefined) {
+
+      point.classList.add('active')
+
+    }
   }
 
   updateCards(index) {
@@ -346,7 +351,7 @@ export default class Experience {
       let pointTimeline = new PointTimeline(month.name, index + 1)
 
       pointTimeline.addEventListener("click", () => {
-        let scroll = (document.body.offsetHeight / this.MONTHS.length) * pointTimeline.dataset.index
+        let scroll = (document.body.offsetHeight / (this.MONTHS.length + 1)) * pointTimeline.dataset.index - window.innerHeight * 1.1
         console.log(scroll)
         animateScrollTo(scroll)
       })
@@ -368,10 +373,7 @@ export default class Experience {
 
   startIntro() {
     if (this.debug) {
-      this.camera.position.z = 8
-      this.started = true
-      document.querySelector(".wrapper").style.transform = "translateY(-100vh)"
-    } else {
+
       let tl = gsap.timeline()
       tl.addLabel("intro")
       tl.to(
@@ -399,7 +401,39 @@ export default class Experience {
         this.started = true
         document.body.style.overflow = "visible"
       }, 100)
+
+    } else {
+
+      let tl = gsap.timeline()
+      tl.addLabel("intro")
+      tl.to(
+        this.camera.position,
+        { z: 8, duration: 1, ease: Power2.easeInOut },
+        "intro"
+      )
+      tl.to(
+        document.querySelector(".wrapper"),
+        { y: "-100vh", duration: 1, ease: Power2.easeInOut },
+        "intro"
+      )
+
+      setTimeout(() => {
+        for (let point of this.timelineWrapper.querySelectorAll(".point")) {
+          point.classList.add("visible")
+        }
+      }, 200)
+
+      setTimeout(() => {
+        this.MONTHS[0].reveal()
+      }, 700)
+
+      setTimeout(() => {
+        this.started = true
+        document.body.style.overflow = "visible"
+      }, 1000)
+
     }
+
   }
 
   start() {
@@ -418,8 +452,6 @@ export default class Experience {
     if (this.debug) {
       this.startIntro()
     } else {
-      // Remove after
-      this.startIntro()
       document
         .querySelector(".screen.intro .cta")
         .addEventListener("click", () => {

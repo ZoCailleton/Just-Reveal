@@ -244,7 +244,8 @@ $gap: 25px;
               display: block;
             }
           }
-          &:hover {
+          &:hover,
+          &.hovered {
             background-color: $black;
             .name {
               transform: translateX(15%) rotate(-2deg) scale(1);
