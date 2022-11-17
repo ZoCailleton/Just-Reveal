@@ -408,7 +408,7 @@ export default class Experience {
       tl.addLabel("intro")
       tl.to(
         this.camera.position,
-        { z: 8, duration: 1, ease: Power2.easeInOut },
+        { z: this.cameraCurve.getPoint(0).z, duration: 1, ease: Power2.easeInOut },
         "intro"
       )
       tl.to(
