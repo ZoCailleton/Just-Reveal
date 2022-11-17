@@ -31,6 +31,9 @@ export default class Experience {
     this.canvas
     this.ambiantLight
     this.environmentSphere
+    this.cameraCurve
+    this.cameraPath
+    this.cameraKeyframes
 
     // Experience objects
     this.scroll = 0
@@ -79,9 +82,10 @@ export default class Experience {
       if (this.started) {
         this.scroll =
           window.scrollY / (document.body.offsetHeight - window.innerHeight)
-        
+
         //this.cameraX = Math.cos(this.scroll * 100) * 20
-        this.cameraY = this.scroll * this.MONTHS[this.MONTHS.length-1]?.position.y
+        this.cameraY =
+          this.scroll * this.MONTHS[this.MONTHS.length - 1]?.position.y
         this.monthObserver()
       }
     })
@@ -149,8 +153,8 @@ export default class Experience {
 
     for (let month of this.MONTHS) {
       if (
-        this.cameraY > month.position.y - ACTIVE_STEP / 2 &&
-        this.cameraY < month.position.y + ACTIVE_STEP / 2
+        this.cameraY > month.position.y - ACTIVE_STEP * .1 &&
+        this.cameraY < month.position.y + ACTIVE_STEP * 2
       ) {
         this.updateTimeline(month.index + 1)
         this.updateCards(month.index + 1)
@@ -204,7 +208,7 @@ export default class Experience {
     this.camera.position.x = 10
     this.camera.position.z = 30
 
-    this.camera.rotation.x = 1
+    this.camera.rotation.x = 0.8
 
     this.group = new Object3D()
     this.scene.add(this.group)
@@ -215,6 +219,59 @@ export default class Experience {
   setupLights() {
     this.ambiantLight = new THREE.AmbientLight(THEMES.dark.background)
     this.scene.add(this.ambiantLight)
+  }
+
+  setupCameraPath() {
+    // console.log(this.MONTHS)
+
+    const islandsPos = []
+
+    console.log(this.MONTHS)
+
+    for (const month of this.MONTHS) {
+      console.log(month)
+      islandsPos.push(
+        new THREE.Vector3(
+          month.position.x + 15,
+          month.position.y - 30,
+          month.layersCount - 3
+        )
+      )
+    }
+
+    this.cameraCurve = new THREE.CatmullRomCurve3(islandsPos)
+
+    const points = this.cameraCurve.getPoints(50)
+    const geometry = new THREE.BufferGeometry().setFromPoints(points)
+
+    const material = new THREE.LineBasicMaterial({
+      color: 0xff0000,
+      wireframe: true,
+    })
+
+    // Create the final object to add to the scene
+    this.cameraPath = new THREE.Line(geometry, material)
+    this.scene.add(this.cameraPath)
+  }
+
+  updateCamera() {
+    const t1 = this.scroll
+    // const t2 = this.scroll + 0.1
+
+    // console.log(this.cameraCurve.getPoint(t1))
+
+    const position = this.cameraCurve.getPoint(t1)
+    // const rotation = this.cameraCurve.getTangent(t1)
+
+    this.camera.position.x = position.x
+    this.camera.position.y = position.y
+    this.camera.position.z = position.z
+
+    this.camera.rotation.x = 1.2 - position.z * .01
+
+    // this.camera.lookAt(this.cameraCurve.getPoint(t2))
+
+    this.environmentSphere.position.y = this.camera.position.y
   }
 
   updateTimeline(index) {
@@ -276,9 +333,9 @@ export default class Experience {
       this.CARDS.push(card)
       this.cardsWrapper.insertAdjacentElement("afterbegin", card)
 
-      let pointTimeline = new PointTimeline(month.name, index+1)
+      let pointTimeline = new PointTimeline(month.name, index + 1)
 
-      pointTimeline.addEventListener('click', () => {
+      pointTimeline.addEventListener("click", () => {
         let scroll = document.body.offsetHeight / pointTimeline.dataset.index
         console.log(scroll)
       })
@@ -289,7 +346,7 @@ export default class Experience {
         index,
         data: month,
         position: {
-          x: 0,
+          x: Math.sin(index) * 20,
           y: index * this.STEP,
         },
       })
@@ -308,12 +365,12 @@ export default class Experience {
       tl.addLabel("intro")
       tl.to(
         this.camera.position,
-        { z: 8, duration: 1, ease: Power2.easeInOut },
+        { z: 8, duration: 0.1, ease: Power2.easeInOut },
         "intro"
       )
       tl.to(
         document.querySelector(".wrapper"),
-        { y: "-100vh", duration: 1, ease: Power2.easeInOut },
+        { y: "-100vh", duration: 0.1, ease: Power2.easeInOut },
         "intro"
       )
 
@@ -321,16 +378,16 @@ export default class Experience {
         for (let point of this.timelineWrapper.querySelectorAll(".point")) {
           point.classList.add("visible")
         }
-      }, 200)
+      }, 20)
 
       setTimeout(() => {
         this.MONTHS[0].reveal()
-      }, 700)
+      }, 70)
 
       setTimeout(() => {
         this.started = true
-        document.body.style.overflow = 'visible'
-      }, 1000)
+        document.body.style.overflow = "visible"
+      }, 100)
     }
   }
 
@@ -342,6 +399,7 @@ export default class Experience {
     this.setupEnvironment()
     this.setupWorld()
     this.setupAudio()
+    this.setupCameraPath()
 
     this.updateSizes()
     this.tick()
@@ -349,6 +407,8 @@ export default class Experience {
     if (this.debug) {
       this.startIntro()
     } else {
+      // Remove after
+      this.startIntro()
       document
         .querySelector(".screen.intro .cta")
         .addEventListener("click", () => {
@@ -361,13 +421,7 @@ export default class Experience {
     this.time += 0.01
     this.renderer.render(this.scene, this.camera)
 
-    //this.camera.position.x = this.cameraX
-    // on démarre 1/2 step avant le début pour bien voir janvier
-    this.camera.position.y = this.cameraY - this.STEP / 2
-    // this.camera.position.z = this.cameraZ
-
-    this.environmentSphere.position.x = this.cameraX
-    this.environmentSphere.position.y = this.cameraY
+    this.updateCamera()
 
     if (this.monthActive) {
       this.monthActive.animateIsland()

@@ -66,7 +66,7 @@ export default class Month {
       const mesh = new THREE.Mesh(islandGeometry, material)
 
       const pos = {
-        x: 2 - offset * 200,
+        x: 2 - offset * 200 + this.position.x,
         y: this.position.y,
         z: i * 0.5 - 12,
       }
@@ -165,14 +165,13 @@ export default class Month {
         for (const model of this.models.filter(el => el.type != 'vegetation')) {
           const dist = pos.distanceTo(model.element.position)
           if (dist < threshold) {
-            console.log("oups")
-            console.log(dist)
+            // console.log(dist)
             hasEnoughSpace = false
           }
         }
       }
 
-      console.log("loop!", loopCount)
+      // console.log("loop!", loopCount)
     } while (!hasEnoughSpace)
 
     let season = this.data.season
