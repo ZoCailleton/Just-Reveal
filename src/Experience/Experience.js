@@ -13,7 +13,6 @@ import Month from "./Month"
 import { MeshLambertMaterial, Object3D, SphereGeometry } from "three"
 import PointTimeline from "./PointTimeline"
 import Card from "./Card"
-import { GUI } from "dat.gui"
 import { getRandomIntFromInterval, mapValueBetween } from "../utils"
 
 let instance = null
@@ -52,8 +51,6 @@ export default class Experience {
     if (window.location.hash.replace("#", "") === "debug") {
       this.debug = true
     }
-
-    this.gui = new GUI()
 
     this.ambianceSound
     this.bubbleSound
