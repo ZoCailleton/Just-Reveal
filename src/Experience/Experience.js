@@ -37,6 +37,8 @@ export default class Experience {
     this.particles = []
     this.snowParticles = []
 
+    this.darkGradient = COLORS.gradient.reverse()
+
     // Experience objects
     this.scroll = 0
     this.cameraX = 0
