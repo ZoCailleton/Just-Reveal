@@ -58,6 +58,7 @@ export default class Experience {
 
     this.ambianceSound
     this.bubbleSound
+    this.buttonSound
 
     this.tl = new gsap.timeline()
 
@@ -155,7 +156,27 @@ export default class Experience {
     })
 
     this.bubbleSound = new Howl({
-      src: "./audio/bubble-1.wav",
+      src: "./audio/bubble-5.wav",
+      volume: 0.2,
+    })
+
+    this.buttonSound = new Howl({
+      src: "./audio/button.wav",
+      volume: 0.3,
+    })
+
+    this.bubbleHover = new Howl({
+      src: "./audio/bubble-3.wav",
+      volume: 0.1,
+    })
+
+    this.wooshSound = new Howl({
+      src: "./audio/woosh.wav",
+      volume: 0.15,
+    })
+
+    this.cardSound = new Howl({
+      src: "./audio/bubble-4.wav",
       volume: 0.1,
     })
   }
@@ -369,6 +390,10 @@ export default class Experience {
 
       let pointTimeline = new PointTimeline(month.name, index + 1)
 
+      pointTimeline.addEventListener('mouseenter', () => {
+        this.bubbleHover.play()
+      })
+
       pointTimeline.addEventListener("click", () => {
         let scroll =
           (document.body.offsetHeight / (this.MONTHS.length + 1)) *
@@ -480,11 +505,6 @@ export default class Experience {
         { y: "-100vh", duration: 0.1, ease: Power2.easeInOut },
         "intro"
       )
-      tl.to(
-        document.querySelector(".tip"),
-        { display: none, ease: Power2.easeInOut },
-        "intro"
-      )
 
       setTimeout(() => {
         for (let point of this.timelineWrapper.querySelectorAll(".point")) {
@@ -552,6 +572,7 @@ export default class Experience {
             if (j === 11) card.classList.add("active")
             if (j === 10) card.classList.add("prev")
             j++
+            this.cardSound.play()
           }, i * 75)
           i++
         }
@@ -569,7 +590,8 @@ export default class Experience {
         animateScrollTo(600, {
           speed: 3000
         })
-      }, 700)
+        gsap.to(document.querySelector('.screen.experience .background'), {opacity: 0, duration: 1, ease: Power2.easeInOut})
+      }, 1100)
 
       setTimeout(() => {
         this.monthObserver()
@@ -599,8 +621,9 @@ export default class Experience {
         .querySelector(".screen.intro .cta")
         .addEventListener("click", () => {
           this.startIntro()
-          this.ambianceSound.play()
-          this.ambianceSound.fade(0, 0.05, 2000)
+          this.buttonSound.play()
+          // this.ambianceSound.play()
+          // this.ambianceSound.fade(0, 0.05, 2000)
         })
     }
   }
