@@ -44,6 +44,8 @@ export default class Experience {
     this.started = false
     this.debug = false
     this.endPoint = 50
+    this.scrollDirection = "bottom"
+    this.lastScrollTop = 0
 
     this.time = 0
     this.monthActive = null
@@ -77,6 +79,15 @@ export default class Experience {
     }
 
     window.addEventListener("scroll", () => {
+      let st = window.pageYOffset || document.documentElement.scrollTop
+      if (st > this.lastScrollTop) {
+        this.scrollDirection = "bottom"
+      } else {
+        this.scrollDirection = "top"
+      }
+
+      this.lastScrollTop = st <= 0 ? 0 : st
+
       if (this.started) {
         this.scroll =
           window.scrollY / (document.body.offsetHeight - window.innerHeight)
@@ -159,22 +170,36 @@ export default class Experience {
         this.updateCards(month.index + 1)
 
         if (!month.active) {
+
           this.bubbleSound.play()
 
           month.reveal()
 
           month.active = true
+
           this.monthActive = month
 
+          if (this.scrollDirection === "bottom") {
+            this.monthActive = month
+          } else {
+            this.monthActive = this.MONTHS[month.index + 1]
+          }
+
           this.positionParticles()
+
         }
+
       } else {
+
         if (month.active) {
+
           month.active = false
           this.monthActive = null
 
           month.darken()
+          
         }
+
       }
     }
   }
@@ -373,9 +398,12 @@ export default class Experience {
     for (let i = 0; i < 15; i++) {
       const geometry = new THREE.SphereGeometry(Math.random() * 0.2, 25)
       const material = new THREE.MeshBasicMaterial({
-        color: 0xEEFFA8,
+        color: 0xeeffa8,
       })
+
       const mesh = new THREE.Mesh(geometry, material)
+      mesh.position.x = 1000
+
       this.group.add(mesh)
       this.particles.push({
         rand: Math.random(),
@@ -426,23 +454,26 @@ export default class Experience {
           this.monthActive.position.y + 20
         )
         particle.mesh.position.z = this.monthActive.layers[0].position.z
-      }  
+      }
     }
   }
 
   startIntro() {
-    
     if (this.debug) {
       let tl = gsap.timeline()
       tl.addLabel("intro")
       tl.to(
         this.camera.position,
-        { z: this.cameraCurve.getPoint(0).z, duration: .1, ease: Power2.easeInOut },
+        {
+          z: this.cameraCurve.getPoint(0).z,
+          duration: 0.1,
+          ease: Power2.easeInOut,
+        },
         "intro"
       )
       tl.to(
         document.querySelector(".wrapper"),
-        { y: "-100vh", duration: .1, ease: Power2.easeInOut },
+        { y: "-100vh", duration: 0.1, ease: Power2.easeInOut },
         "intro"
       )
 
@@ -453,18 +484,17 @@ export default class Experience {
       }, 20)
 
       setTimeout(() => {
-        
-        let i = 0, j = 0
-        for(let card of document.querySelectorAll('.cards .card')) {
+        let i = 0,
+          j = 0
+        for (let card of document.querySelectorAll(".cards .card")) {
           setTimeout(() => {
-            card.classList.add('visible')
+            card.classList.add("visible")
             if (j === 11) card.classList.add("active")
             if (j === 10) card.classList.add("prev")
             j++
-          }, i*0)
+          }, i * 0)
           i++
         }
-
       }, 50)
 
       setTimeout(() => {
@@ -503,18 +533,17 @@ export default class Experience {
       }, 200)
 
       setTimeout(() => {
-        
-        let i = 0, j = 0
-        for(let card of document.querySelectorAll('.cards .card')) {
+        let i = 0,
+          j = 0
+        for (let card of document.querySelectorAll(".cards .card")) {
           setTimeout(() => {
-            card.classList.add('visible')
+            card.classList.add("visible")
             if (j === 11) card.classList.add("active")
             if (j === 10) card.classList.add("prev")
             j++
-          }, i*75)
+          }, i * 75)
           i++
         }
-
       }, 500)
 
       setTimeout(() => {
@@ -528,11 +557,10 @@ export default class Experience {
         this.started = true
         document.body.style.overflow = "visible"
       }, 1000)
-      
+
       setTimeout(() => {
         this.monthObserver()
       }, 2000)
-
     }
   }
 
@@ -563,15 +591,13 @@ export default class Experience {
         })
     }
   }
-  
+
   showIntroScreen() {
-
     setTimeout(() => {
-      document.querySelector('.screen.intro').classList.add('active')
+      document.querySelector(".screen.intro").classList.add("active")
     }, 1000)
-
   }
-  
+
   updateParticles() {
     if (!this.monthActive) return
     if (this.monthActive.data.season === "winter") {
@@ -584,11 +610,20 @@ export default class Experience {
       }
     } else {
       for (let particle of this.particles) {
-        const particleSize = mapValueBetween(particle.mesh.position.z, this.monthActive.layers[0].position.z, this.monthActive.layers[0].position.z + 3, 1, 0)
+        const particleSize = mapValueBetween(
+          particle.mesh.position.z,
+          this.monthActive.layers[0].position.z,
+          this.monthActive.layers[0].position.z + 3,
+          1,
+          0
+        )
 
         particle.mesh.opacity = Math.sin(this.time + particle.rand) * 0.1
         particle.mesh.scale.set(particleSize, particleSize, particleSize)
-        if (particle.mesh.position.z < this.monthActive.layers[0].position.z + 3) {
+        if (
+          particle.mesh.position.z <
+          this.monthActive.layers[0].position.z + 3
+        ) {
           particle.mesh.position.z += particle.rand * 0.025
         } else {
           particle.mesh.position.z = this.monthActive.layers[0].position.z
