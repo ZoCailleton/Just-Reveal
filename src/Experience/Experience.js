@@ -98,7 +98,7 @@ export default class Experience {
   }
 
   updateSizes() {
-    this.sizes.width = window.innerWidth - 350
+    this.sizes.width = window.innerWidth
     this.sizes.height = window.innerHeight
 
     this.canvas.width = this.sizes.width
@@ -211,6 +211,7 @@ export default class Experience {
     this.camera.rotation.x = 0.8
 
     this.group = new Object3D()
+    this.group.position.x = -10
     this.scene.add(this.group)
 
     // new OrbitControls(this.camera, this.canvas);

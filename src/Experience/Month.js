@@ -67,7 +67,7 @@ export default class Month {
 
       const pos = {
         x: 2 - offset * 200 + this.position.x,
-        y: this.position.y,
+        y: this.position.y - offset * 200,
         z: i * 0.5 - 12,
       }
 
