@@ -25,6 +25,7 @@ export default class Card {
 	setupIllu() {
 
 		const img = document.createElement('img')
+		img.classList.add('illu')
 		img.src = `./assets/${this.image}`
 
 		this.html.append(img)

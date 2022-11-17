@@ -2,7 +2,7 @@ export const MONTHS_DATA = [
   {
     name: "janvier",
     title: "janvier",
-    image: "illutest.png",
+    image: "janvier.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 0,
     gradient: ["#F9F9F9", "#84B9BF", "#A6DACD", "#CDEFDB", "#FBFEFB"],
@@ -11,7 +11,7 @@ export const MONTHS_DATA = [
   {
     name: "février",
     title: "février",
-    image: "illutest.png",
+    image: "fevrier.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 2,
     gradient: [
@@ -27,7 +27,7 @@ export const MONTHS_DATA = [
   {
     name: "mars",
     title: "mars",
-    image: "illutest.png",
+    image: "mars.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 3521,
     gradient: [
@@ -46,7 +46,7 @@ export const MONTHS_DATA = [
   {
     name: "avril",
     title: "avril",
-    image: "illutest.png",
+    image: "avril.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 20853,
     gradient: [
@@ -82,7 +82,7 @@ export const MONTHS_DATA = [
   {
     name: "mai",
     title: "mai",
-    image: "illutest.png",
+    image: "mai.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 4426,
     gradient: [
@@ -102,7 +102,7 @@ export const MONTHS_DATA = [
   {
     name: "juin",
     title: "juin",
-    image: "illutest.png",
+    image: "juin.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 1041,
     gradient: [
@@ -122,7 +122,7 @@ export const MONTHS_DATA = [
   {
     name: "juillet",
     title: "juillet",
-    image: "illutest.png",
+    image: "juillet.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 383,
     gradient: [
@@ -138,7 +138,7 @@ export const MONTHS_DATA = [
   {
     name: "août",
     title: "août",
-    image: "illutest.png",
+    image: "aout.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 378,
     gradient: [
@@ -154,7 +154,7 @@ export const MONTHS_DATA = [
   {
     name: "septembre",
     title: "septembre",
-    image: "illutest.png",
+    image: "septembre.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 1352,
     gradient: [
@@ -171,7 +171,7 @@ export const MONTHS_DATA = [
   {
     name: "octobre",
     title: "octobre",
-    image: "illutest.png",
+    image: "octobre.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 4832,
     gradient: [
@@ -191,7 +191,7 @@ export const MONTHS_DATA = [
   {
     name: "novembre",
     title: "novembre",
-    image: "illutest.png",
+    image: "novembre.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 15943,
     gradient: [
@@ -222,7 +222,7 @@ export const MONTHS_DATA = [
   {
     name: "décembre",
     title: "décembre",
-    image: "illutest.png",
+    image: "decembre.png",
     description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
     deaths: 11901,
     gradient: [

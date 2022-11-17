@@ -197,11 +197,12 @@ $gap: 25px;
             font-family: $title;
             transition: 500ms;
           }
-          img {
-            height: 10em;
+          .illu {
+            width: 80%;
+            height: 12em;
+            object-fit: cover;
           }
           .heading {
-            margin: .25em 0;
             font-size: 2.5em;
             font-family: $title;
           }

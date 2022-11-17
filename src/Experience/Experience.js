@@ -178,10 +178,18 @@ export default class Experience {
             particle.mesh.position.z = month.layers[0].position.z + 5
           }
 
-          for(let particle of this.snowParticles) {
-            particle.position.x = getRandomIntFromInterval(month.position.x + 10, month.position.x + 20)
-            particle.position.y = getRandomIntFromInterval(month.position.y + 2, month.position.y + 12)
-            particle.position.z = month.layers[0].position.z + 5
+          if(month != undefined) {
+
+            if(month.index === 0 || month.index === 1 || index === 11) {
+  
+              for(let particle of this.snowParticles) {
+                particle.mesh.position.x = getRandomIntFromInterval(month.position.x + 10, month.position.x + 20)
+                particle.mesh.position.y = getRandomIntFromInterval(month.position.y + 2, month.position.y + 12)
+                particle.mesh.position.z = month.layers[0].position.z + 5
+              }
+  
+            }
+
           }
 
         }
@@ -271,6 +279,7 @@ export default class Experience {
     const material = new THREE.LineBasicMaterial({
       color: 0xff0000,
       wireframe: true,
+      visible: false
     })
 
     // Create the final object to add to the scene
@@ -416,7 +425,11 @@ export default class Experience {
       })
       const mesh = new THREE.Mesh(geometry, material)
       this.group.add(mesh)
-      this.snowParticles.push(mesh)
+      this.snowParticles.push({
+        z: mesh.position.z,
+        rand: Math.random(),
+        mesh
+      })
 
     }
     
@@ -518,7 +531,11 @@ export default class Experience {
     }
 
     for(let particle of this.snowParticles) {
-      particle.position.z += Math.sin(this.time) / 100
+      if(particle.mesh.position.z > particle.z - 6) {
+        particle.mesh.position.z -= particle.rand * 0.1
+      } else {
+        particle.mesh.position.z = particle.z - 2
+      }
     }
 
   }
