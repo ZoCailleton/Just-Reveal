@@ -141,9 +141,9 @@ export default class Experience {
 
   setupAudio() {
     this.ambianceSound = new Howl({
-      src: "./audio/ambiance.wav",
+      src: "./audio/ambiance-1.wav",
       loop: true,
-      volume: 0.1,
+      volume: 0.05,
     })
 
     this.bubbleSound = new Howl({
@@ -428,6 +428,8 @@ export default class Experience {
       })
 
     }
+
+    console.log('monke');
     
   }
 
@@ -549,6 +551,7 @@ export default class Experience {
         .querySelector(".screen.intro .cta")
         .addEventListener("click", () => {
           this.startIntro()
+          this.ambianceSound.play()
         })
     }
   }
