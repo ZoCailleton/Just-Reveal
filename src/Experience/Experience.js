@@ -56,10 +56,6 @@ export default class Experience {
       this.debug = true
     }
 
-    this.ambianceSound
-    this.bubbleSound
-    this.buttonSound
-
     this.tl = new gsap.timeline()
 
     this.timelineWrapper = document.querySelector(".timeline")
@@ -155,6 +151,18 @@ export default class Experience {
       volume: 0,
     })
 
+    this.natureAmbiance = new Howl({
+      src: "./audio/ambiance-3.mp3",
+      loop: true,
+      volume: 0.05,
+    })
+
+    this.lowAmbiance = new Howl({
+      src: "./audio/ambiance-2.wav",
+      loop: true,
+      volume: 0.05,
+    })
+
     this.bubbleSound = new Howl({
       src: "./audio/bubble-5.wav",
       volume: 0.2,
@@ -163,6 +171,11 @@ export default class Experience {
     this.buttonSound = new Howl({
       src: "./audio/button.wav",
       volume: 0.3,
+    })
+
+    this.marimbaSound = new Howl({
+      src: "./audio/marimba-1.wav",
+      volume: 0.1,
     })
 
     this.buttonSound2 = new Howl({
@@ -177,12 +190,17 @@ export default class Experience {
 
     this.wooshSound = new Howl({
       src: "./audio/woosh.wav",
-      volume: 0.35,
+      volume: 0.5,
     })
 
     this.cardSound = new Howl({
       src: "./audio/bubble-4.wav",
       volume: 0.1,
+    })
+
+    this.satSound = new Howl({
+      src: "./audio/sat-1.wav",
+      volume: 0.1
     })
   }
 
@@ -317,19 +335,14 @@ export default class Experience {
 
   updateCamera() {
     const t1 = this.scroll
-    // const t2 = this.scroll + 0.1
-
-    // console.log(this.cameraCurve.getPoint(t1))
 
     const position = this.cameraCurve.getPoint(t1)
-    // const rotation = this.cameraCurve.getTangent(t1)
 
     this.camera.position.x = position.x
     this.camera.position.y = position.y
     this.camera.position.z = position.z
 
     this.camera.rotation.x = 1.2 - position.z * 0.01
-    // this.camera.lookAt(this.cameraCurve.getPoint(t2))
 
     this.environmentSphere.position.y = this.camera.position.y
   }
@@ -405,7 +418,6 @@ export default class Experience {
           (document.body.offsetHeight / (this.MONTHS.length + 1)) *
             pointTimeline.dataset.index -
           window.innerHeight * 1.1
-        //console.log(scroll)
         animateScrollTo(scroll)
       })
 
@@ -566,11 +578,14 @@ export default class Experience {
 
       this.wooshSound.play()
 
+      this.natureAmbiance.play()
+      this.natureAmbiance.fade(0, .05, 1000)
+
       setTimeout(() => {
         for (let point of this.timelineWrapper.querySelectorAll(".point")) {
           point.classList.add("visible")
         }
-      }, 200)
+      }, 400)
 
       setTimeout(() => {
         let i = 0,
@@ -635,8 +650,6 @@ export default class Experience {
       cta.addEventListener("click", () => {
           this.startIntro()
           this.buttonSound.play()
-          // this.ambianceSound.play()
-          // this.ambianceSound.fade(0, 0.05, 2000)
         })
     }
   }
@@ -644,11 +657,18 @@ export default class Experience {
   showIntroScreen() {
 
     document.addEventListener('click', () => {
+
       document.querySelector(".screen.intro").classList.add("active")
 
       setTimeout(() => {
+      
+        // this.satSound.play()
+        
+      }, 800)
+
+      setTimeout(() => {
         document.querySelector('.screen.intro .cta').classList.add('active')
-      }, 2000)
+      }, 1000)
 
     })
 
