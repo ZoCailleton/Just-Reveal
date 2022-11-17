@@ -42,6 +42,7 @@ export default class Experience {
     this.cameraY = 0
     this.started = false
     this.debug = false
+    this.endPoint = 50
 
     this.time = 0
     this.monthActive = null
@@ -86,7 +87,7 @@ export default class Experience {
 
         //this.cameraX = Math.cos(this.scroll * 100) * 20
         this.cameraY =
-          this.scroll * this.MONTHS[this.MONTHS.length - 1]?.position.y
+          this.scroll * (this.MONTHS[this.MONTHS.length - 1]?.position.y + this.endPoint)
         this.monthObserver()
       }
     })
@@ -154,7 +155,7 @@ export default class Experience {
 
     for (let month of this.MONTHS) {
       if (
-        this.cameraY > month.position.y - ACTIVE_STEP * .1 &&
+        this.cameraY > month.position.y - ACTIVE_STEP * 0.1 &&
         this.cameraY < month.position.y + ACTIVE_STEP * 2
       ) {
         this.updateTimeline(month.index + 1)
@@ -204,7 +205,7 @@ export default class Experience {
     )
     this.scene.add(this.camera)
 
-    this.scene.fog = new THREE.Fog(0xfbf8ef, 10, 150)
+    this.scene.fog = new THREE.Fog(0xfbf8ef, 0, 150)
 
     this.camera.position.x = 10
     this.camera.position.z = 30
@@ -212,7 +213,7 @@ export default class Experience {
     this.camera.rotation.x = 0.8
 
     this.group = new Object3D()
-    this.group.position.x = -10
+    this.group.position.x = -4
     this.scene.add(this.group)
 
     // new OrbitControls(this.camera, this.canvas);
@@ -236,10 +237,18 @@ export default class Experience {
         new THREE.Vector3(
           month.position.x + 15,
           month.position.y - 30,
-          month.layersCount - 3
+          month.layersCount - 5
         )
       )
     }
+
+    islandsPos.push(
+      new THREE.Vector3(
+        this.MONTHS[this.MONTHS.length - 1].position.x + 15,
+        this.MONTHS[this.MONTHS.length - 1].position.y + this.endPoint,
+        this.MONTHS[this.MONTHS.length - 1].layersCount - 3
+      )
+    )
 
     this.cameraCurve = new THREE.CatmullRomCurve3(islandsPos)
 
@@ -269,8 +278,7 @@ export default class Experience {
     this.camera.position.y = position.y
     this.camera.position.z = position.z
 
-    this.camera.rotation.x = 1.2 - position.z * .01
-
+    this.camera.rotation.x = 1.2 - position.z * 0.01
     // this.camera.lookAt(this.cameraCurve.getPoint(t2))
 
     this.environmentSphere.position.y = this.camera.position.y
@@ -349,7 +357,7 @@ export default class Experience {
         index,
         data: month,
         position: {
-          x: Math.sin(index) * 20,
+          x: Math.cos(index*100) * 10,
           y: index * this.STEP,
         },
       })
