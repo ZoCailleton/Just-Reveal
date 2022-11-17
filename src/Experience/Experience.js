@@ -436,6 +436,7 @@ export default class Experience {
   }
 
   startIntro() {
+    
     if (this.debug) {
 
       let tl = gsap.timeline()
@@ -513,6 +514,8 @@ export default class Experience {
     this.updateSizes()
     this.tick()
 
+    this.showIntroScreen()
+
     if (this.debug) {
       this.startIntro()
     } else {
@@ -522,6 +525,14 @@ export default class Experience {
           this.startIntro()
         })
     }
+  }
+  
+  showIntroScreen() {
+
+    setTimeout(() => {
+      document.querySelector('.screen.intro').classList.add('active')
+    }, 1000)
+
   }
   
   updateParticles() {
