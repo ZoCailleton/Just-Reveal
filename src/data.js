@@ -1,18 +1,18 @@
 export const MONTHS_DATA = [
   {
     name: "janvier",
-    title: "janvier",
+    title: "Bonne année !",
     image: "janvier.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "L’année 2020 commence ! Au milieu des bonnes résolutions émergent quelques articles sur une épidémie dans la ville de Wuhan…",
     deaths: 0,
     gradient: ["#F9F9F9", "#84B9BF", "#A6DACD", "#CDEFDB", "#FBFEFB"],
     season: "winter",
   },
   {
     name: "février",
-    title: "février",
+    title: "Animal Crossing",
     image: "fevrier.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "Plus qu’un mois avant la sortie d’Animal Crossing: New Horizons ! La date de sortie du jeu, initialement prévue pour 2019, avait été reportée au 20 mars 2020.",
     deaths: 2,
     gradient: [
       "#F9F9F9",
@@ -26,9 +26,9 @@ export const MONTHS_DATA = [
   },
   {
     name: "mars",
-    title: "mars",
+    title: "Élan de solidarité",
     image: "mars.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "Le 17 mars 2020 marque le début du premier confinement. Face au manque de masques, des initiatives solidaires de confection de masques en tissu se multiplient partout en France.",
     deaths: 3521,
     gradient: [
       "#4AA0AB",
@@ -45,9 +45,9 @@ export const MONTHS_DATA = [
   },
   {
     name: "avril",
-    title: "avril",
+    title: "Amour & pandas",
     image: "avril.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "Après dix ans de vie commune à Hong Kong, deux pandas ont profité du calme de leur parc animalier, fermé au public, pour s’accoupler en toute tranquillité… ",
     deaths: 20853,
     gradient: [
       "#2E626C",
@@ -81,9 +81,9 @@ export const MONTHS_DATA = [
   },
   {
     name: "mai",
-    title: "mai",
+    title: "Retour des terrasses",
     image: "mai.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "Un déconfinement progressif de la France a lieu au cours du mois de mai. Rendez-vous en terrasse à partir du 19 mai pour aller prendre un café !",
     deaths: 4426,
     gradient: [
       "#58A18F",
@@ -101,9 +101,9 @@ export const MONTHS_DATA = [
   },
   {
     name: "juin",
-    title: "juin",
+    title: "Pas touche aux pangolins",
     image: "juin.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "Le gouvernement chinois a retiré les pangolins de la liste d’ingrédients de la médecine traditionnelle, garantissant ainsi un peu plus de protection à cette espèce menacée d’extinction.",
     deaths: 1041,
     gradient: [
       "#98C585",
@@ -121,9 +121,9 @@ export const MONTHS_DATA = [
   },
   {
     name: "juillet",
-    title: "juillet",
+    title: "Il va y avoir du sport",
     image: "juillet.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "Le confinement a fait découvrir et encouragé des pratiques sportives telles que le sport en ligne, le yoga ou le jogging dans de nombreux foyers !",
     deaths: 383,
     gradient: [
       "#83B352",
@@ -137,9 +137,9 @@ export const MONTHS_DATA = [
   },
   {
     name: "août",
-    title: "août",
+    title: "Tous en cuisine",
     image: "aout.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "Cuisiner chez soi a le vent en poupe ! Les français se mettent à la cuisine ; la vente d’appareils de cuisine est en hausse et de plus en plus d’influenceurs et de restaurants partagent leurs recettes en ligne…",
     deaths: 378,
     gradient: [
       "#AFBC67",
@@ -153,9 +153,9 @@ export const MONTHS_DATA = [
   },
   {
     name: "septembre",
-    title: "septembre",
+    title: "Dauphins roses",
     image: "septembre.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "Depuis l’arrêt du trafic des ferries, les dauphins roses sont de retour dans les eaux entre Hong Kong et Macao !",
     deaths: 1352,
     gradient: [
       "#E7BF65",
@@ -170,9 +170,9 @@ export const MONTHS_DATA = [
   },
   {
     name: "octobre",
-    title: "octobre",
+    title: "Z Event 2020",
     image: "octobre.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "Nouveau record pour le Z Event ! En l’espace de trois jours, le marathon de streaming francophone, a récolté 5,7 millions d’euros pour Amnesty International.",
     deaths: 4832,
     gradient: [
       "#F2908B",
@@ -190,9 +190,9 @@ export const MONTHS_DATA = [
   },
   {
     name: "novembre",
-    title: "novembre",
+    title: "Nuit des musées",
     image: "novembre.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "Les français étant à nouveau confinés depuis le 30 octobre, la Nuit des musées 2020 s’organise sur internet ! Les musées mettent à disposition leurs collections, proposent des visites virtuelles ou des activités en ligne…",
     deaths: 15943,
     gradient: [
       "#DA759F",
@@ -221,9 +221,9 @@ export const MONTHS_DATA = [
   },
   {
     name: "décembre",
-    title: "décembre",
+    title: "Première vaccination",
     image: "decembre.png",
-    description: "Macron annonce le confinement blabla c’est incvroyable comment on va faire<br>Macron annonce le confinement blabla c’est incvroyable comment on va faire",
+    description: "Le 27 décembre 2020, la première injection de vaccin au Covid-19 a lieu en France ! Un an plus tard, c’est près de 90,5% de la population majeure qui sera vaccinée.",
     deaths: 11901,
     gradient: [
       "#F9F9F9",
