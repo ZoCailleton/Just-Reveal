@@ -345,7 +345,7 @@ $gap: 25px;
         .point {
           width: 15px;
           height: 15px;
-          background-color: #c6c5d8;
+          background-color: $black;
           border-radius: 10px;
           display: flex;
           align-items: center;
@@ -357,7 +357,7 @@ $gap: 25px;
           @for $i from 1 through 12 {
             &:nth-child(#{$i}) {
               transition-delay: transform $i*100ms;
-              opacity: 1;
+              opacity: .15;
             }
           }
           &.visible {
@@ -365,7 +365,7 @@ $gap: 25px;
           }
           &.active {
             height: 35px;
-            background-color: $black;
+            opacity: 1;
             .name {
               display: block;
             }
@@ -373,6 +373,7 @@ $gap: 25px;
           &:hover,
           &.hovered {
             background-color: $black;
+            opacity: 1;
             .name {
               transform: translateX(15%) rotate(-2deg) scale(1);
               opacity: 1;

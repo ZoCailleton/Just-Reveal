@@ -165,6 +165,11 @@ export default class Experience {
       volume: 0.3,
     })
 
+    this.buttonSound2 = new Howl({
+      src: "./audio/button-2.wav",
+      volume: 0.1,
+    })
+
     this.bubbleHover = new Howl({
       src: "./audio/bubble-3.wav",
       volume: 0.1,
@@ -617,9 +622,13 @@ export default class Experience {
     if (this.debug) {
       this.startIntro()
     } else {
-      document
-        .querySelector(".screen.intro .cta")
-        .addEventListener("click", () => {
+      const cta = document.querySelector(".screen.intro .cta")
+      
+      cta.addEventListener('mouseover', () => {
+        this.buttonSound2.play()
+      })
+      
+      cta.addEventListener("click", () => {
           this.startIntro()
           this.buttonSound.play()
           // this.ambianceSound.play()
