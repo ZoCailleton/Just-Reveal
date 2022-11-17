@@ -213,7 +213,7 @@ export default class Month {
         }
       } else {
         layer.material.color.setHex(
-          `0x${COLORS.gradient[i]?.replace("#", "")}`
+          `0x${this.experience.darkGradient[i]?.replace("#", "")}`
         )
       }
     }
