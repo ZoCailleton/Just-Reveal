@@ -528,6 +528,11 @@ export default class Experience {
         this.started = true
         document.body.style.overflow = "visible"
       }, 1000)
+      
+      setTimeout(() => {
+        this.monthObserver()
+      }, 2000)
+
     }
   }
 
