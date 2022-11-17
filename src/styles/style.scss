@@ -203,33 +203,16 @@ $gap: 25px;
         display: flex;
         align-items: center;
         gap: 1em;
-        transform: translateY(2em);
+        transform: translateY(5em);
         opacity: 0;
         transition: 200ms cubic-bezier(.17,.67,.61,1.4);
         transition-delay: 1s;
         img {
           height: 1.75em;
-          display: none;
           transform: translateY(3em);
-          animation-name: audio-icon;
-          animation-duration: 600ms;
-          animation-iteration-count: 1;
-          animation-fill-mode: forwards;
-          animation-delay: 1s;
-          @keyframes audio-icon {
-            30% {
-              transform: translateY(-.5em);
-            }
-            50% {
-              transform: translateY(0em);
-            }
-            75% {
-              transform: translateY(-.5em);
-            }
-            100% {
-              transform: translateY(0);
-            }
-          }
+          opacity: 0;
+          transition: 200ms cubic-bezier(.17,.67,.58,1.36);
+          transition-delay: 1s;
         }
         p {
           font-weight: 300;
@@ -253,7 +236,8 @@ $gap: 25px;
           transform: translateY(0);
           opacity: 1;
           img {
-            display: block;
+            transform: translateY(0em);
+            opacity: 1;
           }
         }
       }

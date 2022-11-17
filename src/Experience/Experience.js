@@ -480,6 +480,11 @@ export default class Experience {
         { y: "-100vh", duration: 0.1, ease: Power2.easeInOut },
         "intro"
       )
+      tl.to(
+        document.querySelector(".tip"),
+        { display: none, ease: Power2.easeInOut },
+        "intro"
+      )
 
       setTimeout(() => {
         for (let point of this.timelineWrapper.querySelectorAll(".point")) {
