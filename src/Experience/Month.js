@@ -50,7 +50,7 @@ export default class Month {
   }
 
   setupLayers() {
-    const island = getRandomFromArray(SHAPES)
+    const island = SHAPES[this.index]
     const islandGeometry = getGeometryFromSVG(island.main)
 
     for (let i = this.layersCount; i > 0; i--) {
@@ -66,7 +66,7 @@ export default class Month {
       const mesh = new THREE.Mesh(islandGeometry, material)
 
       const pos = {
-        x: 2 - offset * 100,
+        x: 2 - offset * 200,
         y: this.position.y,
         z: i * 0.5 - 12,
       }
@@ -106,12 +106,12 @@ export default class Month {
   }
 
   setupModels() {
-    const treesCount = Math.floor(Math.random() * 2 + 3)
+    const treesCount = Math.floor(Math.random() * 2 + 2)
     for (let i = 0; i < treesCount; i++) {
       this.addModelFromType("tree")
     }
 
-    const vegetationCount = Math.floor(Math.random() * 3 + 4)
+    const vegetationCount = Math.floor(Math.random() * 4 + 4)
     for (let i = 0; i < vegetationCount; i++) {
       this.addModelFromType("vegetation")
     }
@@ -136,9 +136,9 @@ export default class Month {
 
   addModelFromType(type) {
     let pos = new THREE.Vector3(0, 0, 0)
-    pos.x = 7.5 * (Math.random() - 0.5) + this.islandSize * 180
-    pos.y = 5 * (Math.random() - 0.5) + this.position.y + 5
-    pos.z = 2 * (Math.random() - 0.5) - 2
+    // pos.x = 7 * (Math.random() - 0.5) + this.islandSize * 160
+    // pos.y = 5 * (Math.random() - 0.5) + this.position.y + 5
+    // pos.z = 2 * (Math.random() - 0.5) - 2
 
     let threshold = 2
     let loopCount = 0
@@ -150,8 +150,8 @@ export default class Month {
       threshold -= 0.1
       if (loopCount > 5) break
 
-      pos.x = 7.5 * (Math.random() - 0.5) + this.islandSize * 180
-      pos.y = 5 * (Math.random() - 0.5) + this.position.y + 5
+      pos.x = 6 * (Math.random() - 0.5) + this.islandSize * 250
+      pos.y = 6 * (Math.random() - 0.5) + this.position.y + 7.5
       pos.z = 2 * (Math.random() - 0.5) - 2
 
       if (type === 'cloud') {
