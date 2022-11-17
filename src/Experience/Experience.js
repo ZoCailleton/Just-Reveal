@@ -177,7 +177,7 @@ export default class Experience {
 
     this.wooshSound = new Howl({
       src: "./audio/woosh.wav",
-      volume: 0.15,
+      volume: 0.25,
     })
 
     this.cardSound = new Howl({
@@ -349,6 +349,7 @@ export default class Experience {
   }
 
   updateCards(index) {
+
     let i = 0
 
     for (let card of this.CARDS) {
@@ -541,6 +542,7 @@ export default class Experience {
       setTimeout(() => {
         this.started = true
         document.body.style.overflow = "visible"
+        gsap.to(document.querySelector('.screen.experience .background'), {opacity: 0, duration: 1, ease: Power2.easeInOut})
       }, 100)
 
     } else {
@@ -561,6 +563,8 @@ export default class Experience {
         { y: "-100vh", duration: 1, ease: Power2.easeInOut },
         "intro"
       )
+
+      this.wooshSound.play()
 
       setTimeout(() => {
         for (let point of this.timelineWrapper.querySelectorAll(".point")) {
