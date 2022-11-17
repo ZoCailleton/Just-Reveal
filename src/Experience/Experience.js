@@ -177,7 +177,7 @@ export default class Experience {
 
     this.wooshSound = new Howl({
       src: "./audio/woosh.wav",
-      volume: 0.25,
+      volume: 0.35,
     })
 
     this.cardSound = new Howl({
@@ -642,9 +642,14 @@ export default class Experience {
   }
 
   showIntroScreen() {
-    setTimeout(() => {
+
+    document.addEventListener('click', () => {
       document.querySelector(".screen.intro").classList.add("active")
-    }, 1000)
+    })
+
+    // setTimeout(() => {
+    //   document.querySelector(".screen.intro").classList.add("active")
+    // }, 1000)
   }
 
   updateParticles() {
