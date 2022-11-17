@@ -2,7 +2,7 @@ import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import gsap, { Power2, Back } from "gsap"
-import animateScrollTo from 'animated-scroll-to'
+import animateScrollTo from "animated-scroll-to"
 import { Howl } from "howler"
 
 import { THEMES } from "../themes"
@@ -14,7 +14,7 @@ import { MeshLambertMaterial, Object3D, SphereGeometry } from "three"
 import PointTimeline from "./PointTimeline"
 import Card from "./Card"
 import { GUI } from "dat.gui"
-import { getRandomIntFromInterval } from "../utils"
+import { getRandomIntFromInterval, mapValueBetween } from "../utils"
 
 let instance = null
 
@@ -89,7 +89,8 @@ export default class Experience {
 
         //this.cameraX = Math.cos(this.scroll * 100) * 20
         this.cameraY =
-          this.scroll * (this.MONTHS[this.MONTHS.length - 1]?.position.y + this.endPoint)
+          this.scroll *
+          (this.MONTHS[this.MONTHS.length - 1]?.position.y + this.endPoint)
         this.monthObserver()
       }
     })
@@ -153,7 +154,6 @@ export default class Experience {
   }
 
   monthObserver() {
-    
     const ACTIVE_STEP = this.STEP * 0.9
 
     for (let month of this.MONTHS) {
@@ -172,26 +172,7 @@ export default class Experience {
           month.active = true
           this.monthActive = month
 
-          for(let particle of this.particles) {
-            particle.mesh.position.x = getRandomIntFromInterval(month.position.x + 10, month.position.x + 20)
-            particle.mesh.position.y = getRandomIntFromInterval(month.position.y + 2, month.position.y + 12)
-            particle.mesh.position.z = month.layers[0].position.z + 5
-          }
-
-          if(month != undefined) {
-
-            if(month.index === 0 || month.index === 1 || index === 11) {
-  
-              for(let particle of this.snowParticles) {
-                particle.mesh.position.x = getRandomIntFromInterval(month.position.x + 10, month.position.x + 20)
-                particle.mesh.position.y = getRandomIntFromInterval(month.position.y + 2, month.position.y + 12)
-                particle.mesh.position.z = month.layers[0].position.z + 5
-              }
-  
-            }
-
-          }
-
+          this.positionParticles()
         }
       } else {
         if (month.active) {
@@ -279,7 +260,7 @@ export default class Experience {
     const material = new THREE.LineBasicMaterial({
       color: 0xff0000,
       wireframe: true,
-      visible: false
+      visible: false,
     })
 
     // Create the final object to add to the scene
@@ -308,15 +289,15 @@ export default class Experience {
 
   updateTimeline(index) {
     for (let point of document.querySelectorAll(".timeline .point")) {
-      point.classList.remove('active')
+      point.classList.remove("active")
     }
 
-    let point = this.timelineWrapper.querySelector(`.timeline .point:nth-child(${index})`)
+    let point = this.timelineWrapper.querySelector(
+      `.timeline .point:nth-child(${index})`
+    )
 
-    if(point != undefined) {
-
-      point.classList.add('active')
-
+    if (point != undefined) {
+      point.classList.add("active")
     }
   }
 
@@ -352,7 +333,6 @@ export default class Experience {
   }
 
   setupWorld() {
-    
     let index = 0
 
     for (const month of MONTHS_DATA) {
@@ -369,7 +349,10 @@ export default class Experience {
       let pointTimeline = new PointTimeline(month.name, index + 1)
 
       pointTimeline.addEventListener("click", () => {
-        let scroll = (document.body.offsetHeight / (this.MONTHS.length + 1)) * pointTimeline.dataset.index - window.innerHeight * 1.1
+        let scroll =
+          (document.body.offsetHeight / (this.MONTHS.length + 1)) *
+            pointTimeline.dataset.index -
+          window.innerHeight * 1.1
         console.log(scroll)
         animateScrollTo(scroll)
       })
@@ -380,7 +363,7 @@ export default class Experience {
         index,
         data: month,
         position: {
-          x: Math.cos(index*100) * 10,
+          x: Math.cos(index * 100) * 10,
           y: index * this.STEP,
         },
       })
@@ -390,51 +373,72 @@ export default class Experience {
 
     this.setupParticles()
     this.setupSnow()
-
   }
 
   setupParticles() {
-
-    for (let i = 0; i <10; i++) {
-
-      const geometry = new THREE.SphereGeometry(.1, 25)
+    for (let i = 0; i < 15; i++) {
+      const geometry = new THREE.SphereGeometry(Math.random() * 0.2, 25)
       const material = new THREE.MeshBasicMaterial({
-        color: 0xff0000
+        color: 0xEEFFA8,
       })
       const mesh = new THREE.Mesh(geometry, material)
       this.group.add(mesh)
       this.particles.push({
         rand: Math.random(),
-        mesh
+        mesh,
       })
     }
-
   }
 
   setupSnow() {
-
-    for(let i=0; i<20; i++) {
-
-      const geometry = new THREE.SphereGeometry(.1, 25)
+    for (let i = 0; i < 20; i++) {
+      const geometry = new THREE.SphereGeometry(0.11, 25)
       const material = new THREE.MeshBasicMaterial({
-        color: 0xffffff
+        color: 0xffffff,
       })
       const mesh = new THREE.Mesh(geometry, material)
       this.group.add(mesh)
       this.snowParticles.push({
         z: mesh.position.z,
         rand: Math.random(),
-        mesh
+        mesh,
       })
-
     }
-    
+  }
+
+  positionParticles() {
+    if (!this.monthActive) return
+
+    if (this.monthActive.data.season === "winter") {
+      for (let particle of this.snowParticles) {
+        particle.mesh.position.x = getRandomIntFromInterval(
+          this.monthActive.position.x + 10,
+          this.monthActive.position.x + 20
+        )
+        particle.mesh.position.y = getRandomIntFromInterval(
+          this.monthActive.position.y + 2,
+          this.monthActive.position.y + 12
+        )
+        particle.mesh.position.z = this.monthActive.layers[0].position.z + 5
+      }
+    } else {
+      for (let particle of this.particles) {
+        particle.mesh.position.x = getRandomIntFromInterval(
+          this.monthActive.position.x + 8,
+          this.monthActive.position.x + 20
+        )
+        particle.mesh.position.y = getRandomIntFromInterval(
+          this.monthActive.position.y + 2,
+          this.monthActive.position.y + 20
+        )
+        particle.mesh.position.z = this.monthActive.layers[0].position.z
+      }  
+    }
   }
 
   startIntro() {
     
     if (this.debug) {
-
       let tl = gsap.timeline()
       tl.addLabel("intro")
       tl.to(
@@ -471,20 +475,25 @@ export default class Experience {
 
       setTimeout(() => {
         this.MONTHS[0].reveal()
+        this.MONTHS[0].active = true
+        this.monthActive = this.MONTHS[0]
+        this.positionParticles()
       }, 70)
 
       setTimeout(() => {
         this.started = true
         document.body.style.overflow = "visible"
       }, 100)
-
     } else {
-
       let tl = gsap.timeline()
       tl.addLabel("intro")
       tl.to(
         this.camera.position,
-        { z: this.cameraCurve.getPoint(0).z, duration: 1, ease: Power2.easeInOut },
+        {
+          z: this.cameraCurve.getPoint(0).z,
+          duration: 1,
+          ease: Power2.easeInOut,
+        },
         "intro"
       )
       tl.to(
@@ -516,15 +525,16 @@ export default class Experience {
 
       setTimeout(() => {
         this.MONTHS[0].reveal()
+        this.MONTHS[0].active = true
+        this.monthActive = this.MONTHS[0]
+        this.positionParticles()
       }, 700)
 
       setTimeout(() => {
         this.started = true
         document.body.style.overflow = "visible"
       }, 1000)
-
     }
-
   }
 
   start() {
@@ -562,19 +572,28 @@ export default class Experience {
   }
   
   updateParticles() {
+    if (!this.monthActive) return
+    if (this.monthActive.data.season === "winter") {
+      for (let particle of this.snowParticles) {
+        if (particle.mesh.position.z > particle.z - 6) {
+          particle.mesh.position.z -= particle.rand * 0.1
+        } else {
+          particle.mesh.position.z = particle.z - 2
+        }
+      }
+    } else {
+      for (let particle of this.particles) {
+        const particleSize = mapValueBetween(particle.mesh.position.z, this.monthActive.layers[0].position.z, this.monthActive.layers[0].position.z + 3, 1, 0)
 
-    for(let particle of this.particles) {
-      particle.mesh.position.z += Math.sin(this.time + particle.rand) / 100
-    }
-
-    for(let particle of this.snowParticles) {
-      if(particle.mesh.position.z > particle.z - 6) {
-        particle.mesh.position.z -= particle.rand * 0.1
-      } else {
-        particle.mesh.position.z = particle.z - 2
+        particle.mesh.opacity = Math.sin(this.time + particle.rand) * 0.1
+        particle.mesh.scale.set(particleSize, particleSize, particleSize)
+        if (particle.mesh.position.z < this.monthActive.layers[0].position.z + 3) {
+          particle.mesh.position.z += particle.rand * 0.025
+        } else {
+          particle.mesh.position.z = this.monthActive.layers[0].position.z
+        }
       }
     }
-
   }
 
   tick() {
