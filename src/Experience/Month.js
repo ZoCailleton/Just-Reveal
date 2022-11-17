@@ -36,17 +36,14 @@ export default class Month {
     // Tableau contenant tous les plans de l'île
     this.layers = []
     this.crumbles = []
-    this.particles = []
     this.light
 
     // Tableau contenant les modèles 3D
     this.models = []
-    this.clouds = []
 
     this.setupLayers()
     this.setupLight()
     this.setupModels()
-    this.setupParticles()
   }
 
   setupLayers() {
@@ -121,19 +118,6 @@ export default class Month {
       this.addModelFromType("cloud")
     }
   }
-
-  setupParticles() {
-    for (let i = 0; i < 10; i++) {
-      const geometry = new THREE.SphereGeometry(0.1, 10)
-      const material = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-      })
-      const mesh = new THREE.Mesh(geometry, material)
-      this.particles.push(mesh)
-      this.experience.scene.add(mesh)
-    }
-  }
-
   addModelFromType(type) {
     let pos = new THREE.Vector3(0, 0, 0)
     // pos.x = 7 * (Math.random() - 0.5) + this.islandSize * 160
@@ -150,11 +134,12 @@ export default class Month {
       threshold -= 0.1
       if (loopCount > 5) break
 
-      pos.x = 6 * (Math.random() - 0.5) + this.position.x + this.islandSize * 250
+      pos.x =
+        6 * (Math.random() - 0.5) + this.position.x + this.islandSize * 250
       pos.y = 6 * (Math.random() - 0.5) + this.position.y + 7.5
       pos.z = 2 * (Math.random() - 0.5) - 2
 
-      if (type === 'cloud') {
+      if (type === "cloud") {
         for (const model of this.clouds) {
           const dist = pos.distanceTo(model.element.position)
           if (dist < threshold) {
@@ -162,7 +147,9 @@ export default class Month {
           }
         }
       } else {
-        for (const model of this.models.filter(el => el.type != 'vegetation')) {
+        for (const model of this.models.filter(
+          (el) => el.type != "vegetation"
+        )) {
           const dist = pos.distanceTo(model.element.position)
           if (dist < threshold) {
             // console.log(dist)
