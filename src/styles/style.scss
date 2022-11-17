@@ -261,7 +261,7 @@ $gap: 25px;
             opacity: 0;
             color: #fff;
             font-family: $title;
-            transition: 200ms;
+            transition: 200ms cubic-bezier(.21,.66,.47,1.49);
             z-index: -1;
             &::first-letter {
               text-transform: uppercase;
