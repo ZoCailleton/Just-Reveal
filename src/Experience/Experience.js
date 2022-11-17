@@ -2,6 +2,7 @@ import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import gsap, { Power2, Back } from "gsap"
+import animateScrollTo from 'animated-scroll-to'
 import { Howl } from "howler"
 
 import { THEMES } from "../themes"
@@ -337,8 +338,9 @@ export default class Experience {
       let pointTimeline = new PointTimeline(month.name, index + 1)
 
       pointTimeline.addEventListener("click", () => {
-        let scroll = document.body.offsetHeight / pointTimeline.dataset.index
+        let scroll = (document.body.offsetHeight / this.MONTHS.length) * pointTimeline.dataset.index
         console.log(scroll)
+        animateScrollTo(scroll)
       })
 
       this.timelineWrapper.append(pointTimeline)
