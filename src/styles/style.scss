@@ -143,9 +143,37 @@ $gap: 25px;
             font-size: 4em;
           }
           span {
-            display: inline-block;
+            display: flex;
+            gap: .03em;
             &.word {
               overflow: hidden;
+              &:nth-child(2) {
+                .letter {
+                  &:nth-child(2) {
+                    margin: 0 .02em;
+                  }
+                  &:nth-child(4) {
+                    margin-left: -.1em;
+                  }
+                  &:nth-child(6) {
+                    justify-content: center;
+                    position: relative;
+                    &::before {
+                      content: '^';
+                      width: 180%;
+                      height: .4em;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      position: absolute;
+                      top: .2em;
+                      font-size: .85em;
+                      z-index: 1;
+                      line-height: 1em;
+                    }
+                  }
+                }
+              }
             }
             &.letter {
               animation-duration: 500ms;
