@@ -36,7 +36,7 @@ export default class Experience {
     this.cameraCurve
     this.cameraPath
     this.particles = []
-    this.snow = []
+    this.snowParticles = []
 
     // Experience objects
     this.scroll = 0
@@ -173,6 +173,12 @@ export default class Experience {
           this.monthActive = month
 
           for(let particle of this.particles) {
+            particle.position.x = getRandomIntFromInterval(month.position.x + 10, month.position.x + 20)
+            particle.position.y = getRandomIntFromInterval(month.position.y + 2, month.position.y + 12)
+            particle.position.z = month.layers[0].position.z + 5
+          }
+
+          for(let particle of this.snowParticles) {
             particle.position.x = getRandomIntFromInterval(month.position.x + 10, month.position.x + 20)
             particle.position.y = getRandomIntFromInterval(month.position.y + 2, month.position.y + 12)
             particle.position.z = month.layers[0].position.z + 5
@@ -378,12 +384,14 @@ export default class Experience {
     }
 
     this.setupParticles()
+    this.setupSnow()
 
   }
 
   setupParticles() {
 
     for (let i = 0; i <10; i++) {
+
       const geometry = new THREE.SphereGeometry(.1, 25)
       const material = new THREE.MeshBasicMaterial({
         color: 0xff0000
@@ -391,8 +399,25 @@ export default class Experience {
       const mesh = new THREE.Mesh(geometry, material)
       this.group.add(mesh)
       this.particles.push(mesh)
+
     }
 
+  }
+
+  setupSnow() {
+
+    for(let i=0; i<20; i++) {
+
+      const geometry = new THREE.SphereGeometry(.1, 25)
+      const material = new THREE.MeshBasicMaterial({
+        color: 0xffffff
+      })
+      const mesh = new THREE.Mesh(geometry, material)
+      this.group.add(mesh)
+      this.snowParticles.push(mesh)
+
+    }
+    
   }
 
   startIntro() {
@@ -487,6 +512,10 @@ export default class Experience {
   updateParticles() {
 
     for(let particle of this.particles) {
+      particle.position.z += Math.sin(this.time) / 100
+    }
+
+    for(let particle of this.snowParticles) {
       particle.position.z += Math.sin(this.time) / 100
     }
 
